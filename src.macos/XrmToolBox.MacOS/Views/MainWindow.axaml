@@ -127,8 +127,7 @@
                 <TextBlock Classes="title-2" Text="Quick Actions" />
                 <UniformGrid Columns="2" Rows="2">
                   <Border Classes="card quick-action" Margin="0,0,8,8">
-                    <Button Background="Transparent" BorderThickness="0" Padding="0"
-                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    <Button Classes="quick-action-target"
                             Command="{Binding QuickOpenPowerPlatformCommand}">
                       <StackPanel Spacing="6">
                         <TextBlock Text="↗" FontSize="22" Foreground="{DynamicResource AccentBrush}" />
@@ -138,8 +137,7 @@
                     </Button>
                   </Border>
                   <Border Classes="card quick-action" Margin="8,0,0,8">
-                    <Button Background="Transparent" BorderThickness="0" Padding="0"
-                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    <Button Classes="quick-action-target"
                             Command="{Binding QuickRunPacCommand}">
                       <StackPanel Spacing="6">
                         <TextBlock Text="⌘" FontSize="22" Foreground="{DynamicResource AccentBrush}" />
@@ -149,8 +147,7 @@
                     </Button>
                   </Border>
                   <Border Classes="card quick-action" Margin="0,0,8,0">
-                    <Button Background="Transparent" BorderThickness="0" Padding="0"
-                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    <Button Classes="quick-action-target"
                             Command="{Binding QuickBrowseEnvironmentCommand}">
                       <StackPanel Spacing="6">
                         <TextBlock Text="🌐" FontSize="20" />
@@ -160,8 +157,7 @@
                     </Button>
                   </Border>
                   <Border Classes="card quick-action" Margin="8,0,0,0">
-                    <Button Background="Transparent" BorderThickness="0" Padding="0"
-                            HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                    <Button Classes="quick-action-target"
                             Command="{Binding QuickImportSolutionCommand}">
                       <StackPanel Spacing="6">
                         <TextBlock Text="📦" FontSize="20" />
@@ -363,6 +359,7 @@
             BorderBrush="{DynamicResource HairlineBrush}"
             BorderThickness="1"
             CornerRadius="{DynamicResource CornerRadiusCard}"
+            ClipToBounds="True"
             Width="640" Height="480"
             HorizontalAlignment="Center" VerticalAlignment="Center"
             Padding="0">
@@ -453,6 +450,7 @@
             BorderBrush="{DynamicResource HairlineBrush}"
             BorderThickness="1"
             CornerRadius="{DynamicResource CornerRadiusCard}"
+            ClipToBounds="True"
             Width="800" Height="560"
             HorizontalAlignment="Center" VerticalAlignment="Center">
       <DockPanel>
@@ -485,21 +483,23 @@
           </ListBox>
           <Border Grid.Column="1" Background="{DynamicResource HairlineBrush}" Width="1" />
           <Border Grid.Column="2" Padding="20,16" Background="{DynamicResource WindowBackgroundBrush}">
-            <StackPanel Spacing="{DynamicResource SpacingSm}">
-              <TextBlock Classes="title-2" Text="{Binding Store.Selected.Name, FallbackValue='Select a plugin'}" />
-              <TextBlock Classes="footnote secondary" Text="{Binding Store.Selected.Authors}" />
-              <TextBlock Classes="body" TextWrapping="Wrap" Text="{Binding Store.Selected.Description, FallbackValue=''}" />
-              <Border Margin="0,12,0,0" Padding="12" CornerRadius="{DynamicResource CornerRadiusControl}"
-                      Background="{DynamicResource ControlBackgroundBrush}"
-                      BorderBrush="{DynamicResource WarningBrush}" BorderThickness="1"
-                      IsVisible="{Binding Store.Selected, Converter={x:Static ObjectConverters.IsNotNull}}">
-                <StackPanel Spacing="{DynamicResource SpacingSm}">
-                  <TextBlock Classes="footnote warning" FontWeight="SemiBold" Text="Needs porting" />
-                  <TextBlock Classes="footnote" TextWrapping="Wrap"
-                             Text="Existing community plugins are .NET Framework + WinForms and won't load in this native shell. The agentic plugin porter (spec 002) auto-converts them. Install will be enabled once that ships." />
-                </StackPanel>
-              </Border>
-            </StackPanel>
+            <ScrollViewer>
+              <StackPanel Spacing="{DynamicResource SpacingSm}">
+                <TextBlock Classes="title-2" Text="{Binding Store.Selected.Name, FallbackValue='Select a plugin'}" />
+                <TextBlock Classes="footnote secondary" Text="{Binding Store.Selected.Authors}" />
+                <TextBlock Classes="body" TextWrapping="Wrap" Text="{Binding Store.Selected.Description, FallbackValue=''}" />
+                <Border Margin="0,12,0,0" Padding="12" CornerRadius="{DynamicResource CornerRadiusControl}"
+                        Background="{DynamicResource ControlBackgroundBrush}"
+                        BorderBrush="{DynamicResource WarningBrush}" BorderThickness="1"
+                        IsVisible="{Binding Store.Selected, Converter={x:Static ObjectConverters.IsNotNull}}">
+                  <StackPanel Spacing="{DynamicResource SpacingSm}">
+                    <TextBlock Classes="footnote warning" FontWeight="SemiBold" Text="Needs porting" />
+                    <TextBlock Classes="footnote" TextWrapping="Wrap"
+                               Text="Existing community plugins are .NET Framework + WinForms and won't load in this native shell. The agentic plugin porter (spec 002) auto-converts them. Install will be enabled once that ships." />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </ScrollViewer>
           </Border>
         </Grid>
       </DockPanel>

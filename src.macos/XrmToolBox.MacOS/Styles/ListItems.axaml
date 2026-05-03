@@ -1,6 +1,43 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+  <!-- ===========================================================
+       Default ListBox / ListBoxItem styling — brand purple selection
+       across every list in the app, not just the sidebar.
+       =========================================================== -->
+  <Style Selector="ListBox">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+
+  <Style Selector="ListBoxItem">
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+    <Setter Property="Margin" Value="6,2" />
+    <Setter Property="Padding" Value="10,8" />
+    <Setter Property="MinHeight" Value="0" />
+  </Style>
+
+  <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+  </Style>
+
+  <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SelectionBackgroundBrush}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
+  </Style>
+
+  <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SelectionBackgroundBrush}" />
+  </Style>
+
+  <Style Selector="ListBoxItem:selected TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
+  </Style>
+
   <!-- macOS-style sidebar list -->
   <Style Selector="ListBox.sidebar">
     <Setter Property="Background" Value="Transparent" />
@@ -128,10 +165,11 @@
 
   <!-- Quick-action card on Home: subtle hover lift -->
   <Style Selector="Border.quick-action">
-    <Setter Property="MinHeight" Value="100" />
+    <Setter Property="MinHeight" Value="108" />
   </Style>
   <Style Selector="Border.quick-action:pointerover">
     <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
   </Style>
 
   <!-- TextBox -->
