@@ -2,7 +2,13 @@
 
 ## Priority: HIGH
 
-## Status: IN PROGRESS
+## Status: COMPLETE (v2)
+
+> v1 shipped: domain types (`ConnectionDetail` extended; `ConnectionFile` + `ConnectionsCatalogue` added to `Extensibility.Core`), `ConnectionCatalogueStore` (atomic JSON, schema-versioned, legacy-recent migration), `SecretStore` (macOS Keychain via `security` CLI; non-mac falls back to per-user file), all four auth flows (`ConnectAsync(ConnectionDetail)` over OAuth interactive / device code / client secret / certificate), `ConnectionsListXmlImporter`, per-tab `Connection` + `IsConnectionPinned` on `OpenedPluginViewModel`, Connections pane (file tree + quick-connect + import), Environments status grid, tab connection chip + pinned indicator, native menu item `File → Import connections from XrmToolBox…`.
+>
+> v2 shipped: `Add connection…` modal (two-step: pick auth mode → fill details + Test/Save/Save-and-connect), Edit support pre-populating the same modal, in-window device-code prompt (Copy code / Open URL / I've signed in), Keychain-backed secret entry with `Set secret` button, `card-button` references switched to existing `tertiary` style, modal `IsVisible` bindings use `$parent[Window]` to avoid scoped-DataContext resolution issues.
+>
+> Deferred (not blocking spec close): drag-drop reorder of catalogue, Cmd-Shift-K toolbar connection picker, per-tab connection-swap popover (chip is read-only today; swap happens via the Connections pane), `connections.log` rolling file (logs go to stderr for now via Avalonia trace).
 
 ## Description
 

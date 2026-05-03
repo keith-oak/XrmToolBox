@@ -426,6 +426,10 @@
               <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Top" Spacing="{DynamicResource SpacingSm}">
                   <TextBlock Classes="title-2" Text="Connections" />
+                  <Button Content="Add connection…"
+                          Classes="primary"
+                          HorizontalAlignment="Stretch"
+                          Command="{Binding OpenAddConnectionCommand}" />
                   <Button Content="Import from XrmToolBox…"
                           Classes="tertiary"
                           HorizontalAlignment="Stretch"
@@ -493,16 +497,20 @@
                     <ItemsControl ItemsSource="{Binding CatalogueConnections}">
                       <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="ext:ConnectionDetail">
-                          <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,6">
+                          <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,6">
                             <StackPanel Grid.Column="0">
                               <TextBlock Text="{Binding ConnectionName}" FontWeight="SemiBold" />
                               <TextBlock Text="{Binding Url}" Classes="footnote secondary mono" />
                             </StackPanel>
                             <Button Grid.Column="1" Content="Connect" Classes="tertiary"
-                                    Margin="0,0,8,0"
+                                    Margin="0,0,6,0"
                                     Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ConnectToCatalogueCommand}"
                                     CommandParameter="{Binding}" />
-                            <Button Grid.Column="2" Content="Forget" Classes="tertiary"
+                            <Button Grid.Column="2" Content="Edit" Classes="tertiary"
+                                    Margin="0,0,6,0"
+                                    Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).EditConnectionCommand}"
+                                    CommandParameter="{Binding}" />
+                            <Button Grid.Column="3" Content="Forget" Classes="tertiary"
                                     Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ForgetCatalogueCommand}"
                                     CommandParameter="{Binding}" />
                           </Grid>
@@ -641,14 +649,17 @@
 
     </Grid>
 
-    <!-- Overlay backdrop (Tool Library + Command Palette only — Settings
-         and About are inline content panes selected via the sidebar). -->
+    <!-- Overlay backdrop (Tool Library + Command Palette + Add Connection +
+         Device Code modals). Settings and About are inline content panes
+         selected via the sidebar, so they don't get a backdrop. -->
     <Border Background="#7F000000"
             IsHitTestVisible="True">
       <Border.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.Or}">
           <Binding Path="IsStoreOpen" />
           <Binding Path="IsCommandPaletteOpen" />
+          <Binding Path="IsAddConnectionOpen" />
+          <Binding Path="IsDeviceCodeOpen" />
         </MultiBinding>
       </Border.IsVisible>
     </Border>
@@ -743,6 +754,178 @@
           </ListBox.ItemTemplate>
         </ListBox>
       </DockPanel>
+    </Border>
+
+    <!-- Add Connection modal -->
+    <Border IsVisible="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).IsAddConnectionOpen}"
+            Background="{DynamicResource SurfaceBackgroundBrush}"
+            BorderBrush="{DynamicResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource CornerRadiusCard}"
+            ClipToBounds="True"
+            Width="640" MaxHeight="640"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            DataContext="{Binding AddConnection}">
+      <DockPanel>
+        <Border DockPanel.Dock="Top" Padding="20,16" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
+          <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Grid.Column="0" Spacing="2">
+              <TextBlock Classes="title-1" Text="Add connection" />
+              <TextBlock Classes="footnote secondary"
+                         Text="Step 1 — pick how you'll sign in"
+                         IsVisible="{Binding !IsAuthModeSelected}" />
+              <TextBlock Classes="footnote secondary"
+                         Text="Step 2 — fill in the details and test"
+                         IsVisible="{Binding IsAuthModeSelected}" />
+            </StackPanel>
+            <Button Grid.Column="1" Content="Close" Classes="tertiary"
+                    Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).CloseAddConnectionCommand}" />
+          </Grid>
+        </Border>
+
+        <!-- Step 1: pick auth mode -->
+        <ScrollViewer IsVisible="{Binding !IsAuthModeSelected}">
+          <StackPanel Margin="20" Spacing="{DynamicResource SpacingSm}">
+            <Button Classes="tertiary"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding SelectAuthModeCommand}"
+                    CommandParameter="OAuth">
+              <StackPanel Spacing="2">
+                <TextBlock Text="OAuth (interactive)" FontWeight="SemiBold" />
+                <TextBlock Classes="footnote secondary"
+                           Text="Sign in with the system browser. Best for normal day-to-day use." />
+              </StackPanel>
+            </Button>
+            <Button Classes="tertiary"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding SelectAuthModeCommand}"
+                    CommandParameter="DeviceCode">
+              <StackPanel Spacing="2">
+                <TextBlock Text="Device code" FontWeight="SemiBold" />
+                <TextBlock Classes="footnote secondary"
+                           Text="Use when this Mac can't open a browser, or you'd rather sign in on another device." />
+              </StackPanel>
+            </Button>
+            <Button Classes="tertiary"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding SelectAuthModeCommand}"
+                    CommandParameter="ClientSecret">
+              <StackPanel Spacing="2">
+                <TextBlock Text="Client secret (S2S)" FontWeight="SemiBold" />
+                <TextBlock Classes="footnote secondary"
+                           Text="App-only auth using an Azure AD app registration. The secret is stored in the macOS Keychain." />
+              </StackPanel>
+            </Button>
+            <Button Classes="tertiary"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding SelectAuthModeCommand}"
+                    CommandParameter="Certificate">
+              <StackPanel Spacing="2">
+                <TextBlock Text="Certificate" FontWeight="SemiBold" />
+                <TextBlock Classes="footnote secondary"
+                           Text="App-only auth using a certificate from the login keychain. Most secure for unattended scenarios." />
+              </StackPanel>
+            </Button>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- Step 2: details -->
+        <ScrollViewer IsVisible="{Binding IsAuthModeSelected}">
+          <StackPanel Margin="20" Spacing="{DynamicResource SpacingSm}">
+            <Grid ColumnDefinitions="120,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="0,0,0,4">
+              <TextBlock Grid.Row="0" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center" Text="Connection name" />
+              <TextBox Grid.Row="0" Grid.Column="1" Watermark="Optional — auto-fills from the org" Text="{Binding ConnectionName}" Margin="0,4" />
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center" Text="URL" />
+              <TextBox Grid.Row="1" Grid.Column="1" Watermark="https://yourorg.crm.dynamics.com" Text="{Binding Url}" Margin="0,4" />
+
+              <TextBlock Grid.Row="2" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center" Text="File (group)" />
+              <TextBox Grid.Row="2" Grid.Column="1" Watermark="Personal" Text="{Binding FileName}" Margin="0,4" />
+
+              <!-- Tenant: shown for all modes; default is 'organizations' -->
+              <TextBlock Grid.Row="3" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center" Text="Tenant" />
+              <TextBox Grid.Row="3" Grid.Column="1" Watermark="organizations (or a tenant id / domain)" Text="{Binding Tenant}" Margin="0,4" />
+
+              <!-- App id: required for ClientSecret + Certificate -->
+              <TextBlock Grid.Row="4" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center"
+                         Text="App id" IsVisible="{Binding NeedsAppId}" />
+              <TextBox Grid.Row="4" Grid.Column="1" Watermark="Azure AD application (client) id" Text="{Binding AzureAdAppId}" Margin="0,4"
+                       IsVisible="{Binding NeedsAppId}" />
+
+              <!-- Cert thumbprint -->
+              <TextBlock Grid.Row="5" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center"
+                         Text="Thumbprint" IsVisible="{Binding IsCertificate}" />
+              <TextBox Grid.Row="5" Grid.Column="1" Watermark="Certificate thumbprint (looked up in login.keychain)"
+                       Text="{Binding CertificateThumbprint}" Margin="0,4"
+                       IsVisible="{Binding IsCertificate}" />
+
+              <!-- Client secret entry -->
+              <TextBlock Grid.Row="6" Grid.Column="0" Classes="footnote secondary" VerticalAlignment="Center"
+                         Text="Secret" IsVisible="{Binding IsClientSecret}" />
+              <Grid Grid.Row="6" Grid.Column="1" ColumnDefinitions="*,Auto" Margin="0,4"
+                    IsVisible="{Binding IsClientSecret}">
+                <TextBox Grid.Column="0" PasswordChar="•"
+                         Watermark="Paste the client secret value here"
+                         Text="{Binding PendingSecret}" />
+                <Button Grid.Column="1" Content="Set secret" Classes="tertiary" Margin="8,0,0,0"
+                        Command="{Binding SetSecretCommand}"
+                        CommandParameter="{Binding PendingSecret}" />
+              </Grid>
+              <TextBlock Grid.Row="7" Grid.Column="1" Classes="footnote secondary"
+                         Text="Secret is stored in macOS Keychain (service: com.lucidlabs.pacdtoolbox.secrets)."
+                         IsVisible="{Binding SecretIsSet}" />
+            </Grid>
+
+            <Border Padding="12" CornerRadius="{DynamicResource CornerRadiusControl}"
+                    Background="{DynamicResource ControlBackgroundBrush}"
+                    BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="1"
+                    IsVisible="{Binding TestResult.Length}">
+              <TextBlock Classes="footnote" Text="{Binding TestResult}" TextWrapping="Wrap" />
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}" HorizontalAlignment="Right">
+              <Button Content="Back" Classes="tertiary" Command="{Binding BackCommand}" />
+              <Button Content="Test connection" Classes="tertiary" Command="{Binding TestCommand}" />
+              <Button Content="Save" Classes="tertiary" Command="{Binding SaveCommand}" />
+              <Button Content="Save and connect" Classes="primary" Command="{Binding SaveAndConnectCommand}" />
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+
+    <!-- Device code modal -->
+    <Border IsVisible="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).IsDeviceCodeOpen}"
+            Background="{DynamicResource SurfaceBackgroundBrush}"
+            BorderBrush="{DynamicResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource CornerRadiusCard}"
+            Width="480"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            DataContext="{Binding DeviceCode}">
+      <StackPanel Margin="24" Spacing="{DynamicResource SpacingMd}">
+        <TextBlock Classes="title-1" Text="Sign in via device code" />
+        <TextBlock Classes="body" TextWrapping="Wrap" Text="{Binding Message}" />
+        <Border Padding="20,16" CornerRadius="{DynamicResource CornerRadiusCard}"
+                Background="{DynamicResource AccentSoftBrush}">
+          <TextBlock Classes="title-1"
+                     Text="{Binding UserCode}"
+                     FontFamily="ui-monospace"
+                     HorizontalAlignment="Center" />
+        </Border>
+        <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}" HorizontalAlignment="Right">
+          <Button Content="Copy code" Classes="tertiary"
+                  Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).CopyDeviceCodeCommand}" />
+          <Button Content="Open URL" Classes="tertiary"
+                  Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).OpenDeviceCodeUrlCommand}" />
+          <Button Content="I've signed in" Classes="primary"
+                  Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).CloseDeviceCodeCommand}" />
+        </StackPanel>
+      </StackPanel>
     </Border>
 
   </Grid>

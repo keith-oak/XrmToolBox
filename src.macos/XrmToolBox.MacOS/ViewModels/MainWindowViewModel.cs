@@ -32,9 +32,13 @@ public sealed class MainWindowViewModel : ViewModelBase
     private readonly PluginManager _pluginManager;
     private readonly DataverseConnectionService _connectionService;
     private readonly ConnectionCatalogueStore _catalogue;
+    private readonly SecretStore _secrets;
     public SettingsService SettingsService { get; }
     public ConnectionCatalogueStore Catalogue => _catalogue;
     public DataverseConnectionService ConnectionService => _connectionService;
+    public SecretStore SecretStore => _secrets;
+
+    public void NotifyCatalogueChanged() => SyncCatalogueViews();
 
     private string _connectionStatus = "Not connected";
     public string ConnectionStatus
@@ -116,6 +120,30 @@ public sealed class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isStoreOpen, value);
     }
 
+    private AddConnectionViewModel? _addConnection;
+    public AddConnectionViewModel? AddConnection
+    {
+        get => _addConnection;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _addConnection, value);
+            this.RaisePropertyChanged(nameof(IsAddConnectionOpen));
+        }
+    }
+    public bool IsAddConnectionOpen => AddConnection is not null;
+
+    private DeviceCodePrompt? _deviceCode;
+    public DeviceCodePrompt? DeviceCode
+    {
+        get => _deviceCode;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _deviceCode, value);
+            this.RaisePropertyChanged(nameof(IsDeviceCodeOpen));
+        }
+    }
+    public bool IsDeviceCodeOpen => DeviceCode is not null;
+
     public PluginStoreViewModel Store { get; } = new();
 
     public ObservableCollection<NavItem> NavItems { get; } = new()
@@ -189,6 +217,12 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<ConnectionDetail, Unit> SetDefaultCommand { get; }
     public ReactiveCommand<string, Unit> NewConnectionFileCommand { get; }
     public ReactiveCommand<Unit, Unit> ImportFromXrmToolBoxCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenAddConnectionCommand { get; }
+    public ReactiveCommand<ConnectionDetail, Unit> EditConnectionCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseAddConnectionCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseDeviceCodeCommand { get; }
+    public ReactiveCommand<Unit, Unit> CopyDeviceCodeCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenDeviceCodeUrlCommand { get; }
     public ReactiveCommand<Unit, Unit> ToggleCommandPaletteCommand { get; }
     public ReactiveCommand<Unit, Unit> ToggleSettingsCommand { get; }
     public ReactiveCommand<Unit, Unit> ToggleAboutCommand { get; }
@@ -242,6 +276,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         _pluginManager = pluginManager;
         SettingsService = settings;
         _catalogue = catalogue;
+        _secrets = secrets;
         _connectionService = new DataverseConnectionService(secrets);
 
         // One-time migration of legacy flat RecentConnections into the catalogue.
@@ -277,6 +312,20 @@ public sealed class MainWindowViewModel : ViewModelBase
         SetDefaultCommand = ReactiveCommand.Create<ConnectionDetail>(SetDefaultConnection);
         NewConnectionFileCommand = ReactiveCommand.Create<string>(NewConnectionFile);
         ImportFromXrmToolBoxCommand = ReactiveCommand.CreateFromTask(ImportFromXrmToolBoxAsync);
+
+        OpenAddConnectionCommand = ReactiveCommand.Create(OpenAddConnection);
+        EditConnectionCommand = ReactiveCommand.Create<ConnectionDetail>(EditConnection);
+        CloseAddConnectionCommand = ReactiveCommand.Create(() => { AddConnection = null; });
+        CloseDeviceCodeCommand = ReactiveCommand.Create(() => { DeviceCode = null; });
+        CopyDeviceCodeCommand = ReactiveCommand.Create(CopyDeviceCode);
+        OpenDeviceCodeUrlCommand = ReactiveCommand.Create(OpenDeviceCodeUrl);
+
+        // Device code hook: surface the prompt as an in-window overlay.
+        ShowDeviceCodeAsync = prompt =>
+        {
+            DeviceCode = prompt;
+            return Task.CompletedTask;
+        };
 
         ToggleCommandPaletteCommand = ReactiveCommand.Create(() => { IsCommandPaletteOpen = !IsCommandPaletteOpen; });
         ToggleSettingsCommand = ReactiveCommand.Create(() =>
@@ -513,6 +562,49 @@ public sealed class MainWindowViewModel : ViewModelBase
         _catalogue.EnsureFile(name);
         _catalogue.Save();
         SyncCatalogueViews();
+    }
+
+    private void OpenAddConnection()
+    {
+        var vm = new AddConnectionViewModel(this);
+        vm.RequestClose += (_, _) => AddConnection = null;
+        AddConnection = vm;
+    }
+
+    private void EditConnection(ConnectionDetail detail)
+    {
+        if (detail is null) return;
+        var vm = new AddConnectionViewModel(this, detail);
+        vm.RequestClose += (_, _) => AddConnection = null;
+        AddConnection = vm;
+    }
+
+    private void CopyDeviceCode()
+    {
+        if (DeviceCode is null) return;
+        try
+        {
+            var clipboard = Avalonia.Application.Current?.ApplicationLifetime is
+                Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop
+                ? desktop.MainWindow?.Clipboard
+                : null;
+            clipboard?.SetTextAsync(DeviceCode.UserCode);
+        }
+        catch
+        {
+            // Clipboard access can fail under some sandboxed scenarios; the
+            // user can still read the code from the modal.
+        }
+    }
+
+    private void OpenDeviceCodeUrl()
+    {
+        if (DeviceCode is null) return;
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(DeviceCode.VerificationUrl) { UseShellExecute = true });
+        }
+        catch { }
     }
 
     private async Task ImportFromXrmToolBoxAsync()
