@@ -83,7 +83,16 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
             HorizontalAlignment = HorizontalAlignment.Left,
             Classes = { "primary" },
         };
-        _runButton.Click += async (_, _) => await RunQueryAsync();
+        _runButton.Click += async (_, _) =>
+        {
+            try { await RunQueryAsync(); }
+            catch (Exception ex)
+            {
+                _statusLabel!.Foreground = Brushes.OrangeRed;
+                _statusLabel!.Text = $"Error: {ex.Message}";
+                _runButton!.IsEnabled = true;
+            }
+        };
 
         _copyButton = new Button
         {
@@ -93,7 +102,15 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
             IsEnabled = false,
             Classes = { "tertiary" },
         };
-        _copyButton.Click += async (_, _) => await CopyResultsAsync();
+        _copyButton.Click += async (_, _) =>
+        {
+            try { await CopyResultsAsync(); }
+            catch (Exception ex)
+            {
+                _statusLabel!.Foreground = Brushes.OrangeRed;
+                _statusLabel!.Text = $"Copy failed: {ex.Message}";
+            }
+        };
 
         var closeButton = new Button
         {
@@ -233,8 +250,11 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
             return;
         }
 
-        var entry = s_entities[_entityPicker.SelectedIndex];
+        var idx = Math.Clamp(_entityPicker.SelectedIndex, 0, s_entities.Length - 1);
+        var entry = s_entities[idx];
         var top = (int)(_topCount.Value ?? 10);
+        if (top < 1) top = 1;
+        if (top > 250) top = 250;
 
         _runButton.IsEnabled = false;
         _statusLabel.Foreground = new SolidColorBrush(Color.FromArgb(180, 90, 90, 95));
