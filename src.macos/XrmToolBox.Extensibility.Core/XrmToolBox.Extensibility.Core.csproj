@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>XrmToolBox.Extensibility</RootNamespace>
+    <AssemblyName>XrmToolBox.Extensibility.Core</AssemblyName>
+    <Version>2.0.0</Version>
+    <Description>Cross-platform XrmToolBox plugin SDK contracts. UI-agnostic.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.5" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Plugins/">
+    <Project Path="Plugins/SampleTool/SampleTool.csproj" />
+  </Folder>
+  <Project Path="XrmToolBox.Extensibility.Core/XrmToolBox.Extensibility.Core.csproj" />
+  <Project Path="XrmToolBox.MacOS/XrmToolBox.MacOS.csproj" />
+</Solution>
