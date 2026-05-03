@@ -118,6 +118,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ToggleStoreCommand { get; }
     public ReactiveCommand<Unit, Unit> ReloadPluginsCommand { get; }
     public ReactiveCommand<Unit, Unit> QuitCommand { get; }
+    public ReactiveCommand<Unit, Unit> CloseAllOverlaysCommand { get; }
 
     public MainWindowViewModel(PluginManager pluginManager, SettingsService settings)
     {
@@ -161,6 +162,13 @@ public sealed class MainWindowViewModel : ViewModelBase
         });
         ReloadPluginsCommand = ReactiveCommand.Create(ReloadPlugins);
         QuitCommand = ReactiveCommand.Create(Quit);
+        CloseAllOverlaysCommand = ReactiveCommand.Create(() =>
+        {
+            IsCommandPaletteOpen = false;
+            IsSettingsOpen = false;
+            IsAboutOpen = false;
+            IsStoreOpen = false;
+        });
     }
 
     private async Task ConnectOrDisconnectAsync()
