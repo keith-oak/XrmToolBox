@@ -3,14 +3,15 @@
 
   <ResourceDictionary.ThemeDictionaries>
 
-    <!-- LIGHT -->
+    <!-- LIGHT — macOS Sequoia: cool greys, opaque enough to neutralise
+         warm-tinted wallpapers bleeding through. -->
     <ResourceDictionary x:Key="Light">
-      <Color x:Key="WindowBackgroundColor">#F5F5F7</Color>
-      <Color x:Key="SidebarBackgroundColor">#FAFAFAF0</Color>
+      <Color x:Key="WindowBackgroundColor">#ECECEE</Color>
+      <Color x:Key="SidebarBackgroundColor">#F2F2F4</Color>
       <Color x:Key="SurfaceBackgroundColor">#FFFFFF</Color>
       <Color x:Key="SurfaceElevatedColor">#FFFFFF</Color>
-      <Color x:Key="ToolbarBackgroundColor">#F0F0F2F8</Color>
-      <Color x:Key="StatusBarBackgroundColor">#E8E8EAF0</Color>
+      <Color x:Key="ToolbarBackgroundColor">#E8E8EB</Color>
+      <Color x:Key="StatusBarBackgroundColor">#E2E2E5</Color>
       <Color x:Key="DividerColor">#1F000000</Color>
       <Color x:Key="HairlineColor">#33000000</Color>
       <Color x:Key="PrimaryTextColor">#1D1D1F</Color>
@@ -56,14 +57,14 @@
       <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{DynamicResource ControlBackgroundColor}" />
     </ResourceDictionary>
 
-    <!-- DARK -->
+    <!-- DARK — macOS Sequoia dark: near-opaque cool greys -->
     <ResourceDictionary x:Key="Dark">
-      <Color x:Key="WindowBackgroundColor">#1E1E1F</Color>
-      <Color x:Key="SidebarBackgroundColor">#262628E0</Color>
+      <Color x:Key="WindowBackgroundColor">#1E1E20</Color>
+      <Color x:Key="SidebarBackgroundColor">#252527</Color>
       <Color x:Key="SurfaceBackgroundColor">#2C2C2E</Color>
       <Color x:Key="SurfaceElevatedColor">#3A3A3C</Color>
-      <Color x:Key="ToolbarBackgroundColor">#2C2C2EE0</Color>
-      <Color x:Key="StatusBarBackgroundColor">#202022E0</Color>
+      <Color x:Key="ToolbarBackgroundColor">#2A2A2C</Color>
+      <Color x:Key="StatusBarBackgroundColor">#222224</Color>
       <Color x:Key="DividerColor">#33FFFFFF</Color>
       <Color x:Key="HairlineColor">#55000000</Color>
       <Color x:Key="PrimaryTextColor">#F5F5F7</Color>

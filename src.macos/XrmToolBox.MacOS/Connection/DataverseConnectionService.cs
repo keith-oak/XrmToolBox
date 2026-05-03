@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk;
 using XrmToolBox.Extensibility;
@@ -12,15 +13,40 @@ public sealed class DataverseConnectionService
 
     public async Task<(bool Success, string? Error)> ConnectInteractiveAsync(string url)
     {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return (false, "Enter a Dataverse environment URL.");
+        }
+
+        ServiceClient? client = null;
         try
         {
             var connectionString =
                 $"AuthType=OAuth;Url={url};LoginPrompt=Auto;TokenCacheStorePath={GetTokenCachePath()};RedirectUri=http://localhost;";
-            var client = await Task.Run(() => new ServiceClient(connectionString));
+            client = await Task.Run(() => new ServiceClient(connectionString));
 
             if (!client.IsReady)
             {
-                return (false, client.LastError ?? "ServiceClient not ready");
+                client.Dispose();
+                var msg = client.LastError;
+                if (string.IsNullOrWhiteSpace(msg))
+                {
+                    msg = "Authentication did not complete. If you denied a Keychain prompt or cancelled the sign-in, click Connect to try again.";
+                }
+                return (false, msg);
+            }
+
+            // Verify the session is genuinely usable end-to-end. ServiceClient
+            // sometimes reports IsReady=true even when the underlying token grant
+            // was denied; a real Dataverse round-trip surfaces that immediately.
+            try
+            {
+                _ = await Task.Run(() => (WhoAmIResponse)client.Execute(new WhoAmIRequest()));
+            }
+            catch (Exception probe)
+            {
+                client.Dispose();
+                return (false, $"Connected but the environment refused the request: {probe.Message}");
             }
 
             Client = client;
@@ -36,7 +62,18 @@ public sealed class DataverseConnectionService
         }
         catch (Exception ex)
         {
-            return (false, ex.Message);
+            client?.Dispose();
+            // MSAL/Keychain denial typically surfaces here as a cancelled
+            // operation. Translate to something a user can act on.
+            var msg = ex.Message;
+            if (msg.Contains("cancelled", StringComparison.OrdinalIgnoreCase) ||
+                msg.Contains("canceled", StringComparison.OrdinalIgnoreCase) ||
+                msg.Contains("denied", StringComparison.OrdinalIgnoreCase) ||
+                msg.Contains("MsalClientException", StringComparison.OrdinalIgnoreCase))
+            {
+                msg = "Sign-in was cancelled or the Keychain access was denied. Click Connect to try again.";
+            }
+            return (false, msg);
         }
     }
 
