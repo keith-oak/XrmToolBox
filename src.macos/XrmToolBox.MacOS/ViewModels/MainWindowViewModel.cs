@@ -141,16 +141,8 @@ public sealed class MainWindowViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(IsSettingsActive));
             this.RaisePropertyChanged(nameof(IsAboutActive));
 
-            // Some nav targets are overlay panels in v1.
-            if (value?.Section == NavSection.Settings)
-            {
-                IsSettingsOpen = true;
-            }
-            else if (value?.Section == NavSection.About)
-            {
-                IsAboutOpen = true;
-            }
-            else if (value?.Section == NavSection.Plugins)
+            // Plugins still uses the overlay store for now.
+            if (value?.Section == NavSection.Plugins)
             {
                 _ = ToggleStoreCommand.Execute().Subscribe();
             }
@@ -221,8 +213,14 @@ public sealed class MainWindowViewModel : ViewModelBase
         SelectRecentCommand = ReactiveCommand.Create<RecentConnection>(c => DataverseUrl = c.Url);
         ForgetRecentCommand = ReactiveCommand.Create<RecentConnection>(ForgetRecent);
         ToggleCommandPaletteCommand = ReactiveCommand.Create(() => { IsCommandPaletteOpen = !IsCommandPaletteOpen; });
-        ToggleSettingsCommand = ReactiveCommand.Create(() => { IsSettingsOpen = !IsSettingsOpen; });
-        ToggleAboutCommand = ReactiveCommand.Create(() => { IsAboutOpen = !IsAboutOpen; });
+        ToggleSettingsCommand = ReactiveCommand.Create(() =>
+        {
+            SelectedNav = NavItems.First(n => n.Section == NavSection.Settings);
+        });
+        ToggleAboutCommand = ReactiveCommand.Create(() =>
+        {
+            SelectedNav = NavItems.First(n => n.Section == NavSection.About);
+        });
         ToggleStoreCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             IsStoreOpen = !IsStoreOpen;

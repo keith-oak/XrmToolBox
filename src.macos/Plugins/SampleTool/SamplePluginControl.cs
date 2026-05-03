@@ -58,7 +58,7 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
         _entityPicker = new ComboBox
         {
             Width = 200,
-            SelectedIndex = 0,
+            PlaceholderText = "Choose an entity",
             HorizontalAlignment = HorizontalAlignment.Left,
         };
         foreach (var (_, display, _) in s_entities)
@@ -266,8 +266,14 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
             return;
         }
 
-        var idx = Math.Clamp(_entityPicker.SelectedIndex, 0, s_entities.Length - 1);
-        var entry = s_entities[idx];
+        if (_entityPicker.SelectedIndex < 0)
+        {
+            _statusLabel.Foreground = Brushes.OrangeRed;
+            _statusLabel.Text = "Choose an entity from the dropdown first.";
+            return;
+        }
+
+        var entry = s_entities[_entityPicker.SelectedIndex];
         var top = (int)(_topCount.Value ?? 10);
         if (top < 1) top = 1;
         if (top > 250) top = 250;

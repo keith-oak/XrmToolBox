@@ -97,10 +97,18 @@
                      SelectedItem="{Binding SelectedNav}">
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="vm:NavItem">
-                  <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-                    <TextBlock Text="{Binding Icon}" FontSize="14" Width="18" />
-                    <TextBlock Text="{Binding Label}" FontWeight="Medium" />
-                  </StackPanel>
+                  <Grid ColumnDefinitions="22,*" Height="28">
+                    <TextBlock Grid.Column="0"
+                               Text="{Binding Icon}"
+                               FontSize="14"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Label}"
+                               FontWeight="Medium"
+                               Margin="10,0,0,0"
+                               VerticalAlignment="Center" />
+                  </Grid>
                 </DataTemplate>
               </ListBox.ItemTemplate>
             </ListBox>
@@ -319,6 +327,132 @@
             </ListBox>
           </StackPanel>
 
+          <!-- SETTINGS pane (inline) -->
+          <ScrollViewer IsVisible="{Binding IsSettingsActive}">
+            <StackPanel Margin="32,28,32,28" Spacing="{DynamicResource SpacingXl}">
+              <StackPanel Spacing="{DynamicResource SpacingXs}">
+                <TextBlock Classes="large-title" Text="Settings" />
+                <TextBlock Classes="footnote secondary" Text="Configure your PAC'd Toolbox experience." />
+              </StackPanel>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Appearance" />
+                  <TextBlock Classes="footnote secondary" Text="Theme override (live)" />
+                  <ComboBox Width="240" SelectedIndex="0">
+                    <ComboBoxItem Content="Auto (follow system)" />
+                    <ComboBoxItem Content="Light" />
+                    <ComboBoxItem Content="Dark" />
+                  </ComboBox>
+                </StackPanel>
+              </Border>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Connections" />
+                  <TextBlock Classes="footnote secondary" Text="Recent connections — Forget removes one and clears its token cache entry on next sign-in." />
+                  <ListBox ItemsSource="{Binding RecentConnections}" MaxHeight="200">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate DataType="set:RecentConnection">
+                        <Grid ColumnDefinitions="*,Auto">
+                          <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding OrganizationFriendlyName}" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding Url}" Classes="footnote secondary" />
+                          </StackPanel>
+                          <Button Grid.Column="1" Content="Forget" Classes="tertiary"
+                                  Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ForgetRecentCommand}"
+                                  CommandParameter="{Binding}" />
+                        </Grid>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </StackPanel>
+              </Border>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Plugins" />
+                  <Button Content="Reload plugins" Command="{Binding ReloadPluginsCommand}" HorizontalAlignment="Left" />
+                </StackPanel>
+              </Border>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Files" />
+                  <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.SettingsPath}" />
+                  <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.PluginsDirectory}" />
+                  <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.LogsDirectory}" />
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+
+          <!-- ABOUT pane (inline) -->
+          <ScrollViewer IsVisible="{Binding IsAboutActive}">
+            <StackPanel Margin="32,28,32,28" Spacing="{DynamicResource SpacingXl}" MaxWidth="640">
+              <StackPanel Spacing="{DynamicResource SpacingXs}">
+                <TextBlock Classes="large-title" Text="About PAC'd Toolbox" />
+                <TextBlock Classes="footnote secondary" Text="The modern toolkit for Power Platform developers." />
+              </StackPanel>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingMd}">
+                  <StackPanel Orientation="Horizontal" Spacing="14" VerticalAlignment="Center">
+                    <Border Width="56" Height="56" CornerRadius="14"
+                            Background="{DynamicResource AccentBrush}">
+                      <TextBlock Text="&gt;_" FontWeight="Bold" FontSize="22"
+                                 Foreground="{DynamicResource AccentForegroundBrush}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <StackPanel VerticalAlignment="Center" Spacing="2">
+                      <TextBlock Text="PAC'd Toolbox" FontWeight="SemiBold" FontSize="17" />
+                      <TextBlock Text="Version 2.0.0" Classes="footnote secondary" />
+                    </StackPanel>
+                  </StackPanel>
+                  <TextBlock Classes="body" TextWrapping="Wrap"
+                             Text="Built natively for macOS with Avalonia and .NET 10. Connects to Microsoft Dataverse via the Power Platform Dataverse Client and MSAL with macOS Keychain-backed token storage." />
+                </StackPanel>
+              </Border>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Lineage" />
+                  <TextBlock Classes="body" TextWrapping="Wrap"
+                             Text="Built on the XrmToolBox lineage by Tanguy Touzard / MscrmTools." />
+                  <TextBlock Classes="footnote secondary mono" Text="https://www.xrmtoolbox.com" />
+                </StackPanel>
+              </Border>
+
+              <Border Classes="card">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Brand essence" />
+                  <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="⚡" FontSize="14" Margin="0,4,12,8" />
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,8">
+                      <TextBlock Text="Powerful" FontWeight="SemiBold" />
+                      <TextBlock Text="Built for productivity and advanced workflows." Classes="footnote secondary" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="✨" FontSize="14" Margin="0,4,12,8" />
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,8">
+                      <TextBlock Text="Modern" FontWeight="SemiBold" />
+                      <TextBlock Text="Clean, current and delightful across platforms." Classes="footnote secondary" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="🛡" FontSize="14" Margin="0,4,12,8" />
+                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,8">
+                      <TextBlock Text="Reliable" FontWeight="SemiBold" />
+                      <TextBlock Text="Trusted open-source toolkit for the community." Classes="footnote secondary" TextWrapping="Wrap" />
+                    </StackPanel>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="🖥" FontSize="14" Margin="0,4,12,0" />
+                    <StackPanel Grid.Row="3" Grid.Column="1">
+                      <TextBlock Text="Cross-Platform" FontWeight="SemiBold" />
+                      <TextBlock Text="Seamless experience on macOS and Windows." Classes="footnote secondary" TextWrapping="Wrap" />
+                    </StackPanel>
+                  </Grid>
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </ScrollViewer>
+
         </Grid>
 
       </Grid>
@@ -340,108 +474,16 @@
 
     </Grid>
 
-    <!-- Overlay backdrop -->
+    <!-- Overlay backdrop (Tool Library + Command Palette only — Settings
+         and About are inline content panes selected via the sidebar). -->
     <Border Background="#7F000000"
             IsHitTestVisible="True">
       <Border.IsVisible>
         <MultiBinding Converter="{x:Static BoolConverters.Or}">
-          <Binding Path="IsSettingsOpen" />
-          <Binding Path="IsAboutOpen" />
           <Binding Path="IsStoreOpen" />
           <Binding Path="IsCommandPaletteOpen" />
         </MultiBinding>
       </Border.IsVisible>
-    </Border>
-
-    <!-- Settings panel -->
-    <Border IsVisible="{Binding IsSettingsOpen}"
-            Background="{DynamicResource SurfaceBackgroundBrush}"
-            BorderBrush="{DynamicResource HairlineBrush}"
-            BorderThickness="1"
-            CornerRadius="{DynamicResource CornerRadiusCard}"
-            ClipToBounds="True"
-            Width="640" Height="480"
-            HorizontalAlignment="Center" VerticalAlignment="Center"
-            Padding="0">
-      <DockPanel>
-        <Border DockPanel.Dock="Top" Padding="20,16" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
-          <Grid ColumnDefinitions="*,Auto">
-            <TextBlock Grid.Column="0" Classes="title-1" Text="Settings" />
-            <Button Grid.Column="1" Content="Done" Classes="primary" Command="{Binding ToggleSettingsCommand}" />
-          </Grid>
-        </Border>
-        <ScrollViewer>
-          <StackPanel Margin="20,16" Spacing="{DynamicResource SpacingLg}">
-            <StackPanel Spacing="{DynamicResource SpacingSm}">
-              <TextBlock Classes="title-2" Text="Appearance" />
-              <TextBlock Classes="footnote secondary" Text="Theme override (live)" />
-              <ComboBox Width="240" SelectedIndex="0">
-                <ComboBoxItem Content="Auto (follow system)" />
-                <ComboBoxItem Content="Light" />
-                <ComboBoxItem Content="Dark" />
-              </ComboBox>
-            </StackPanel>
-            <StackPanel Spacing="{DynamicResource SpacingSm}">
-              <TextBlock Classes="title-2" Text="Connections" />
-              <TextBlock Classes="footnote secondary" Text="Recent connections — Forget removes one and clears its token cache entry on next sign-in." />
-              <ListBox ItemsSource="{Binding RecentConnections}" MaxHeight="160">
-                <ListBox.ItemTemplate>
-                  <DataTemplate DataType="set:RecentConnection">
-                    <Grid ColumnDefinitions="*,Auto">
-                      <StackPanel Grid.Column="0">
-                        <TextBlock Text="{Binding OrganizationFriendlyName}" FontWeight="SemiBold" />
-                        <TextBlock Text="{Binding Url}" Classes="footnote secondary" />
-                      </StackPanel>
-                      <Button Grid.Column="1" Content="Forget" Classes="tertiary"
-                              Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ForgetRecentCommand}"
-                              CommandParameter="{Binding}" />
-                    </Grid>
-                  </DataTemplate>
-                </ListBox.ItemTemplate>
-              </ListBox>
-            </StackPanel>
-            <StackPanel Spacing="{DynamicResource SpacingSm}">
-              <TextBlock Classes="title-2" Text="Plugins" />
-              <Button Content="Reload plugins" Command="{Binding ReloadPluginsCommand}" HorizontalAlignment="Left" />
-            </StackPanel>
-            <StackPanel Spacing="{DynamicResource SpacingSm}">
-              <TextBlock Classes="title-2" Text="Files" />
-              <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.SettingsPath}" />
-              <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.PluginsDirectory}" />
-              <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.LogsDirectory}" />
-            </StackPanel>
-          </StackPanel>
-        </ScrollViewer>
-      </DockPanel>
-    </Border>
-
-    <!-- About panel -->
-    <Border IsVisible="{Binding IsAboutOpen}"
-            Background="{DynamicResource SurfaceBackgroundBrush}"
-            BorderBrush="{DynamicResource HairlineBrush}"
-            BorderThickness="1"
-            CornerRadius="{DynamicResource CornerRadiusCard}"
-            Width="420"
-            HorizontalAlignment="Center" VerticalAlignment="Center"
-            Padding="32,28">
-      <StackPanel Spacing="{DynamicResource SpacingMd}" HorizontalAlignment="Center">
-        <Border Width="56" Height="56" CornerRadius="14"
-                Background="{DynamicResource AccentBrush}" HorizontalAlignment="Center">
-          <TextBlock Text="&gt;_" FontWeight="Bold" FontSize="22"
-                     Foreground="{DynamicResource AccentForegroundBrush}"
-                     HorizontalAlignment="Center" VerticalAlignment="Center" />
-        </Border>
-        <TextBlock Classes="large-title" Text="PAC'd Toolbox" HorizontalAlignment="Center" />
-        <TextBlock Classes="footnote secondary" Text="The modern toolkit for Power Platform developers" HorizontalAlignment="Center" TextAlignment="Center" />
-        <TextBlock Classes="footnote secondary" Text="Version 2.0.0" HorizontalAlignment="Center" />
-        <Border Margin="0,8,0,0" Padding="0,12,0,0" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0">
-          <StackPanel Spacing="{DynamicResource SpacingSm}">
-            <TextBlock Classes="footnote" TextAlignment="Center" TextWrapping="Wrap"
-                       Text="Built on the XrmToolBox lineage by Tanguy Touzard / MscrmTools. xrmtoolbox.com" />
-          </StackPanel>
-        </Border>
-        <Button Content="Close" Command="{Binding ToggleAboutCommand}" HorizontalAlignment="Center" />
-      </StackPanel>
     </Border>
 
     <!-- Plugin Store panel -->
