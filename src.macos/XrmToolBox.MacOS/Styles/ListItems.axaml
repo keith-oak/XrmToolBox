@@ -53,6 +53,20 @@
     <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
   </Style>
 
+  <!-- Hide Fluent's default coloured "pipe" inside the tab item; we draw
+       our own underline via the TabItem's BorderThickness/BorderBrush. -->
+  <Style Selector="TabControl.macos > TabItem /template/ Border#PART_SelectedPipe">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem:pointerover /template/ Border#PART_LayoutRoot">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem:selected /template/ Border#PART_LayoutRoot">
+    <Setter Property="Background" Value="Transparent" />
+  </Style>
+
   <Style Selector="TabControl.macos > TabItem:pointerover">
     <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
   </Style>
@@ -60,6 +74,10 @@
   <Style Selector="TabControl.macos > TabItem:selected">
     <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
     <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem:selected:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
   </Style>
 
   <!-- Toolbar -->

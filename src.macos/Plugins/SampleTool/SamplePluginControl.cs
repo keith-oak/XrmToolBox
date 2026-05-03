@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -35,7 +36,7 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
     private readonly TextBlock _statusLabel;
     private readonly TextBlock _summaryLabel;
     private readonly ListBox _resultsList;
-    private readonly StackPanel _root;
+    private readonly Grid _root;
 
     public ObservableCollection<RecordRow> Results { get; } = new();
 
@@ -120,8 +121,9 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
             ItemsSource = Results,
             Background = Brushes.Transparent,
             BorderThickness = new Thickness(0),
-            MinHeight = 280,
         };
+        ScrollViewer.SetHorizontalScrollBarVisibility(_resultsList, ScrollBarVisibility.Disabled);
+        ScrollViewer.SetVerticalScrollBarVisibility(_resultsList, ScrollBarVisibility.Auto);
         _resultsList.ItemTemplate = new FuncDataTemplate<RecordRow>((row, _) =>
         {
             if (row is null) return new TextBlock();
@@ -175,35 +177,36 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
         };
         Grid.SetColumn((Control)headerRow.Children[1], 1);
 
+        var resultsBody = new DockPanel { LastChildFill = true };
+        DockPanel.SetDock(_summaryLabel, Dock.Top);
+        resultsBody.Children.Add(_summaryLabel);
+        resultsBody.Children.Add(_resultsList);
+
         var resultsCard = new Border
         {
             BorderBrush = new SolidColorBrush(Color.FromArgb(40, 0, 0, 0)),
             BorderThickness = new Thickness(1),
             CornerRadius = new CornerRadius(10),
             Padding = new Thickness(16, 12),
-            Child = new StackPanel
-            {
-                Spacing = 8,
-                Children =
-                {
-                    _summaryLabel,
-                    _resultsList,
-                },
-            },
+            Child = resultsBody,
         };
 
-        _root = new StackPanel
+        _root = new Grid
         {
             Margin = new Thickness(20),
-            Spacing = 18,
-            Children =
-            {
-                headerRow,
-                queryRow,
-                _statusLabel,
-                resultsCard,
-            },
+            RowDefinitions = new RowDefinitions("Auto,Auto,Auto,*"),
         };
+        headerRow.Margin = new Thickness(0, 0, 0, 14);
+        queryRow.Margin = new Thickness(0, 0, 0, 8);
+        _statusLabel.Margin = new Thickness(0, 0, 0, 8);
+        Grid.SetRow(headerRow, 0);
+        Grid.SetRow(queryRow, 1);
+        Grid.SetRow(_statusLabel, 2);
+        Grid.SetRow(resultsCard, 3);
+        _root.Children.Add(headerRow);
+        _root.Children.Add(queryRow);
+        _root.Children.Add(_statusLabel);
+        _root.Children.Add(resultsCard);
     }
 
     public object GetView() => _root;
