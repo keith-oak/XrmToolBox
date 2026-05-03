@@ -40,6 +40,23 @@
     <Setter Property="Background" Value="{DynamicResource AccentPressedBrush}" />
   </Style>
 
+  <!-- Primary button in "connected" state: bordered, neutral, calmer -->
+  <Style Selector="Button.primary.connected">
+    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="FontWeight" Value="Medium" />
+  </Style>
+
+  <Style Selector="Button.primary.connected:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+  </Style>
+
+  <Style Selector="Button.primary.connected:pressed /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource PressedOverlayBrush}" />
+  </Style>
+
   <!-- Tertiary button: text only (HIG link) -->
   <Style Selector="Button.tertiary">
     <Setter Property="Background" Value="Transparent" />

@@ -23,8 +23,14 @@
       <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}" VerticalAlignment="Center">
         <TextBlock Text="Dataverse" Classes="footnote secondary" VerticalAlignment="Center" />
         <TextBox Text="{Binding DataverseUrl}" Width="380" />
-        <Button Content="Connect" Command="{Binding ConnectCommand}" Classes="primary" />
-        <TextBlock Text="{Binding ConnectionStatus}" Classes="footnote" VerticalAlignment="Center" Margin="12,0,0,0" />
+        <Button Content="{Binding ConnectButtonCaption}"
+                Command="{Binding ConnectCommand}"
+                Classes="primary"
+                Classes.connected="{Binding IsConnected}" />
+        <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="6,0,0,0"
+                 IsVisible="{Binding IsConnected}"
+                 Fill="{DynamicResource SuccessBrush}" />
+        <TextBlock Text="{Binding ConnectionStatus}" Classes="footnote" VerticalAlignment="Center" Margin="6,0,0,0" />
       </StackPanel>
     </Border>
 
@@ -39,7 +45,7 @@
                      Padding="16,12,16,4" />
           <ListBox Classes="sidebar"
                    ItemsSource="{Binding AvailablePlugins}"
-                   DoubleTapped="OnPluginDoubleTapped">
+                   SelectedItem="{Binding SelectedPlugin}">
             <ListBox.ItemTemplate>
               <DataTemplate DataType="plg:PluginEntry">
                 <StackPanel Spacing="{DynamicResource SpacingXs}">
@@ -60,30 +66,55 @@
                     Width="1"
                     ResizeDirection="Columns" />
 
-      <TabControl Grid.Column="2"
-                  Classes="macos"
-                  Margin="12,8,12,8"
-                  ItemsSource="{Binding OpenedPlugins}"
-                  SelectedItem="{Binding ActivePlugin}">
-        <TabControl.ItemTemplate>
-          <DataTemplate DataType="vm:OpenedPluginViewModel">
-            <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-              <TextBlock Text="{Binding Title}" />
-              <Button Content="✕"
-                      Classes="tab-close"
-                      Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
-                      CommandParameter="{Binding}" />
-            </StackPanel>
-          </DataTemplate>
-        </TabControl.ItemTemplate>
-        <TabControl.ContentTemplate>
-          <DataTemplate DataType="vm:OpenedPluginViewModel">
-            <Border Classes="card" Background="{DynamicResource SurfaceBackgroundBrush}">
-              <ContentControl Content="{Binding View}" />
-            </Border>
-          </DataTemplate>
-        </TabControl.ContentTemplate>
-      </TabControl>
+      <Grid Grid.Column="2">
+
+        <!-- Empty state shown when no plugin is open -->
+        <Border IsVisible="{Binding !OpenedPlugins.Count}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+          <StackPanel Spacing="{DynamicResource SpacingMd}"
+                      HorizontalAlignment="Center"
+                      MaxWidth="420">
+            <TextBlock Classes="large-title secondary" Text="No tool open"
+                       HorizontalAlignment="Center" />
+            <TextBlock Classes="body secondary"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"
+                       Text="Choose a tool from the sidebar to get started. Tools query and edit your Dataverse environment using the connection set above." />
+            <TextBlock Classes="footnote secondary"
+                       TextAlignment="Center"
+                       IsVisible="{Binding !IsConnected}"
+                       Text="Tip: connect to a Dataverse environment first." />
+          </StackPanel>
+        </Border>
+
+        <!-- Tab host shown when at least one plugin is open -->
+        <TabControl Classes="macos"
+                    Margin="12,8,12,8"
+                    IsVisible="{Binding OpenedPlugins.Count}"
+                    ItemsSource="{Binding OpenedPlugins}"
+                    SelectedItem="{Binding ActivePlugin}">
+          <TabControl.ItemTemplate>
+            <DataTemplate DataType="vm:OpenedPluginViewModel">
+              <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Title}" />
+                <Button Content="✕"
+                        Classes="tab-close"
+                        Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
+                        CommandParameter="{Binding}" />
+              </StackPanel>
+            </DataTemplate>
+          </TabControl.ItemTemplate>
+          <TabControl.ContentTemplate>
+            <DataTemplate DataType="vm:OpenedPluginViewModel">
+              <Border Classes="card" Background="{DynamicResource SurfaceBackgroundBrush}">
+                <ContentControl Content="{Binding View}" />
+              </Border>
+            </DataTemplate>
+          </TabControl.ContentTemplate>
+        </TabControl>
+
+      </Grid>
 
     </Grid>
 

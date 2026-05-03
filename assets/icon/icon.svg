@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0A84FF"/>
+      <stop offset="1" stop-color="#0058B3"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
+      <feOffset dy="10" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- macOS Sequoia squircle -->
+  <rect x="64" y="64" width="896" height="896" rx="220" ry="220" fill="url(#bg)"/>
+
+  <!-- Inner subtle highlight -->
+  <rect x="80" y="80" width="864" height="864" rx="208" ry="208"
+        fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="2"/>
+
+  <!-- Wrench + cog glyph (toolbox metaphor) -->
+  <g transform="translate(512 512)" filter="url(#shadow)">
+    <!-- Cog -->
+    <g fill="#FFFFFF" fill-opacity="0.95">
+      <circle r="170"/>
+    </g>
+    <g fill="#0A84FF">
+      <circle r="80"/>
+    </g>
+    <!-- Cog teeth -->
+    <g fill="#FFFFFF" fill-opacity="0.95">
+      <rect x="-30" y="-260" width="60" height="80" rx="10"/>
+      <rect x="-30" y="180" width="60" height="80" rx="10"/>
+      <rect x="-260" y="-30" width="80" height="60" rx="10"/>
+      <rect x="180" y="-30" width="80" height="60" rx="10"/>
+      <g transform="rotate(45)">
+        <rect x="-30" y="-260" width="60" height="80" rx="10"/>
+        <rect x="-30" y="180" width="60" height="80" rx="10"/>
+        <rect x="-260" y="-30" width="80" height="60" rx="10"/>
+        <rect x="180" y="-30" width="80" height="60" rx="10"/>
+      </g>
+    </g>
+    <!-- Letter X overlay -->
+    <g stroke="#0A84FF" stroke-width="34" stroke-linecap="round" fill="none">
+      <line x1="-46" y1="-46" x2="46" y2="46"/>
+      <line x1="46" y1="-46" x2="-46" y2="46"/>
+    </g>
+  </g>
+</svg>

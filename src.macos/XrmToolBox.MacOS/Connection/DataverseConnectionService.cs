@@ -42,6 +42,13 @@ public sealed class DataverseConnectionService
 
     public IOrganizationService? GetOrganizationService() => Client;
 
+    public void Disconnect()
+    {
+        Client?.Dispose();
+        Client = null;
+        CurrentConnection = null;
+    }
+
     private static string GetTokenCachePath()
     {
         var dir = Path.Combine(
