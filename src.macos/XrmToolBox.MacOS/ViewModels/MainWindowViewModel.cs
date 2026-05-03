@@ -122,8 +122,8 @@ public sealed class MainWindowViewModel : ViewModelBase
         new(NavSection.Plugins, "Plugins", "🧩"),
         new(NavSection.Environments, "Environments", "🌐"),
         new(NavSection.Connections, "Connections", "🔗"),
-        new(NavSection.Settings, "Settings", "⚙"),
-        new(NavSection.About, "About", "ⓘ"),
+        new(NavSection.Settings, "Settings", "⚙️"),
+        new(NavSection.About, "About", "ℹ️"),
     };
 
     private NavItem _selectedNav;
@@ -141,11 +141,6 @@ public sealed class MainWindowViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(IsSettingsActive));
             this.RaisePropertyChanged(nameof(IsAboutActive));
 
-            // Plugins still uses the overlay store for now.
-            if (value?.Section == NavSection.Plugins)
-            {
-                _ = ToggleStoreCommand.Execute().Subscribe();
-            }
         }
     }
 
@@ -172,6 +167,8 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ToggleAboutCommand { get; }
     public ReactiveCommand<Unit, Unit> ToggleStoreCommand { get; }
     public ReactiveCommand<Unit, Unit> ReloadPluginsCommand { get; }
+    public ReactiveCommand<PluginEntry, Unit> UninstallPluginCommand { get; }
+    public ReactiveCommand<Unit, Unit> OpenPluginsFolderCommand { get; }
     public ReactiveCommand<Unit, Unit> QuitCommand { get; }
     public ReactiveCommand<Unit, Unit> CloseAllOverlaysCommand { get; }
 
@@ -230,6 +227,15 @@ public sealed class MainWindowViewModel : ViewModelBase
             }
         });
         ReloadPluginsCommand = ReactiveCommand.Create(ReloadPlugins);
+        UninstallPluginCommand = ReactiveCommand.Create<PluginEntry>(UninstallPlugin);
+        OpenPluginsFolderCommand = ReactiveCommand.Create(() =>
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(_pluginManager.PluginsDirectory) { UseShellExecute = true });
+            }
+            catch { }
+        });
         QuitCommand = ReactiveCommand.Create(Quit);
         CloseAllOverlaysCommand = ReactiveCommand.Create(() =>
         {
@@ -425,6 +431,43 @@ public sealed class MainWindowViewModel : ViewModelBase
         {
             ActivePlugin = OpenedPlugins.Count > 0 ? OpenedPlugins[^1] : null;
         }
+    }
+
+    private void UninstallPlugin(PluginEntry entry)
+    {
+        // Close the plugin if open.
+        var openTab = OpenedPlugins.FirstOrDefault(o => o.Entry == entry);
+        if (openTab is not null) CloseTab(openTab);
+
+        try
+        {
+            var asmPath = entry.Plugin.GetType().Assembly.Location;
+            if (!string.IsNullOrEmpty(asmPath) && File.Exists(asmPath))
+            {
+                // Delete the plugin's containing folder (we drop each plugin
+                // into Plugins/<Name>/), but only if it's actually under the
+                // Plugins root.
+                var dir = Path.GetDirectoryName(asmPath);
+                var pluginsRoot = _pluginManager.PluginsDirectory;
+                if (dir is not null &&
+                    dir.StartsWith(pluginsRoot, StringComparison.Ordinal) &&
+                    !string.Equals(Path.GetFullPath(dir), Path.GetFullPath(pluginsRoot), StringComparison.Ordinal))
+                {
+                    Directory.Delete(dir, recursive: true);
+                }
+                else if (File.Exists(asmPath))
+                {
+                    File.Delete(asmPath);
+                }
+            }
+        }
+        catch
+        {
+            // Best-effort uninstall; if the file is locked the plugin is
+            // still gone from the in-memory registry after Reload below.
+        }
+
+        ReloadPlugins();
     }
 
     private void ReloadPlugins()
