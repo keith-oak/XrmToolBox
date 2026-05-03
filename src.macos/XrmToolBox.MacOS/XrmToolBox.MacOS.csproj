@@ -9,10 +9,10 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <RootNamespace>XrmToolBox.MacOS</RootNamespace>
-    <AssemblyName>XrmToolBox</AssemblyName>
+    <AssemblyName>PACdToolbox</AssemblyName>
     <Version>2.0.0</Version>
-    <Product>XrmToolBox</Product>
-    <AssemblyTitle>XrmToolBox</AssemblyTitle>
+    <Product>PAC'd Toolbox</Product>
+    <AssemblyTitle>PAC'd Toolbox</AssemblyTitle>
     <Company>Lucid Labs</Company>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>$(NoWarn);NU1903</NoWarn>

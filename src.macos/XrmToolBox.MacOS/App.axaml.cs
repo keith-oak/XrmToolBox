@@ -108,7 +108,7 @@ public class App : Application
         {
             Menu = new Avalonia.Controls.NativeMenu(),
         };
-        helpMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItem("About XrmToolBox")
+        helpMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItem("About PAC'd Toolbox")
         {
             Command = vm.ToggleAboutCommand,
         });

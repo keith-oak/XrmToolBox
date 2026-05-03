@@ -12,7 +12,7 @@ public sealed class DataverseConnectionService
 {
     // Dataverse public client app id used by SDK samples + XrmToolBox upstream.
     private const string PublicClientId = "51f81489-12ee-4a9e-aaae-a2591f45987d";
-    private const string MacKeychainServiceName = "com.lucidlabs.xrmtoolbox.tokencache";
+    private const string MacKeychainServiceName = "com.lucidlabs.pacdtoolbox.tokencache";
     private const string MacKeychainAccountName = "msal-cache";
     private const string CacheFileName = "msal.cache";
 
@@ -173,7 +173,7 @@ public sealed class DataverseConnectionService
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
             "Library",
             "Application Support",
-            "XrmToolBox",
+            "PACdToolbox",
             "TokenCache");
         Directory.CreateDirectory(cacheDir);
 

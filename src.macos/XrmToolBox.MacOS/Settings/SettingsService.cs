@@ -23,14 +23,14 @@ public sealed class SettingsService
     public SettingsService()
     {
         var configRoot = OperatingSystem.IsMacOS()
-            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Application Support", "XrmToolBox")
-            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "XrmToolBox");
+            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Application Support", "PACdToolbox")
+            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PACdToolbox");
 
         Directory.CreateDirectory(configRoot);
         SettingsPath = Path.Combine(configRoot, "settings.json");
 
         LogsDirectory = OperatingSystem.IsMacOS()
-            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs", "XrmToolBox")
+            ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Logs", "PACdToolbox")
             : Path.Combine(configRoot, "Logs");
         Directory.CreateDirectory(LogsDirectory);
 

@@ -120,8 +120,18 @@
   <!-- Card surface -->
   <Style Selector="Border.card">
     <Setter Property="Background" Value="{DynamicResource SurfaceBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
     <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusCard}" />
     <Setter Property="Padding" Value="{DynamicResource CardPadding}" />
+  </Style>
+
+  <!-- Quick-action card on Home: subtle hover lift -->
+  <Style Selector="Border.quick-action">
+    <Setter Property="MinHeight" Value="100" />
+  </Style>
+  <Style Selector="Border.quick-action:pointerover">
+    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
   </Style>
 
   <!-- TextBox -->

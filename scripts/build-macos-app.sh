@@ -35,7 +35,8 @@ while (( $# > 0 )); do
 done
 
 VERSION=$(grep -oE '<Version>[^<]+</Version>' "${SHELL_PROJ}/XrmToolBox.MacOS.csproj" | head -1 | sed -E 's/<\/?Version>//g')
-APP="${DIST_DIR}/XrmToolBox.app"
+APP="${DIST_DIR}/PAC'd Toolbox.app"
+EXE_NAME="PACdToolbox"
 
 echo "→ build-macos-app: version=${VERSION} rid=${RID} sign=${SIGN_IDENTITY:-none} zip=${MAKE_ZIP}"
 
@@ -61,7 +62,7 @@ cp -R "${PUBLISH_DIR}/." "${APP}/Contents/MacOS/"
 
 # Move runtime libraries into MacOS (Apple expects everything next to the executable)
 # The executable itself is named XrmToolBox per <AssemblyName>.
-chmod +x "${APP}/Contents/MacOS/XrmToolBox"
+chmod +x "${APP}/Contents/MacOS/${EXE_NAME}"
 
 # 4. Icon
 cp "${ICON}" "${APP}/Contents/Resources/AppIcon.icns"
@@ -95,13 +96,13 @@ fi
 
 # 9. Optional zip
 if (( MAKE_ZIP == 1 )); then
-  ZIP="${DIST_DIR}/XrmToolBox-${VERSION}-${RID}.zip"
+  ZIP="${DIST_DIR}/PACdToolbox-${VERSION}-${RID}.zip"
   echo "→ zip → ${ZIP}"
-  (cd "${DIST_DIR}" && rm -f "$(basename "${ZIP}")" && /usr/bin/ditto -c -k --keepParent "XrmToolBox.app" "$(basename "${ZIP}")")
+  (cd "${DIST_DIR}" && rm -f "$(basename "${ZIP}")" && /usr/bin/ditto -c -k --keepParent "PAC'd Toolbox.app" "$(basename "${ZIP}")")
 fi
 
 # 10. Cleanup intermediate publish dir
 rm -rf "${DIST_DIR}/publish-${RID}"
 
 echo "✓ ${APP}"
-ls -lah "${APP}/Contents/MacOS/XrmToolBox"
+ls -lah "${APP}/Contents/MacOS/${EXE_NAME}"

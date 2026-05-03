@@ -6,16 +6,16 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceInclude Source="avares://XrmToolBox/Themes/AppleTheme.axaml" />
+        <ResourceInclude Source="avares://PACdToolbox/Themes/AppleTheme.axaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Application.Resources>
 
   <Application.Styles>
     <FluentTheme />
-    <StyleInclude Source="avares://XrmToolBox/Styles/Buttons.axaml" />
-    <StyleInclude Source="avares://XrmToolBox/Styles/TextBlocks.axaml" />
-    <StyleInclude Source="avares://XrmToolBox/Styles/ListItems.axaml" />
+    <StyleInclude Source="avares://PACdToolbox/Styles/Buttons.axaml" />
+    <StyleInclude Source="avares://PACdToolbox/Styles/TextBlocks.axaml" />
+    <StyleInclude Source="avares://PACdToolbox/Styles/ListItems.axaml" />
   </Application.Styles>
 
 </Application>

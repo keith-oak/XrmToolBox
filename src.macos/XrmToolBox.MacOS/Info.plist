@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>XrmToolBox</string>
+    <string>PAC'd Toolbox</string>
     <key>CFBundleDisplayName</key>
-    <string>XrmToolBox</string>
+    <string>PAC'd Toolbox</string>
     <key>CFBundleIdentifier</key>
-    <string>com.lucidlabs.xrmtoolbox</string>
+    <string>com.lucidlabs.pacdtoolbox</string>
     <key>CFBundleVersion</key>
     <string>__VERSION__</string>
     <key>CFBundleShortVersionString</key>
     <string>__VERSION__</string>
     <key>CFBundleExecutable</key>
-    <string>XrmToolBox</string>
+    <string>PACdToolbox</string>
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
     <key>CFBundlePackageType</key>
@@ -31,7 +31,7 @@
     <key>NSRequiresAquaSystemAppearance</key>
     <false/>
     <key>NSHumanReadableCopyright</key>
-    <string>Original XrmToolBox by Tanguy Touzard / MscrmTools. Native macOS port maintained at github.com/keith-oak/XrmToolBox.</string>
+    <string>PAC'd Toolbox — modern toolkit for Power Platform developers. Built on the XrmToolBox lineage by Tanguy Touzard / MscrmTools.</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.developer-tools</string>
 </dict>

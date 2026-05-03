@@ -3,34 +3,57 @@
 
   <ResourceDictionary.ThemeDictionaries>
 
-    <!-- LIGHT — macOS Sequoia: cool greys, opaque enough to neutralise
-         warm-tinted wallpapers bleeding through. -->
+    <!-- =========================================================
+         LIGHT — PAC'd Toolbox brand palette on a clean neutral.
+         Primary: #6C5CE7 (electric purple)
+         Secondary accents: #0964E3 / #00CEC9 / #2ECC71
+         Neutrals: #0B0F14 → #F7F9FB
+         ========================================================= -->
     <ResourceDictionary x:Key="Light">
-      <Color x:Key="WindowBackgroundColor">#ECECEE</Color>
-      <Color x:Key="SidebarBackgroundColor">#F2F2F4</Color>
+      <!-- Surfaces -->
+      <Color x:Key="WindowBackgroundColor">#F7F9FB</Color>
+      <Color x:Key="SidebarBackgroundColor">#FFFFFF</Color>
       <Color x:Key="SurfaceBackgroundColor">#FFFFFF</Color>
       <Color x:Key="SurfaceElevatedColor">#FFFFFF</Color>
-      <Color x:Key="ToolbarBackgroundColor">#E8E8EB</Color>
-      <Color x:Key="StatusBarBackgroundColor">#E2E2E5</Color>
-      <Color x:Key="DividerColor">#1F000000</Color>
-      <Color x:Key="HairlineColor">#33000000</Color>
-      <Color x:Key="PrimaryTextColor">#1D1D1F</Color>
-      <Color x:Key="SecondaryTextColor">#86868B</Color>
-      <Color x:Key="TertiaryTextColor">#AEAEB2</Color>
-      <Color x:Key="AccentColor">#0A84FF</Color>
+      <Color x:Key="ToolbarBackgroundColor">#F7F9FB</Color>
+      <Color x:Key="StatusBarBackgroundColor">#EEF1F5</Color>
+      <Color x:Key="DividerColor">#1F0B0F14</Color>
+      <Color x:Key="HairlineColor">#E5E7EB</Color>
+
+      <!-- Text -->
+      <Color x:Key="PrimaryTextColor">#0B0F14</Color>
+      <Color x:Key="SecondaryTextColor">#475569</Color>
+      <Color x:Key="TertiaryTextColor">#94A3B8</Color>
+
+      <!-- Brand accent (primary purple) -->
+      <Color x:Key="AccentColor">#6C5CE7</Color>
       <Color x:Key="AccentForegroundColor">#FFFFFF</Color>
-      <Color x:Key="AccentHoverColor">#0071E3</Color>
-      <Color x:Key="AccentPressedColor">#0058B3</Color>
-      <Color x:Key="DestructiveColor">#FF3B30</Color>
-      <Color x:Key="SuccessColor">#34C759</Color>
-      <Color x:Key="WarningColor">#FF9500</Color>
-      <Color x:Key="HoverOverlayColor">#0F000000</Color>
-      <Color x:Key="PressedOverlayColor">#1F000000</Color>
-      <Color x:Key="SelectionBackgroundColor">#0A84FF</Color>
+      <Color x:Key="AccentHoverColor">#5848D6</Color>
+      <Color x:Key="AccentPressedColor">#4837C2</Color>
+      <Color x:Key="AccentSoftColor">#EEEBFE</Color>
+
+      <!-- Secondary brand colours -->
+      <Color x:Key="BlueColor">#0964E3</Color>
+      <Color x:Key="TealColor">#00CEC9</Color>
+      <Color x:Key="GreenColor">#2ECC71</Color>
+
+      <!-- Semantic -->
+      <Color x:Key="SuccessColor">#22C55E</Color>
+      <Color x:Key="WarningColor">#F59E0B</Color>
+      <Color x:Key="DestructiveColor">#EF4444</Color>
+      <Color x:Key="InfoColor">#3B82F6</Color>
+
+      <!-- Overlays / states -->
+      <Color x:Key="HoverOverlayColor">#0F0B0F14</Color>
+      <Color x:Key="PressedOverlayColor">#1F0B0F14</Color>
+      <Color x:Key="SelectionBackgroundColor">#6C5CE7</Color>
       <Color x:Key="SelectionForegroundColor">#FFFFFF</Color>
-      <Color x:Key="ControlBorderColor">#1F000000</Color>
+
+      <!-- Controls -->
+      <Color x:Key="ControlBorderColor">#E5E7EB</Color>
       <Color x:Key="ControlBackgroundColor">#FFFFFF</Color>
 
+      <!-- Brushes -->
       <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}" />
       <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{DynamicResource SidebarBackgroundColor}" />
       <SolidColorBrush x:Key="SurfaceBackgroundBrush" Color="{DynamicResource SurfaceBackgroundColor}" />
@@ -46,9 +69,14 @@
       <SolidColorBrush x:Key="AccentForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
       <SolidColorBrush x:Key="AccentHoverBrush" Color="{DynamicResource AccentHoverColor}" />
       <SolidColorBrush x:Key="AccentPressedBrush" Color="{DynamicResource AccentPressedColor}" />
+      <SolidColorBrush x:Key="AccentSoftBrush" Color="{DynamicResource AccentSoftColor}" />
+      <SolidColorBrush x:Key="BlueBrush" Color="{DynamicResource BlueColor}" />
+      <SolidColorBrush x:Key="TealBrush" Color="{DynamicResource TealColor}" />
+      <SolidColorBrush x:Key="GreenBrush" Color="{DynamicResource GreenColor}" />
       <SolidColorBrush x:Key="DestructiveBrush" Color="{DynamicResource DestructiveColor}" />
       <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
       <SolidColorBrush x:Key="WarningBrush" Color="{DynamicResource WarningColor}" />
+      <SolidColorBrush x:Key="InfoBrush" Color="{DynamicResource InfoColor}" />
       <SolidColorBrush x:Key="HoverOverlayBrush" Color="{DynamicResource HoverOverlayColor}" />
       <SolidColorBrush x:Key="PressedOverlayBrush" Color="{DynamicResource PressedOverlayColor}" />
       <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{DynamicResource SelectionBackgroundColor}" />
@@ -57,32 +85,48 @@
       <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{DynamicResource ControlBackgroundColor}" />
     </ResourceDictionary>
 
-    <!-- DARK — macOS Sequoia dark: near-opaque cool greys -->
+    <!-- =========================================================
+         DARK — brand on neutral 900s. Mirrors the macOS mockup.
+         ========================================================= -->
     <ResourceDictionary x:Key="Dark">
-      <Color x:Key="WindowBackgroundColor">#1E1E20</Color>
-      <Color x:Key="SidebarBackgroundColor">#252527</Color>
-      <Color x:Key="SurfaceBackgroundColor">#2C2C2E</Color>
-      <Color x:Key="SurfaceElevatedColor">#3A3A3C</Color>
-      <Color x:Key="ToolbarBackgroundColor">#2A2A2C</Color>
-      <Color x:Key="StatusBarBackgroundColor">#222224</Color>
+      <!-- Surfaces -->
+      <Color x:Key="WindowBackgroundColor">#0B0F14</Color>
+      <Color x:Key="SidebarBackgroundColor">#151A22</Color>
+      <Color x:Key="SurfaceBackgroundColor">#1F2630</Color>
+      <Color x:Key="SurfaceElevatedColor">#2A313C</Color>
+      <Color x:Key="ToolbarBackgroundColor">#151A22</Color>
+      <Color x:Key="StatusBarBackgroundColor">#0B0F14</Color>
       <Color x:Key="DividerColor">#33FFFFFF</Color>
-      <Color x:Key="HairlineColor">#55000000</Color>
-      <Color x:Key="PrimaryTextColor">#F5F5F7</Color>
-      <Color x:Key="SecondaryTextColor">#98989D</Color>
-      <Color x:Key="TertiaryTextColor">#636366</Color>
-      <Color x:Key="AccentColor">#0A84FF</Color>
+      <Color x:Key="HairlineColor">#2A313C</Color>
+
+      <!-- Text -->
+      <Color x:Key="PrimaryTextColor">#F7F9FB</Color>
+      <Color x:Key="SecondaryTextColor">#94A3B8</Color>
+      <Color x:Key="TertiaryTextColor">#64748B</Color>
+
+      <!-- Brand accent (electric purple, slightly brighter on dark) -->
+      <Color x:Key="AccentColor">#7C6DF0</Color>
       <Color x:Key="AccentForegroundColor">#FFFFFF</Color>
-      <Color x:Key="AccentHoverColor">#409CFF</Color>
-      <Color x:Key="AccentPressedColor">#0058B3</Color>
-      <Color x:Key="DestructiveColor">#FF453A</Color>
-      <Color x:Key="SuccessColor">#30D158</Color>
-      <Color x:Key="WarningColor">#FF9F0A</Color>
+      <Color x:Key="AccentHoverColor">#9485F4</Color>
+      <Color x:Key="AccentPressedColor">#5848D6</Color>
+      <Color x:Key="AccentSoftColor">#2A2545</Color>
+
+      <Color x:Key="BlueColor">#3B82F6</Color>
+      <Color x:Key="TealColor">#22D3D9</Color>
+      <Color x:Key="GreenColor">#34D687</Color>
+
+      <Color x:Key="SuccessColor">#22C55E</Color>
+      <Color x:Key="WarningColor">#F59E0B</Color>
+      <Color x:Key="DestructiveColor">#EF4444</Color>
+      <Color x:Key="InfoColor">#3B82F6</Color>
+
       <Color x:Key="HoverOverlayColor">#1FFFFFFF</Color>
       <Color x:Key="PressedOverlayColor">#33FFFFFF</Color>
-      <Color x:Key="SelectionBackgroundColor">#0A84FF</Color>
+      <Color x:Key="SelectionBackgroundColor">#7C6DF0</Color>
       <Color x:Key="SelectionForegroundColor">#FFFFFF</Color>
-      <Color x:Key="ControlBorderColor">#33FFFFFF</Color>
-      <Color x:Key="ControlBackgroundColor">#3A3A3C</Color>
+
+      <Color x:Key="ControlBorderColor">#2A313C</Color>
+      <Color x:Key="ControlBackgroundColor">#1F2630</Color>
 
       <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}" />
       <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{DynamicResource SidebarBackgroundColor}" />
@@ -99,9 +143,14 @@
       <SolidColorBrush x:Key="AccentForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
       <SolidColorBrush x:Key="AccentHoverBrush" Color="{DynamicResource AccentHoverColor}" />
       <SolidColorBrush x:Key="AccentPressedBrush" Color="{DynamicResource AccentPressedColor}" />
+      <SolidColorBrush x:Key="AccentSoftBrush" Color="{DynamicResource AccentSoftColor}" />
+      <SolidColorBrush x:Key="BlueBrush" Color="{DynamicResource BlueColor}" />
+      <SolidColorBrush x:Key="TealBrush" Color="{DynamicResource TealColor}" />
+      <SolidColorBrush x:Key="GreenBrush" Color="{DynamicResource GreenColor}" />
       <SolidColorBrush x:Key="DestructiveBrush" Color="{DynamicResource DestructiveColor}" />
       <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
       <SolidColorBrush x:Key="WarningBrush" Color="{DynamicResource WarningColor}" />
+      <SolidColorBrush x:Key="InfoBrush" Color="{DynamicResource InfoColor}" />
       <SolidColorBrush x:Key="HoverOverlayBrush" Color="{DynamicResource HoverOverlayColor}" />
       <SolidColorBrush x:Key="PressedOverlayBrush" Color="{DynamicResource PressedOverlayColor}" />
       <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{DynamicResource SelectionBackgroundColor}" />
@@ -112,8 +161,11 @@
 
   </ResourceDictionary.ThemeDictionaries>
 
-  <!-- Typography -->
-  <FontFamily x:Key="SystemFontFamily">avares://Avalonia.Fonts.Inter/Assets#Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif</FontFamily>
+  <!-- Typography — Inter Tight is the brand body face, Inter for OS-level
+       fallback. We ship Inter via Avalonia.Fonts.Inter and rely on the
+       system font fallback for Inter Tight where the user has it installed;
+       otherwise the chain falls back to system sans. -->
+  <FontFamily x:Key="SystemFontFamily">Inter Tight,avares://Avalonia.Fonts.Inter/Assets#Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif</FontFamily>
 
   <x:Double x:Key="FontSizeWindowTitle">17</x:Double>
   <x:Double x:Key="FontSizeLargeTitle">26</x:Double>
@@ -125,15 +177,15 @@
   <x:Double x:Key="FontSizeCaption">10</x:Double>
 
   <!-- Geometry -->
-  <CornerRadius x:Key="CornerRadiusControl">6</CornerRadius>
-  <CornerRadius x:Key="CornerRadiusCard">10</CornerRadius>
+  <CornerRadius x:Key="CornerRadiusControl">8</CornerRadius>
+  <CornerRadius x:Key="CornerRadiusCard">12</CornerRadius>
   <CornerRadius x:Key="CornerRadiusWindow">12</CornerRadius>
-  <Thickness x:Key="ControlPadding">10,5</Thickness>
-  <Thickness x:Key="CardPadding">12,10</Thickness>
+  <Thickness x:Key="ControlPadding">12,6</Thickness>
+  <Thickness x:Key="CardPadding">16,14</Thickness>
   <Thickness x:Key="SidebarItemMargin">8,2</Thickness>
-  <Thickness x:Key="SidebarItemPadding">10,8</Thickness>
+  <Thickness x:Key="SidebarItemPadding">12,8</Thickness>
 
-  <!-- Spacing tokens -->
+  <!-- Spacing -->
   <x:Double x:Key="SpacingXs">4</x:Double>
   <x:Double x:Key="SpacingSm">8</x:Double>
   <x:Double x:Key="SpacingMd">12</x:Double>

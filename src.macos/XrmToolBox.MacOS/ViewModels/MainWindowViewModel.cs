@@ -14,6 +14,19 @@ using XrmToolBox.MacOS.Settings;
 
 namespace XrmToolBox.MacOS.ViewModels;
 
+public enum NavSection
+{
+    Home,
+    Tools,
+    Plugins,
+    Environments,
+    Connections,
+    Settings,
+    About,
+}
+
+public sealed record NavItem(NavSection Section, string Label, string Icon);
+
 public sealed class MainWindowViewModel : ViewModelBase
 {
     private readonly PluginManager _pluginManager;
@@ -102,6 +115,56 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     public PluginStoreViewModel Store { get; } = new();
 
+    public ObservableCollection<NavItem> NavItems { get; } = new()
+    {
+        new(NavSection.Home, "Home", "🏠"),
+        new(NavSection.Tools, "Tools", "🧰"),
+        new(NavSection.Plugins, "Plugins", "🧩"),
+        new(NavSection.Environments, "Environments", "🌐"),
+        new(NavSection.Connections, "Connections", "🔗"),
+        new(NavSection.Settings, "Settings", "⚙"),
+        new(NavSection.About, "About", "ⓘ"),
+    };
+
+    private NavItem _selectedNav;
+    public NavItem SelectedNav
+    {
+        get => _selectedNav;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedNav, value);
+            this.RaisePropertyChanged(nameof(IsHomeActive));
+            this.RaisePropertyChanged(nameof(IsToolsActive));
+            this.RaisePropertyChanged(nameof(IsPluginsActive));
+            this.RaisePropertyChanged(nameof(IsEnvironmentsActive));
+            this.RaisePropertyChanged(nameof(IsConnectionsActive));
+            this.RaisePropertyChanged(nameof(IsSettingsActive));
+            this.RaisePropertyChanged(nameof(IsAboutActive));
+
+            // Some nav targets are overlay panels in v1.
+            if (value?.Section == NavSection.Settings)
+            {
+                IsSettingsOpen = true;
+            }
+            else if (value?.Section == NavSection.About)
+            {
+                IsAboutOpen = true;
+            }
+            else if (value?.Section == NavSection.Plugins)
+            {
+                _ = ToggleStoreCommand.Execute().Subscribe();
+            }
+        }
+    }
+
+    public bool IsHomeActive => SelectedNav?.Section == NavSection.Home;
+    public bool IsToolsActive => SelectedNav?.Section == NavSection.Tools;
+    public bool IsPluginsActive => SelectedNav?.Section == NavSection.Plugins;
+    public bool IsEnvironmentsActive => SelectedNav?.Section == NavSection.Environments;
+    public bool IsConnectionsActive => SelectedNav?.Section == NavSection.Connections;
+    public bool IsSettingsActive => SelectedNav?.Section == NavSection.Settings;
+    public bool IsAboutActive => SelectedNav?.Section == NavSection.About;
+
     public ObservableCollection<PluginEntry> AvailablePlugins { get; } = new();
     public ObservableCollection<OpenedPluginViewModel> OpenedPlugins { get; } = new();
     public ObservableCollection<RecentConnection> RecentConnections { get; } = new();
@@ -120,11 +183,19 @@ public sealed class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> QuitCommand { get; }
     public ReactiveCommand<Unit, Unit> CloseAllOverlaysCommand { get; }
 
+    public ReactiveCommand<Unit, Unit> QuickOpenPowerPlatformCommand { get; }
+    public ReactiveCommand<Unit, Unit> QuickRunPacCommand { get; }
+    public ReactiveCommand<Unit, Unit> QuickBrowseEnvironmentCommand { get; }
+    public ReactiveCommand<Unit, Unit> QuickImportSolutionCommand { get; }
+
+    public ObservableCollection<RecentTool> RecentTools { get; } = new();
+
     public MainWindowViewModel(PluginManager pluginManager, SettingsService settings)
     {
         _pluginManager = pluginManager;
         SettingsService = settings;
 
+        _selectedNav = NavItems[0];
         _dataverseUrl = settings.Current.DefaultDataverseUrl;
 
         foreach (var entry in _pluginManager.GetPluginEntries())
@@ -169,6 +240,41 @@ public sealed class MainWindowViewModel : ViewModelBase
             IsAboutOpen = false;
             IsStoreOpen = false;
         });
+
+        QuickOpenPowerPlatformCommand = ReactiveCommand.Create(() =>
+        {
+            var url = string.IsNullOrWhiteSpace(DataverseUrl)
+                ? "https://make.powerapps.com"
+                : DataverseUrl;
+            try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true }); } catch { }
+        });
+        QuickRunPacCommand = ReactiveCommand.Create(() =>
+        {
+            // Placeholder until a built-in PAC CLI runner exists.
+            ConnectionStatus = "PAC CLI runner — coming soon.";
+        });
+        QuickBrowseEnvironmentCommand = ReactiveCommand.Create(() =>
+        {
+            ConnectionStatus = IsConnected
+                ? $"Browsing {_connectionService.CurrentConnection?.OrganizationFriendlyName} — open the Sample Tool to query."
+                : "Connect first to browse an environment.";
+        });
+        QuickImportSolutionCommand = ReactiveCommand.Create(() =>
+        {
+            ConnectionStatus = "Solution importer — coming soon.";
+        });
+
+        // Seed Recent Tools from previously-opened plugins (will surface
+        // on Home view).
+        foreach (var typeName in settings.Current.LastOpenedPlugins)
+        {
+            var entry = AvailablePlugins.FirstOrDefault(e =>
+                string.Equals(e.Plugin.GetType().FullName, typeName, StringComparison.Ordinal));
+            if (entry is not null)
+            {
+                RecentTools.Add(new RecentTool(entry, "Plugin", DateTimeOffset.Now));
+            }
+        }
     }
 
     private async Task ConnectOrDisconnectAsync()
@@ -276,6 +382,18 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     private void OpenPlugin(PluginEntry entry)
     {
+        // Track in Recent Tools (move to top, dedupe).
+        var existingRecent = RecentTools.FirstOrDefault(r => r.Entry == entry);
+        if (existingRecent is not null) RecentTools.Remove(existingRecent);
+        RecentTools.Insert(0, new RecentTool(entry, "Plugin", DateTimeOffset.Now));
+        while (RecentTools.Count > 10) RecentTools.RemoveAt(RecentTools.Count - 1);
+
+        // Switch to Tools section so the opened plugin is visible.
+        if (SelectedNav?.Section != NavSection.Tools)
+        {
+            SelectedNav = NavItems.First(n => n.Section == NavSection.Tools);
+        }
+
         var existing = OpenedPlugins.FirstOrDefault(o => o.Entry == entry);
         if (existing is not null)
         {
@@ -338,6 +456,22 @@ public sealed class MainWindowViewModel : ViewModelBase
             "dark" => ThemeVariant.Dark,
             _ => ThemeVariant.Default,
         };
+    }
+}
+
+public sealed record RecentTool(PluginEntry Entry, string Badge, DateTimeOffset OpenedAt)
+{
+    public string Name => Entry.Metadata.Name;
+    public string Relative
+    {
+        get
+        {
+            var span = DateTimeOffset.Now - OpenedAt;
+            return span.TotalMinutes < 1 ? "just now"
+                : span.TotalMinutes < 60 ? $"{(int)span.TotalMinutes}m ago"
+                : span.TotalHours < 24 ? $"{(int)span.TotalHours}h ago"
+                : $"{(int)span.TotalDays}d ago";
+        }
     }
 }
 

@@ -1,51 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0A84FF"/>
-      <stop offset="1" stop-color="#0058B3"/>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8B7DF0"/>
+      <stop offset="1" stop-color="#5848D6"/>
     </linearGradient>
+    <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9485F4"/>
+      <stop offset="1" stop-color="#6C5CE7"/>
+    </linearGradient>
+    <linearGradient id="boxFace" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6C5CE7"/>
+      <stop offset="1" stop-color="#5848D6"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="14"/>
-      <feOffset dy="10" result="offsetblur"/>
-      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dy="8" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.4"/></feComponentTransfer>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
-  <!-- macOS Sequoia squircle -->
-  <rect x="64" y="64" width="896" height="896" rx="220" ry="220" fill="url(#bg)"/>
+  <!-- macOS Sequoia squircle background -->
+  <rect x="64" y="64" width="896" height="896" rx="220" ry="220" fill="url(#bgGrad)"/>
 
-  <!-- Inner subtle highlight -->
+  <!-- Subtle inner highlight -->
   <rect x="80" y="80" width="864" height="864" rx="208" ry="208"
-        fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="2"/>
+        fill="none" stroke="#FFFFFF" stroke-opacity="0.2" stroke-width="2"/>
 
-  <!-- Wrench + cog glyph (toolbox metaphor) -->
-  <g transform="translate(512 512)" filter="url(#shadow)">
-    <!-- Cog -->
-    <g fill="#FFFFFF" fill-opacity="0.95">
-      <circle r="170"/>
-    </g>
-    <g fill="#0A84FF">
-      <circle r="80"/>
-    </g>
-    <!-- Cog teeth -->
-    <g fill="#FFFFFF" fill-opacity="0.95">
-      <rect x="-30" y="-260" width="60" height="80" rx="10"/>
-      <rect x="-30" y="180" width="60" height="80" rx="10"/>
-      <rect x="-260" y="-30" width="80" height="60" rx="10"/>
-      <rect x="180" y="-30" width="80" height="60" rx="10"/>
-      <g transform="rotate(45)">
-        <rect x="-30" y="-260" width="60" height="80" rx="10"/>
-        <rect x="-30" y="180" width="60" height="80" rx="10"/>
-        <rect x="-260" y="-30" width="80" height="60" rx="10"/>
-        <rect x="180" y="-30" width="80" height="60" rx="10"/>
-      </g>
-    </g>
-    <!-- Letter X overlay -->
-    <g stroke="#0A84FF" stroke-width="34" stroke-linecap="round" fill="none">
-      <line x1="-46" y1="-46" x2="46" y2="46"/>
-      <line x1="46" y1="-46" x2="-46" y2="46"/>
+  <!-- Toolbox glyph centred -->
+  <g transform="translate(512 532)" filter="url(#shadow)">
+    <!-- Handle (top bar) -->
+    <rect x="-130" y="-260" width="260" height="60" rx="30" ry="30"
+          fill="none" stroke="#FFFFFF" stroke-width="36" stroke-opacity="0.85"/>
+
+    <!-- Box body — wider than tall -->
+    <rect x="-280" y="-200" width="560" height="380" rx="42" ry="42"
+          fill="url(#boxFace)"/>
+
+    <!-- Top edge highlight -->
+    <rect x="-280" y="-200" width="560" height="50" rx="42" ry="42"
+          fill="#FFFFFF" fill-opacity="0.18"/>
+
+    <!-- Latch / clasp in middle top -->
+    <rect x="-32" y="-210" width="64" height="28" rx="6" ry="6"
+          fill="#FFFFFF" fill-opacity="0.55"/>
+
+    <!-- Terminal prompt panel inside the box -->
+    <rect x="-200" y="-100" width="400" height="240" rx="22" ry="22"
+          fill="#0B0F14" fill-opacity="0.35"/>
+
+    <!-- Chevron > -->
+    <g stroke="#FFFFFF" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <polyline points="-130,-30 -50,20 -130,70"/>
+      <!-- Underscore _ -->
+      <line x1="-20" y1="80" x2="120" y2="80"/>
     </g>
   </g>
 </svg>
