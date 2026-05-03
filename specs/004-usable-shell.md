@@ -2,7 +2,10 @@
 
 ## Priority: HIGH
 
-## Status: INCOMPLETE
+## Status: COMPLETE (v1)
+
+> v1 ships: settings persistence + window state, recent connections (AutoCompleteBox + forget), settings panel, About panel, Plugin Store with online catalogue + offline fallback + honest "needs porting" install message, command palette (overlay), native macOS menu bar with File/View/Help, Cmd-K / Cmd-, / Cmd-R bindings.
+> v2 follow-ups (left as comments in `004-usable-shell.md`): theme dropdown wired live, command palette fuzzy filter, MSAL token-cache cleanup on Forget, About-panel link buttons, "Open logs folder" via OS shell, command palette opening focuses the search box.
 
 ## Description
 

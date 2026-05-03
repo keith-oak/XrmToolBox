@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:XrmToolBox.MacOS.ViewModels"
         xmlns:plg="using:XrmToolBox.MacOS.Plugins"
+        xmlns:set="using:XrmToolBox.MacOS.Settings"
         mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
         x:Class="XrmToolBox.MacOS.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -16,117 +17,342 @@
         ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaChromeHints="PreferSystemChrome">
 
-  <Grid RowDefinitions="Auto,*,Auto">
+  <Window.KeyBindings>
+    <KeyBinding Gesture="Meta+K" Command="{Binding ToggleCommandPaletteCommand}" />
+    <KeyBinding Gesture="Ctrl+K" Command="{Binding ToggleCommandPaletteCommand}" />
+    <KeyBinding Gesture="Meta+OemComma" Command="{Binding ToggleSettingsCommand}" />
+    <KeyBinding Gesture="Ctrl+OemComma" Command="{Binding ToggleSettingsCommand}" />
+    <KeyBinding Gesture="Meta+R" Command="{Binding ReloadPluginsCommand}" />
+    <KeyBinding Gesture="Ctrl+R" Command="{Binding ReloadPluginsCommand}" />
+  </Window.KeyBindings>
 
-    <!-- Toolbar — extends under the traffic lights on macOS -->
-    <Border Grid.Row="0" Classes="toolbar" Padding="80,8,12,8">
-      <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}" VerticalAlignment="Center">
-        <TextBlock Text="Dataverse" Classes="footnote secondary" VerticalAlignment="Center" />
-        <TextBox Text="{Binding DataverseUrl}" Width="380" />
-        <Button Content="{Binding ConnectButtonCaption}"
-                Command="{Binding ConnectCommand}"
-                Classes="primary"
-                Classes.connected="{Binding IsConnected}" />
-        <Ellipse Width="8" Height="8" VerticalAlignment="Center" Margin="6,0,0,0"
-                 IsVisible="{Binding IsConnected}"
-                 Fill="{DynamicResource SuccessBrush}" />
-        <TextBlock Text="{Binding ConnectionStatus}" Classes="footnote" VerticalAlignment="Center" Margin="6,0,0,0" />
-      </StackPanel>
-    </Border>
+  <Grid>
 
-    <!-- Body: sidebar + tab host -->
-    <Grid Grid.Row="1" ColumnDefinitions="260,1,*">
+    <!-- Main shell -->
+    <Grid RowDefinitions="Auto,*,Auto">
 
-      <Border Grid.Column="0" Classes="sidebar" BorderThickness="0">
-        <DockPanel>
-          <TextBlock DockPanel.Dock="Top"
-                     Text="Tools"
-                     Classes="footnote secondary"
-                     Padding="16,12,16,4" />
-          <ListBox Classes="sidebar"
-                   ItemsSource="{Binding AvailablePlugins}"
-                   SelectedItem="{Binding SelectedPlugin}">
-            <ListBox.ItemTemplate>
-              <DataTemplate DataType="plg:PluginEntry">
-                <StackPanel Spacing="{DynamicResource SpacingXs}">
-                  <TextBlock Text="{Binding Metadata.Name}" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Metadata.Description}"
-                             Classes="footnote"
-                             TextWrapping="Wrap"
-                             MaxLines="2" />
+      <!-- Toolbar -->
+      <Border Grid.Row="0" Classes="toolbar" Padding="80,8,12,8">
+        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto">
+          <TextBlock Grid.Column="0" Text="Dataverse" Classes="footnote secondary" VerticalAlignment="Center" Margin="0,0,8,0" />
+          <AutoCompleteBox Grid.Column="1"
+                           Width="380"
+                           Text="{Binding DataverseUrl}"
+                           ItemsSource="{Binding RecentConnections}"
+                           ValueMemberBinding="{Binding Url}"
+                           FilterMode="Contains">
+            <AutoCompleteBox.ItemTemplate>
+              <DataTemplate DataType="set:RecentConnection">
+                <StackPanel>
+                  <TextBlock Text="{Binding OrganizationFriendlyName}" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding Url}" Classes="footnote secondary" />
                 </StackPanel>
               </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-        </DockPanel>
+            </AutoCompleteBox.ItemTemplate>
+          </AutoCompleteBox>
+          <Button Grid.Column="2"
+                  Margin="8,0,0,0"
+                  Content="{Binding ConnectButtonCaption}"
+                  Command="{Binding ConnectCommand}"
+                  Classes="primary"
+                  Classes.connected="{Binding IsConnected}" />
+          <Ellipse Grid.Column="3" Width="8" Height="8" VerticalAlignment="Center" Margin="8,0,0,0"
+                   IsVisible="{Binding IsConnected}"
+                   Fill="{DynamicResource SuccessBrush}" />
+          <TextBlock Grid.Column="4" Text="{Binding ConnectionStatus}" Classes="footnote" VerticalAlignment="Center" Margin="6,0,0,0" />
+          <Button Grid.Column="6"
+                  Content="Browse Tools"
+                  Classes="tertiary"
+                  Command="{Binding ToggleStoreCommand}" />
+        </Grid>
       </Border>
 
-      <GridSplitter Grid.Column="1"
-                    Background="{DynamicResource HairlineBrush}"
-                    Width="1"
-                    ResizeDirection="Columns" />
+      <!-- Body -->
+      <Grid Grid.Row="1" ColumnDefinitions="260,1,*">
 
-      <Grid Grid.Column="2">
-
-        <!-- Empty state shown when no plugin is open -->
-        <Border IsVisible="{Binding !OpenedPlugins.Count}"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center">
-          <StackPanel Spacing="{DynamicResource SpacingMd}"
-                      HorizontalAlignment="Center"
-                      MaxWidth="420">
-            <TextBlock Classes="large-title secondary" Text="No tool open"
-                       HorizontalAlignment="Center" />
-            <TextBlock Classes="body secondary"
-                       TextAlignment="Center"
-                       TextWrapping="Wrap"
-                       Text="Choose a tool from the sidebar to get started. Tools query and edit your Dataverse environment using the connection set above." />
-            <TextBlock Classes="footnote secondary"
-                       TextAlignment="Center"
-                       IsVisible="{Binding !IsConnected}"
-                       Text="Tip: connect to a Dataverse environment first." />
-          </StackPanel>
+        <Border Grid.Column="0" Classes="sidebar" BorderThickness="0">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top"
+                       Text="Tools"
+                       Classes="footnote secondary"
+                       Padding="16,12,16,4" />
+            <ListBox Classes="sidebar"
+                     ItemsSource="{Binding AvailablePlugins}"
+                     SelectedItem="{Binding SelectedPlugin}">
+              <ListBox.ItemTemplate>
+                <DataTemplate DataType="plg:PluginEntry">
+                  <StackPanel Spacing="{DynamicResource SpacingXs}">
+                    <TextBlock Text="{Binding Metadata.Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Metadata.Description}"
+                               Classes="footnote"
+                               TextWrapping="Wrap"
+                               MaxLines="2" />
+                  </StackPanel>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </DockPanel>
         </Border>
 
-        <!-- Tab host shown when at least one plugin is open -->
-        <TabControl Classes="macos"
-                    Margin="12,8,12,8"
-                    IsVisible="{Binding OpenedPlugins.Count}"
-                    ItemsSource="{Binding OpenedPlugins}"
-                    SelectedItem="{Binding ActivePlugin}">
-          <TabControl.ItemTemplate>
-            <DataTemplate DataType="vm:OpenedPluginViewModel">
-              <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                <TextBlock Text="{Binding Title}" />
-                <Button Content="✕"
-                        Classes="tab-close"
-                        Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
-                        CommandParameter="{Binding}" />
+        <GridSplitter Grid.Column="1"
+                      Background="{DynamicResource HairlineBrush}"
+                      Width="1"
+                      ResizeDirection="Columns" />
+
+        <Grid Grid.Column="2">
+
+          <!-- Empty state -->
+          <Border IsVisible="{Binding !OpenedPlugins.Count}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+            <StackPanel Spacing="{DynamicResource SpacingMd}"
+                        HorizontalAlignment="Center"
+                        MaxWidth="460">
+              <TextBlock Classes="large-title secondary" Text="No tool open"
+                         HorizontalAlignment="Center" />
+              <TextBlock Classes="body secondary"
+                         TextAlignment="Center"
+                         TextWrapping="Wrap"
+                         Text="Choose a tool from the sidebar, browse the community catalogue, or press ⌘K to search." />
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="{DynamicResource SpacingSm}">
+                <Button Content="Browse Tool Library" Classes="primary" Command="{Binding ToggleStoreCommand}" />
+                <Button Content="Command Palette (⌘K)" Classes="tertiary" Command="{Binding ToggleCommandPaletteCommand}" />
               </StackPanel>
-            </DataTemplate>
-          </TabControl.ItemTemplate>
-          <TabControl.ContentTemplate>
-            <DataTemplate DataType="vm:OpenedPluginViewModel">
-              <Border Classes="card" Background="{DynamicResource SurfaceBackgroundBrush}">
-                <ContentControl Content="{Binding View}" />
-              </Border>
-            </DataTemplate>
-          </TabControl.ContentTemplate>
-        </TabControl>
+              <TextBlock Classes="footnote secondary"
+                         TextAlignment="Center"
+                         IsVisible="{Binding !IsConnected}"
+                         Text="Tip: connect to a Dataverse environment first." />
+            </StackPanel>
+          </Border>
+
+          <!-- Tab host -->
+          <TabControl Classes="macos"
+                      Margin="12,8,12,8"
+                      IsVisible="{Binding OpenedPlugins.Count}"
+                      ItemsSource="{Binding OpenedPlugins}"
+                      SelectedItem="{Binding ActivePlugin}">
+            <TabControl.ItemTemplate>
+              <DataTemplate DataType="vm:OpenedPluginViewModel">
+                <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Title}" />
+                  <Button Content="✕"
+                          Classes="tab-close"
+                          Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
+                          CommandParameter="{Binding}" />
+                </StackPanel>
+              </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+              <DataTemplate DataType="vm:OpenedPluginViewModel">
+                <Border Classes="card" Background="{DynamicResource SurfaceBackgroundBrush}">
+                  <ContentControl Content="{Binding View}" />
+                </Border>
+              </DataTemplate>
+            </TabControl.ContentTemplate>
+          </TabControl>
+
+        </Grid>
 
       </Grid>
+
+      <!-- Status bar -->
+      <Border Grid.Row="2" Classes="statusbar">
+        <Grid ColumnDefinitions="*,Auto,Auto">
+          <TextBlock Grid.Column="0" Classes="caption mono" VerticalAlignment="Center">
+            XrmToolBox · native build
+          </TextBlock>
+          <Button Grid.Column="1" Classes="tertiary"
+                  Padding="8,2" FontSize="10"
+                  Content="Settings (⌘,)"
+                  Command="{Binding ToggleSettingsCommand}" />
+          <TextBlock Grid.Column="2" Classes="caption secondary mono" VerticalAlignment="Center" Margin="8,0,0,0"
+                     Text="{Binding OpenedPlugins.Count, StringFormat='{}{0} tab(s) open'}" />
+        </Grid>
+      </Border>
 
     </Grid>
 
-    <!-- Status bar -->
-    <Border Grid.Row="2" Classes="statusbar">
-      <Grid ColumnDefinitions="*,Auto">
-        <TextBlock Grid.Column="0" Classes="caption mono" VerticalAlignment="Center">
-          XrmToolBox · native build
-        </TextBlock>
-        <TextBlock Grid.Column="1" Classes="caption secondary mono" VerticalAlignment="Center"
-                   Text="{Binding OpenedPlugins.Count, StringFormat='{}{0} tab(s) open'}" />
-      </Grid>
+    <!-- Overlay backdrop (shared by Settings, About, Store, Command Palette) -->
+    <Border Background="#7F000000"
+            IsHitTestVisible="True">
+      <Border.IsVisible>
+        <MultiBinding Converter="{x:Static BoolConverters.Or}">
+          <Binding Path="IsSettingsOpen" />
+          <Binding Path="IsAboutOpen" />
+          <Binding Path="IsStoreOpen" />
+          <Binding Path="IsCommandPaletteOpen" />
+        </MultiBinding>
+      </Border.IsVisible>
+    </Border>
+
+    <!-- Settings panel -->
+    <Border IsVisible="{Binding IsSettingsOpen}"
+            Background="{DynamicResource SurfaceBackgroundBrush}"
+            BorderBrush="{DynamicResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource CornerRadiusCard}"
+            Width="640" Height="480"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Padding="0">
+      <DockPanel>
+        <Border DockPanel.Dock="Top" Padding="20,16" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Grid.Column="0" Classes="title-1" Text="Settings" />
+            <Button Grid.Column="1" Content="Done" Classes="primary" Command="{Binding ToggleSettingsCommand}" />
+          </Grid>
+        </Border>
+        <ScrollViewer>
+          <StackPanel Margin="20,16" Spacing="{DynamicResource SpacingLg}">
+            <StackPanel Spacing="{DynamicResource SpacingSm}">
+              <TextBlock Classes="title-2" Text="Appearance" />
+              <TextBlock Classes="footnote secondary" Text="Theme override (live)" />
+              <ComboBox Width="240" SelectedIndex="0">
+                <ComboBoxItem Content="Auto (follow system)" />
+                <ComboBoxItem Content="Light" />
+                <ComboBoxItem Content="Dark" />
+              </ComboBox>
+            </StackPanel>
+            <StackPanel Spacing="{DynamicResource SpacingSm}">
+              <TextBlock Classes="title-2" Text="Connections" />
+              <TextBlock Classes="footnote secondary" Text="Recent connections — context menu lets you forget one." />
+              <ListBox ItemsSource="{Binding RecentConnections}" MaxHeight="160">
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="set:RecentConnection">
+                    <Grid ColumnDefinitions="*,Auto">
+                      <StackPanel Grid.Column="0">
+                        <TextBlock Text="{Binding OrganizationFriendlyName}" FontWeight="SemiBold" />
+                        <TextBlock Text="{Binding Url}" Classes="footnote secondary" />
+                      </StackPanel>
+                      <Button Grid.Column="1" Content="Forget" Classes="tertiary"
+                              Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ForgetRecentCommand}"
+                              CommandParameter="{Binding}" />
+                    </Grid>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </StackPanel>
+            <StackPanel Spacing="{DynamicResource SpacingSm}">
+              <TextBlock Classes="title-2" Text="Plugins" />
+              <Button Content="Reload plugins" Command="{Binding ReloadPluginsCommand}" HorizontalAlignment="Left" />
+            </StackPanel>
+            <StackPanel Spacing="{DynamicResource SpacingSm}">
+              <TextBlock Classes="title-2" Text="Files" />
+              <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.SettingsPath}" />
+              <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.PluginsDirectory}" />
+              <TextBlock Classes="footnote secondary mono" Text="{Binding SettingsService.LogsDirectory}" />
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+
+    <!-- About panel -->
+    <Border IsVisible="{Binding IsAboutOpen}"
+            Background="{DynamicResource SurfaceBackgroundBrush}"
+            BorderBrush="{DynamicResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource CornerRadiusCard}"
+            Width="420"
+            HorizontalAlignment="Center" VerticalAlignment="Center"
+            Padding="32,28">
+      <StackPanel Spacing="{DynamicResource SpacingMd}" HorizontalAlignment="Center">
+        <TextBlock Classes="large-title" Text="XrmToolBox" HorizontalAlignment="Center" />
+        <TextBlock Classes="footnote secondary" Text="Cross-platform · native build" HorizontalAlignment="Center" />
+        <TextBlock Classes="footnote secondary" Text="Version 2.0.0" HorizontalAlignment="Center" />
+        <Border Margin="0,8,0,0" Padding="0,12,0,0" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,1,0,0">
+          <StackPanel Spacing="{DynamicResource SpacingSm}">
+            <TextBlock Classes="footnote" TextAlignment="Center" TextWrapping="Wrap"
+                       Text="Original XrmToolBox by Tanguy Touzard / MscrmTools. xrmtoolbox.com" />
+          </StackPanel>
+        </Border>
+        <Button Content="Close" Command="{Binding ToggleAboutCommand}" HorizontalAlignment="Center" />
+      </StackPanel>
+    </Border>
+
+    <!-- Plugin Store panel -->
+    <Border IsVisible="{Binding IsStoreOpen}"
+            Background="{DynamicResource SurfaceBackgroundBrush}"
+            BorderBrush="{DynamicResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource CornerRadiusCard}"
+            Width="800" Height="560"
+            HorizontalAlignment="Center" VerticalAlignment="Center">
+      <DockPanel>
+        <Border DockPanel.Dock="Top" Padding="20,16" BorderBrush="{DynamicResource HairlineBrush}" BorderThickness="0,0,0,1">
+          <Grid ColumnDefinitions="*,Auto,Auto">
+            <StackPanel Grid.Column="0" Spacing="2">
+              <TextBlock Classes="title-1" Text="Tool Library" />
+              <TextBlock Classes="footnote secondary" Text="{Binding Store.Status}" />
+            </StackPanel>
+            <Button Grid.Column="1" Content="Refresh" Classes="tertiary" Command="{Binding Store.RefreshCommand}" />
+            <Button Grid.Column="2" Content="Done" Classes="primary" Command="{Binding ToggleStoreCommand}" Margin="8,0,0,0" />
+          </Grid>
+        </Border>
+        <Grid ColumnDefinitions="*,1,260">
+          <ListBox Grid.Column="0"
+                   ItemsSource="{Binding Store.Packages}"
+                   SelectedItem="{Binding Store.Selected}">
+            <ListBox.ItemTemplate>
+              <DataTemplate DataType="vm:StorePackage">
+                <Grid ColumnDefinitions="*,Auto" Margin="4,6">
+                  <StackPanel Grid.Column="0">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Description}" Classes="footnote secondary" TextWrapping="Wrap" MaxLines="2" />
+                    <TextBlock Text="{Binding Authors}" Classes="caption secondary" />
+                  </StackPanel>
+                  <TextBlock Grid.Column="1" Text="{Binding DownloadCountDisplay}" Classes="caption secondary" VerticalAlignment="Center" Margin="8,0,0,0" />
+                </Grid>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+          <Border Grid.Column="1" Background="{DynamicResource HairlineBrush}" Width="1" />
+          <Border Grid.Column="2" Padding="20,16" Background="{DynamicResource WindowBackgroundBrush}">
+            <StackPanel Spacing="{DynamicResource SpacingSm}">
+              <TextBlock Classes="title-2" Text="{Binding Store.Selected.Name, FallbackValue='Select a plugin'}" />
+              <TextBlock Classes="footnote secondary" Text="{Binding Store.Selected.Authors}" />
+              <TextBlock Classes="body" TextWrapping="Wrap" Text="{Binding Store.Selected.Description, FallbackValue=''}" />
+              <Border Margin="0,12,0,0" Padding="12" CornerRadius="{DynamicResource CornerRadiusControl}"
+                      Background="{DynamicResource ControlBackgroundBrush}"
+                      BorderBrush="{DynamicResource WarningBrush}" BorderThickness="1"
+                      IsVisible="{Binding Store.Selected, Converter={x:Static ObjectConverters.IsNotNull}}">
+                <StackPanel Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="footnote warning" FontWeight="SemiBold" Text="Needs porting" />
+                  <TextBlock Classes="footnote" TextWrapping="Wrap"
+                             Text="Existing community plugins are .NET Framework + WinForms and won't load in this native shell. The agentic plugin porter (spec 002) auto-converts them. Install will be enabled once that ships." />
+                </StackPanel>
+              </Border>
+            </StackPanel>
+          </Border>
+        </Grid>
+      </DockPanel>
+    </Border>
+
+    <!-- Command palette -->
+    <Border IsVisible="{Binding IsCommandPaletteOpen}"
+            Background="{DynamicResource SurfaceBackgroundBrush}"
+            BorderBrush="{DynamicResource HairlineBrush}"
+            BorderThickness="1"
+            CornerRadius="{DynamicResource CornerRadiusCard}"
+            Width="560" MaxHeight="400"
+            HorizontalAlignment="Center" VerticalAlignment="Top"
+            Margin="0,120,0,0">
+      <DockPanel>
+        <TextBox DockPanel.Dock="Top" Watermark="Type a command or tool name…"
+                 BorderThickness="0"
+                 Padding="16,12"
+                 FontSize="{DynamicResource FontSizeTitle2}"
+                 x:Name="PaletteSearchBox" />
+        <ListBox ItemsSource="{Binding AvailablePlugins}" Padding="8,4">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="plg:PluginEntry">
+              <StackPanel>
+                <TextBlock Text="{Binding Metadata.Name}" />
+                <TextBlock Text="{Binding Metadata.Description}" Classes="footnote secondary" MaxLines="1" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
     </Border>
 
   </Grid>
