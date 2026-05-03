@@ -1,7 +1,7 @@
 # FetchXML Builder — port report
 
 **Upstream:** `rappen/fetchxmlbuilder@71ad86219285401a7795e4a4e2415dec3a798457`
-**Output:** `src.macos/Plugins/FetchXmlBuilder/`
+**Output:** `src/Plugins/FetchXmlBuilder/`
 **Confidence:** LOW
 
 ## Summary

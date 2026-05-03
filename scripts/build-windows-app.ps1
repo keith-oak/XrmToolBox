@@ -36,9 +36,9 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $RepoRoot   = Split-Path -Parent $PSScriptRoot
-$ShellProj  = Join-Path $RepoRoot 'src.macos\XrmToolBox.MacOS\XrmToolBox.MacOS.csproj'
+$ShellProj  = Join-Path $RepoRoot 'src\XrmToolBox.MacOS\XrmToolBox.MacOS.csproj'
 $DistDir    = Join-Path $RepoRoot 'dist'
-$Slnx       = Join-Path $RepoRoot 'src.macos\XrmToolBox.MacOS.slnx'
+$Slnx       = Join-Path $RepoRoot 'src\XrmToolBox.MacOS.slnx'
 
 if (-not (Test-Path $ShellProj)) {
     throw "Shell project not found: $ShellProj"
@@ -58,7 +58,7 @@ dotnet restore $Slnx
 if ($LASTEXITCODE -ne 0) { throw "dotnet restore failed" }
 
 Write-Host "==> Running tests" -ForegroundColor Cyan
-$TestProj = Join-Path $RepoRoot 'src.macos\XrmToolBox.Catalog.Tests\XrmToolBox.Catalog.Tests.csproj'
+$TestProj = Join-Path $RepoRoot 'src\XrmToolBox.Catalog.Tests\XrmToolBox.Catalog.Tests.csproj'
 dotnet test $TestProj -c Release --nologo
 if ($LASTEXITCODE -ne 0) { throw "tests failed" }
 
@@ -81,7 +81,7 @@ if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed" }
 $PluginsDir = Join-Path $PublishDir 'Plugins'
 New-Item -ItemType Directory -Force -Path $PluginsDir | Out-Null
 
-$PluginProjects = Get-ChildItem -Path (Join-Path $RepoRoot 'src.macos\Plugins') -Recurse -Filter '*.csproj'
+$PluginProjects = Get-ChildItem -Path (Join-Path $RepoRoot 'src\Plugins') -Recurse -Filter '*.csproj'
 foreach ($p in $PluginProjects) {
     Write-Host "    publishing plugin: $($p.BaseName)"
     $pluginOut = Join-Path $PluginsDir $p.BaseName

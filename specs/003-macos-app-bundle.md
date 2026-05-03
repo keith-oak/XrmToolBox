@@ -43,7 +43,7 @@ Right now the executable shows up as "Avalonia Application" with no icon because
 ### Build script
 
 - [ ] `scripts/build-macos-app.sh` (executable) that:
-  1. Runs `dotnet publish src.macos/XrmToolBox.MacOS -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=false`
+  1. Runs `dotnet publish src/XrmToolBox.MacOS -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=false`
   2. Assembles `dist/XrmToolBox.app/Contents/{MacOS,Resources}` from `Info.plist`, the published output, the icon, and the plugin DLLs
   3. Marks `Contents/MacOS/XrmToolBox` executable and clears the macOS quarantine attribute on the bundle (`xattr -dr com.apple.quarantine`)
   4. Optional `--sign "Developer ID Application: …"` flag that codesigns with hardened runtime + timestamp; default behaviour is unsigned (ad-hoc)
@@ -54,7 +54,7 @@ Right now the executable shows up as "Avalonia Application" with no icon because
 
 ### MSBuild integration
 
-- [ ] `src.macos/XrmToolBox.MacOS/XrmToolBox.MacOS.csproj` declares the bundle metadata so `dotnet publish` picks up the version + icon path:
+- [ ] `src/XrmToolBox.MacOS/XrmToolBox.MacOS.csproj` declares the bundle metadata so `dotnet publish` picks up the version + icon path:
   - `<ApplicationIcon>` pointing at the `.icns` for tooling that wants it
   - `<AssemblyTitle>` and `<Product>` set to "XrmToolBox" so any displayed assembly metadata is consistent
 

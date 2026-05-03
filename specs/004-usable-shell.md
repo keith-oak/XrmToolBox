@@ -90,9 +90,9 @@ After the theme spec (001) and bundle spec (003), the app *looks* native but doe
 
 ## Technical Requirements
 
-- [ ] `dotnet build src.macos/XrmToolBox.MacOS.slnx -warnaserror` exits 0
+- [ ] `dotnet build src/XrmToolBox.MacOS.slnx -warnaserror` exits 0
 - [ ] `XrmToolBox --probe` still passes
-- [ ] `dotnet format src.macos/XrmToolBox.MacOS.slnx --verify-no-changes` exits 0
+- [ ] `dotnet format src/XrmToolBox.MacOS.slnx --verify-no-changes` exits 0
 - [ ] Settings file written by the app round-trips correctly: launch, change theme, quit, relaunch, theme persists
 - [ ] Window position round-trips correctly across relaunches
 
@@ -100,9 +100,9 @@ After the theme spec (001) and bundle spec (003), the app *looks* native but doe
 
 ```bash
 # 1. Build clean
-dotnet build src.macos/XrmToolBox.MacOS.slnx -nologo -warnaserror
+dotnet build src/XrmToolBox.MacOS.slnx -nologo -warnaserror
 # 2. Launch via the bundle (after spec 003 is done) or directly:
-dotnet run --project src.macos/XrmToolBox.MacOS
+dotnet run --project src/XrmToolBox.MacOS
 # 3. Connect to a Dataverse env → confirm URL is saved as recent
 # 4. Cmd-, → Settings opens, switch theme → app updates immediately
 # 5. Cmd-K → Command palette opens, fuzzy-find "Sample Tool" → opens it

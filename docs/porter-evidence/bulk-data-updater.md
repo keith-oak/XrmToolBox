@@ -1,7 +1,7 @@
 # Bulk Data Updater — port report
 
 **Upstream:** `rappen/BulkDataUpdater@40158af2445f55d0b9a32f83a916ea138f1f1196`
-**Output:** `src.macos/Plugins/BulkDataUpdater/`
+**Output:** `src/Plugins/BulkDataUpdater/`
 **Confidence:** LOW
 
 ## Summary

@@ -27,14 +27,14 @@ open "dist/PAC'd Toolbox.app"
 For fast iteration during development you can still run the raw build (no icon, no native menu binding):
 
 ```bash
-dotnet build src.macos/XrmToolBox.MacOS/XrmToolBox.MacOS.csproj
-dotnet run  --project src.macos/XrmToolBox.MacOS/XrmToolBox.MacOS.csproj
+dotnet build src/XrmToolBox.MacOS/XrmToolBox.MacOS.csproj
+dotnet run  --project src/XrmToolBox.MacOS/XrmToolBox.MacOS.csproj
 ```
 
 Probe plugin discovery without launching the UI:
 
 ```bash
-src.macos/XrmToolBox.MacOS/bin/Debug/net10.0/PACdToolbox --probe
+src/XrmToolBox.MacOS/bin/Debug/net10.0/PACdToolbox --probe
 ```
 
 For Intel Macs / signed builds / zipped distribution, see [`docs/macos-distribution.md`](../docs/macos-distribution.md).

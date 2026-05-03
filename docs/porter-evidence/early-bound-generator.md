@@ -1,7 +1,7 @@
 # Early Bound Generator V2 — port report
 
 **Upstream:** `daryllabar/DLaB.Xrm.XrmToolBoxTools@c977ffd4d8f4e8c43bcf1d2ed1d6530e2325c733`
-**Output:** `src.macos/Plugins/EarlyBoundGenerator/`
+**Output:** `src/Plugins/EarlyBoundGenerator/`
 **Confidence:** LOW
 
 ## Summary

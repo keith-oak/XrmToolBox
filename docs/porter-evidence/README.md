@@ -12,7 +12,7 @@ Five plugins, picked as the top by `mctools_totaldownloadcount` from
 CDS, FetchXML / View Record Counter, View Designer were skipped because their
 sources aren't public). For each, the upstream was cloned to a read-only
 scratch dir, then a parallel macOS/Avalonia tree was hand-authored under
-`src.macos/Plugins/<Name>/` exactly as the deterministic porter spec dictates:
+`src/Plugins/<Name>/` exactly as the deterministic porter spec dictates:
 
 - **csproj rewrite** to net10.0 SDK-style with `Avalonia 11.2.3`,
   `System.ComponentModel.Composition` for MEF, a `ProjectReference` to
@@ -29,11 +29,11 @@ scratch dir, then a parallel macOS/Avalonia tree was hand-authored under
 
 | Plugin | Output | Confidence | Functional |
 |---|---|---|---|
-| Bulk Data Updater | `src.macos/Plugins/BulkDataUpdater/` | MEDIUM | FetchXML preview → bulk single-attribute update with progress |
-| Plugin Trace Viewer | `src.macos/Plugins/PluginTraceViewer/` | MEDIUM | filter (type/message/hours) → list → click for detail + exception |
-| FetchXML Builder | `src.macos/Plugins/FetchXmlBuilder/` | MEDIUM | entity tree (lazy attrs) + raw editor + run + results |
-| Plugin Registration | `src.macos/Plugins/PluginRegistration/` | MEDIUM | tree of pluginassembly → plugintype → step + detail pane (read-only) |
-| Early Bound Generator V2 | `src.macos/Plugins/EarlyBoundGenerator/` | MEDIUM | pick entities → namespace + folder → C# early-bound classes |
+| Bulk Data Updater | `src/Plugins/BulkDataUpdater/` | MEDIUM | FetchXML preview → bulk single-attribute update with progress |
+| Plugin Trace Viewer | `src/Plugins/PluginTraceViewer/` | MEDIUM | filter (type/message/hours) → list → click for detail + exception |
+| FetchXML Builder | `src/Plugins/FetchXmlBuilder/` | MEDIUM | entity tree (lazy attrs) + raw editor + run + results |
+| Plugin Registration | `src/Plugins/PluginRegistration/` | MEDIUM | tree of pluginassembly → plugintype → step + detail pane (read-only) |
+| Early Bound Generator V2 | `src/Plugins/EarlyBoundGenerator/` | MEDIUM | pick entities → namespace + folder → C# early-bound classes |
 
 After the second pass, each plugin does the *core* user-facing flow. Things still
 unimplemented per plugin (the long tail spec 002 specifically reserves for

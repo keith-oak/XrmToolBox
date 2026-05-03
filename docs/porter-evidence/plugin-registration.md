@@ -1,7 +1,7 @@
 # Plugin Registration — port report
 
 **Upstream:** `Biznamics/PluginRegistration@2313168f75387b04d6638925ee300f040f907e44`
-**Output:** `src.macos/Plugins/PluginRegistration/`
+**Output:** `src/Plugins/PluginRegistration/`
 **Confidence:** LOW
 
 ## Summary

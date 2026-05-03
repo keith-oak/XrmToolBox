@@ -1,7 +1,7 @@
 # Plugin Trace Viewer — port report
 
 **Upstream:** `rappen/XrmToolBox.PluginTraceViewer@e6eda11063cbff9d6cc229d40e49cebdf16b7673`
-**Output:** `src.macos/Plugins/PluginTraceViewer/`
+**Output:** `src/Plugins/PluginTraceViewer/`
 **Confidence:** LOW
 
 ## Summary
