@@ -16,6 +16,16 @@ public sealed class AppSettings
     public List<RecentConnection> RecentConnections { get; set; } = new();
 
     public List<string> LastOpenedPlugins { get; set; } = new();
+
+    public List<Favourite> Favourites { get; set; } = new();
+
+    public bool ConnectAtStartup { get; set; }
+}
+
+public sealed class Favourite
+{
+    public string PluginTypeName { get; set; } = string.Empty;
+    public Guid? ConnectionId { get; set; }
 }
 
 public sealed class WindowPlacement

@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using Avalonia.Styling;
+using XrmToolBox.MacOS.Connection;
 using XrmToolBox.MacOS.Plugins;
 using XrmToolBox.MacOS.Settings;
 using XrmToolBox.MacOS.ViewModels;
@@ -23,8 +25,35 @@ public class App : Application
             var pluginManager = new PluginManager();
             pluginManager.LoadPlugins();
 
-            var vm = new MainWindowViewModel(pluginManager, settings);
+            // Catalogue + secrets share the same config root as settings.
+            var configRoot = System.IO.Path.GetDirectoryName(settings.SettingsPath)!;
+            var catalogue = new ConnectionCatalogueStore(configRoot);
+            var secrets = new SecretStore(System.IO.Path.Combine(configRoot, "Secrets"));
+
+            var vm = new MainWindowViewModel(pluginManager, settings, catalogue, secrets);
             var window = new MainWindow { DataContext = vm };
+
+            // Wire the file picker callback so the catalogue importer can ask
+            // the user for an XML path without the ViewModel knowing about
+            // Avalonia's storage API.
+            vm.OpenFileDialogAsync = async suggested =>
+            {
+                if (window.StorageProvider is null) return null;
+                var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+                {
+                    Title = "Import XrmToolBox connections",
+                    AllowMultiple = false,
+                    FileTypeFilter = new[]
+                    {
+                        new FilePickerFileType("XrmToolBox connections")
+                        {
+                            Patterns = new[] { "*.xml" },
+                        },
+                    },
+                });
+                return files.Count == 0 ? null : files[0].TryGetLocalPath();
+            };
+
             ApplyWindowPlacement(window, settings);
             window.Closing += (_, _) =>
             {
@@ -81,6 +110,11 @@ public class App : Application
         fileMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItem("Browse Tool Library…")
         {
             Command = vm.ToggleStoreCommand,
+        });
+        fileMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItemSeparator());
+        fileMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItem("Import connections from XrmToolBox…")
+        {
+            Command = vm.ImportFromXrmToolBoxCommand,
         });
         fileMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItemSeparator());
         fileMenu.Menu.Items.Add(new Avalonia.Controls.NativeMenuItem("Disconnect")

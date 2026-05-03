@@ -5,6 +5,7 @@
         xmlns:vm="using:XrmToolBox.MacOS.ViewModels"
         xmlns:plg="using:XrmToolBox.MacOS.Plugins"
         xmlns:set="using:XrmToolBox.MacOS.Settings"
+        xmlns:ext="using:XrmToolBox.Extensibility"
         mc:Ignorable="d" d:DesignWidth="1180" d:DesignHeight="760"
         x:Class="XrmToolBox.MacOS.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -270,8 +271,29 @@
                           SelectedItem="{Binding ActivePlugin}">
                 <TabControl.ItemTemplate>
                   <DataTemplate DataType="vm:OpenedPluginViewModel">
-                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                       <TextBlock Text="{Binding Title}" />
+                      <Border Classes="conn-chip"
+                              IsVisible="{Binding HasConnection}"
+                              Background="{DynamicResource AccentSoftBrush}"
+                              CornerRadius="6"
+                              Padding="6,2"
+                              VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ConnectionLabel}"
+                                   FontSize="11"
+                                   Classes="footnote secondary"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxWidth="160" />
+                      </Border>
+                      <Border Classes="conn-chip pinned"
+                              IsVisible="{Binding IsConnectionPinned}"
+                              Background="{DynamicResource AccentBrush}"
+                              CornerRadius="6"
+                              Padding="4,1"
+                              VerticalAlignment="Center"
+                              ToolTip.Tip="Pinned to this connection — won't follow session changes">
+                        <TextBlock Text="📌" FontSize="10" />
+                      </Border>
                       <Button Content="✕"
                               Classes="tab-close"
                               Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
@@ -356,41 +378,142 @@
             </StackPanel>
           </ScrollViewer>
 
-          <!-- ENVIRONMENTS placeholder -->
-          <StackPanel IsVisible="{Binding IsEnvironmentsActive}"
-                      Margin="32,28,32,28"
-                      Spacing="{DynamicResource SpacingMd}">
-            <TextBlock Classes="large-title" Text="Environments" />
-            <TextBlock Classes="footnote secondary"
-                       Text="View, switch, and audit Power Platform environments. Coming soon — will list all environments your account can access." />
-          </StackPanel>
+          <!-- ENVIRONMENTS — read-only status dashboard of every catalogue connection -->
+          <ScrollViewer IsVisible="{Binding IsEnvironmentsActive}">
+            <StackPanel Margin="32,28,32,28" Spacing="{DynamicResource SpacingMd}">
+              <StackPanel Spacing="{DynamicResource SpacingXs}">
+                <TextBlock Classes="large-title" Text="Environments" />
+                <TextBlock Classes="footnote secondary"
+                           Text="Every Dataverse environment from your catalogue. Status updates as connections come and go. Edit them in Connections." />
+              </StackPanel>
+              <Border Classes="card">
+                <ItemsControl ItemsSource="{Binding CatalogueConnections}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="ext:ConnectionDetail">
+                      <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,8">
+                        <StackPanel Grid.Column="0">
+                          <TextBlock Text="{Binding ConnectionName}" FontWeight="SemiBold" />
+                          <TextBlock Text="{Binding Url}" Classes="footnote secondary mono" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding AuthMode}"
+                                   Classes="footnote secondary"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,12,0" />
+                        <Button Grid.Column="2" Content="Connect" Classes="tertiary"
+                                Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ConnectToCatalogueCommand}"
+                                CommandParameter="{Binding}" />
+                      </Grid>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Border>
+              <TextBlock IsVisible="{Binding !CatalogueConnections.Count}"
+                         Classes="footnote secondary"
+                         Text="No catalogue connections yet. Add one in the Connections pane, or import from XrmToolBox (Windows) via File → Import." />
+            </StackPanel>
+          </ScrollViewer>
 
-          <!-- CONNECTIONS placeholder -->
-          <StackPanel IsVisible="{Binding IsConnectionsActive}"
-                      Margin="32,28,32,28"
-                      Spacing="{DynamicResource SpacingMd}">
-            <TextBlock Classes="large-title" Text="Connections" />
-            <TextBlock Classes="footnote secondary"
-                       Text="Manage saved connections. The toolbar URL field shows your most recent — full management UI lives here." />
-            <ListBox ItemsSource="{Binding RecentConnections}"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     MaxHeight="500">
-              <ListBox.ItemTemplate>
-                <DataTemplate DataType="set:RecentConnection">
-                  <Grid ColumnDefinitions="*,Auto" Margin="0,8">
-                    <StackPanel Grid.Column="0">
-                      <TextBlock Text="{Binding OrganizationFriendlyName}" FontWeight="SemiBold" />
-                      <TextBlock Text="{Binding Url}" Classes="footnote secondary mono" />
-                    </StackPanel>
-                    <Button Grid.Column="1" Content="Forget" Classes="tertiary"
-                            Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ForgetRecentCommand}"
-                            CommandParameter="{Binding}" />
-                  </Grid>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-          </StackPanel>
+          <!-- CONNECTIONS — file tree + detail editor -->
+          <Grid IsVisible="{Binding IsConnectionsActive}"
+                ColumnDefinitions="320,*"
+                Margin="0,0,0,0">
+            <!-- File tree -->
+            <Border Grid.Column="0"
+                    BorderThickness="0,0,1,0"
+                    BorderBrush="{DynamicResource HairlineBrush}"
+                    Padding="20,28,20,20">
+              <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Top" Spacing="{DynamicResource SpacingSm}">
+                  <TextBlock Classes="title-2" Text="Connections" />
+                  <Button Content="Import from XrmToolBox…"
+                          Classes="tertiary"
+                          HorizontalAlignment="Stretch"
+                          Command="{Binding ImportFromXrmToolBoxCommand}" />
+                  <Border Background="{DynamicResource HairlineBrush}" Height="1" Margin="0,8,0,8" />
+                </StackPanel>
+                <ScrollViewer>
+                  <ItemsControl ItemsSource="{Binding CatalogueFiles}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate DataType="ext:ConnectionFile">
+                        <StackPanel Margin="0,4,0,8">
+                          <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                          <ItemsControl ItemsSource="{Binding Connections}">
+                            <ItemsControl.ItemTemplate>
+                              <DataTemplate DataType="ext:ConnectionDetail">
+                                <Button Classes="tertiary"
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        Padding="8,6"
+                                        Margin="0,1"
+                                        Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ConnectToCatalogueCommand}"
+                                        CommandParameter="{Binding}">
+                                  <StackPanel>
+                                    <TextBlock Text="{Binding ConnectionName}" />
+                                    <TextBlock Text="{Binding Url}"
+                                               Classes="footnote secondary mono"
+                                               TextTrimming="CharacterEllipsis" />
+                                  </StackPanel>
+                                </Button>
+                              </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                          </ItemsControl>
+                        </StackPanel>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </ScrollViewer>
+              </DockPanel>
+            </Border>
+
+            <!-- Detail / empty state -->
+            <ScrollViewer Grid.Column="1">
+              <StackPanel Margin="32,28,32,28" Spacing="{DynamicResource SpacingMd}" MaxWidth="640">
+                <TextBlock Classes="large-title" Text="Connection details" />
+
+                <!-- Empty state -->
+                <Border Classes="card"
+                        IsVisible="{Binding !CatalogueFiles.Count}">
+                  <StackPanel Spacing="{DynamicResource SpacingSm}">
+                    <TextBlock Classes="title-2" Text="No connections yet." />
+                    <TextBlock Classes="footnote secondary"
+                               Text="Connect once via the toolbar to start your catalogue, or import an MscrmTools.ConnectionsList.xml from XrmToolBox on Windows." />
+                    <Button Content="Import from XrmToolBox…" Classes="primary"
+                            Command="{Binding ImportFromXrmToolBoxCommand}" />
+                  </StackPanel>
+                </Border>
+
+                <!-- Recent (flat) — quick re-connect -->
+                <Border Classes="card"
+                        IsVisible="{Binding CatalogueConnections.Count}">
+                  <StackPanel Spacing="{DynamicResource SpacingSm}">
+                    <TextBlock Classes="title-2" Text="Quick connect" />
+                    <TextBlock Classes="footnote secondary"
+                               Text="Most-recently-used catalogue entries. Click to (re)connect; the active session connection updates and new tabs follow." />
+                    <ItemsControl ItemsSource="{Binding CatalogueConnections}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="ext:ConnectionDetail">
+                          <Grid ColumnDefinitions="*,Auto,Auto" Margin="0,6">
+                            <StackPanel Grid.Column="0">
+                              <TextBlock Text="{Binding ConnectionName}" FontWeight="SemiBold" />
+                              <TextBlock Text="{Binding Url}" Classes="footnote secondary mono" />
+                            </StackPanel>
+                            <Button Grid.Column="1" Content="Connect" Classes="tertiary"
+                                    Margin="0,0,8,0"
+                                    Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ConnectToCatalogueCommand}"
+                                    CommandParameter="{Binding}" />
+                            <Button Grid.Column="2" Content="Forget" Classes="tertiary"
+                                    Command="{Binding $parent[Window].((vm:MainWindowViewModel)DataContext).ForgetCatalogueCommand}"
+                                    CommandParameter="{Binding}" />
+                          </Grid>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </ScrollViewer>
+          </Grid>
 
           <!-- SETTINGS pane (inline) -->
           <ScrollViewer IsVisible="{Binding IsSettingsActive}">
