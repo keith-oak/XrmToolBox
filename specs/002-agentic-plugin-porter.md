@@ -31,7 +31,7 @@ The existing community ecosystem is hundreds of plugins, all WinForms / .NET Fra
   - `<PackageReference>` to `Avalonia` 11.2.x and `Avalonia.ReactiveUI`
   - All original WinForms-only `<Reference>` entries dropped
   - Original `<PackageReference>` entries (Newtonsoft.Json, etc.) preserved if they target netstandard
-  - MSBuild target that copies output DLL into `src/XrmToolBox.MacOS/bin/$(Configuration)/$(TargetFramework)/Plugins/<Name>/`
+  - MSBuild target that copies output DLL into `src/Shell/bin/$(Configuration)/$(TargetFramework)/Plugins/<Name>/`
 - [ ] **C# rewrite** with documented mappings (table below) — applies via Roslyn `SyntaxRewriter`:
   - `using System.Windows.Forms;` → `using Avalonia.Controls;` (+ `using Avalonia.Layout;` where layout types used)
   - Base class `: UserControl` (WinForms) → `: UserControl` (Avalonia) — no namespace ambiguity since old `using` is removed
@@ -135,8 +135,8 @@ dotnet run --project tools/PluginPorter -- Plugins/MsCrmTools.SampleTool/SampleT
 # 3. Compile the result
 dotnet build /tmp/ported-sample
 # 4. Drop the resulting DLL into the macOS shell's Plugins folder and probe
-cp /tmp/ported-sample/bin/**/MsCrmTools.SampleTool.dll src/XrmToolBox.MacOS/bin/Debug/net10.0/Plugins/AutoPorted/
-src/XrmToolBox.MacOS/bin/Debug/net10.0/XrmToolBox --probe
+cp /tmp/ported-sample/bin/**/MsCrmTools.SampleTool.dll src/Shell/bin/Debug/net10.0/Plugins/AutoPorted/
+src/Shell/bin/Debug/net10.0/XrmToolBox --probe
 #    → expect 2 plugins listed (the hand-written sample + the auto-ported one)
 # 5. Workflow lint (Agentic Workflows installed)
 gh aw lint .github/workflows/port-plugin.md

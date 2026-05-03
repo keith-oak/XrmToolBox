@@ -25,9 +25,9 @@ Inherited from `strict-development`. Concretely for this repo:
 
 ```bash
 # All four must exit 0 before <promise>DONE</promise>
-dotnet build src/XrmToolBox.MacOS.slnx -nologo -warnaserror > /dev/null 2>&1
-src/XrmToolBox.MacOS/bin/Debug/net10.0/XrmToolBox --probe   # must list ≥1 plugin
-dotnet format src/XrmToolBox.MacOS.slnx --verify-no-changes
+dotnet build src/PACdToolbox.slnx -nologo -warnaserror > /dev/null 2>&1
+src/Shell/bin/Debug/net10.0/XrmToolBox --probe   # must list ≥1 plugin
+dotnet format src/PACdToolbox.slnx --verify-no-changes
 # Manual UI verification step documented in the spec must be ticked off
 ```
 

@@ -6,7 +6,7 @@
 
 ## Description
 
-Replace the default Avalonia FluentTheme in `src/XrmToolBox.MacOS` with a custom theme that follows Apple's Human Interface Guidelines (HIG) so the shell feels native on macOS. The same theme must degrade gracefully on Windows and Linux (no broken visuals, no missing fonts, just "looks tasteful" rather than "looks Mac").
+Replace the default Avalonia FluentTheme in `src/Shell` with a custom theme that follows Apple's Human Interface Guidelines (HIG) so the shell feels native on macOS. The same theme must degrade gracefully on Windows and Linux (no broken visuals, no missing fonts, just "looks tasteful" rather than "looks Mac").
 
 The theme must respect the system's light/dark appearance and accent colour on macOS, and never hard-code a colour that should follow system tokens.
 
@@ -57,9 +57,9 @@ Right now the shell uses generic Avalonia Fluent — it looks like a Windows app
 ## Technical Requirements
 
 - [ ] Avalonia 11.2.x ResourceDictionary + Styles approach (no third-party theme dependency unless justified in the PR)
-- [ ] `dotnet build src/XrmToolBox.MacOS.slnx -warnaserror` exits 0
+- [ ] `dotnet build src/PACdToolbox.slnx -warnaserror` exits 0
 - [ ] `XrmToolBox --probe` still succeeds (theme doesn't break plugin discovery)
-- [ ] `dotnet format src/XrmToolBox.MacOS.slnx --verify-no-changes` exits 0
+- [ ] `dotnet format src/PACdToolbox.slnx --verify-no-changes` exits 0
 - [ ] Manual verification (documented in spec completion comment): screenshot of macOS light, macOS dark, and the same window on Windows or Linux
 
 ## Manual Verification Steps
@@ -68,13 +68,13 @@ When marking this spec complete, the implementer must run and report:
 
 ```bash
 # 1. Build clean
-dotnet build src/XrmToolBox.MacOS.slnx -nologo -warnaserror
+dotnet build src/PACdToolbox.slnx -nologo -warnaserror
 # 2. Probe
-src/XrmToolBox.MacOS/bin/Debug/net10.0/XrmToolBox --probe
+src/Shell/bin/Debug/net10.0/XrmToolBox --probe
 # 3. Format check
-dotnet format src/XrmToolBox.MacOS.slnx --verify-no-changes
+dotnet format src/PACdToolbox.slnx --verify-no-changes
 # 4. Launch and confirm visually
-src/XrmToolBox.MacOS/bin/Debug/net10.0/XrmToolBox
+src/Shell/bin/Debug/net10.0/XrmToolBox
 #    → traffic lights present
 #    → sidebar translucent
 #    → SF Pro body font

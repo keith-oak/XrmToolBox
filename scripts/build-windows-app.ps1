@@ -36,9 +36,9 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $RepoRoot   = Split-Path -Parent $PSScriptRoot
-$ShellProj  = Join-Path $RepoRoot 'src\XrmToolBox.MacOS\XrmToolBox.MacOS.csproj'
+$ShellProj  = Join-Path $RepoRoot 'src\Shell\XrmToolBox.MacOS.csproj'
 $DistDir    = Join-Path $RepoRoot 'dist'
-$Slnx       = Join-Path $RepoRoot 'src\XrmToolBox.MacOS.slnx'
+$Slnx       = Join-Path $RepoRoot 'src\PACdToolbox.slnx'
 
 if (-not (Test-Path $ShellProj)) {
     throw "Shell project not found: $ShellProj"

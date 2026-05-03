@@ -9,6 +9,6 @@
   </Folder>
   <Project Path="XrmToolBox.Extensibility.Core/XrmToolBox.Extensibility.Core.csproj" />
   <Project Path="XrmToolBox.Catalog/XrmToolBox.Catalog.csproj" />
-  <Project Path="XrmToolBox.MacOS/XrmToolBox.MacOS.csproj" />
+  <Project Path="Shell/XrmToolBox.MacOS.csproj" />
   <Project Path="XrmToolBox.Catalog.Tests/XrmToolBox.Catalog.Tests.csproj" />
 </Solution>

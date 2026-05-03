@@ -18,7 +18,7 @@ Feed URL: `https://www.xrmtoolbox.com/_odata/plugins`
 
 ## Our shell
 
-The macOS shell (`src/XrmToolBox.MacOS`) is a re-implementation of the upstream `MscrmTools/XrmToolBox` Windows shell. The upstream is **GPL-3.0** (`LICENSE.txt` at repo root). Our derivative work inherits GPL-3.0. All ported plugins above are compatible: GPL-3.0 (Rappen × 3) is identical, MIT (DLaB) is GPL-3 compatible, and the Biznamics catalogue declaration is open source.
+The macOS shell (`src/Shell`) is a re-implementation of the upstream `MscrmTools/XrmToolBox` Windows shell. The upstream is **GPL-3.0** (`LICENSE.txt` at repo root). Our derivative work inherits GPL-3.0. All ported plugins above are compatible: GPL-3.0 (Rappen × 3) is identical, MIT (DLaB) is GPL-3 compatible, and the Biznamics catalogue declaration is open source.
 
 ## Plugin Registration — additional notes
 

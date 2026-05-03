@@ -40,7 +40,7 @@ unimplemented per plugin (the long tail spec 002 specifically reserves for
 follow-up sessions) are documented in the per-plugin reports.
 
 All five compile with `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>`
-under `dotnet build XrmToolBox.MacOS.slnx -c Debug` (0 warnings, 0 errors), and
+under `dotnet build PACdToolbox.slnx -c Debug` (0 warnings, 0 errors), and
 all five are discovered by the shell's MEF `PluginManager` — verified with a
 standalone probe (`/tmp/probe`) that uses the same `AggregateCatalog` +
 `CompositionContainer` the shell uses. Probe output:

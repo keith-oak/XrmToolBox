@@ -128,9 +128,9 @@ Every ported tool will assume "I'm operating against *some* connection — possi
 
 ## Technical Requirements
 
-- [ ] `dotnet build src/XrmToolBox.MacOS.slnx -warnaserror` exits 0
+- [ ] `dotnet build src/PACdToolbox.slnx -warnaserror` exits 0
 - [ ] `XrmToolBox --probe` still passes and lists at least the sample tool
-- [ ] `dotnet format src/XrmToolBox.MacOS.slnx --verify-no-changes` exits 0
+- [ ] `dotnet format src/PACdToolbox.slnx --verify-no-changes` exits 0
 - [ ] `connections.json` round-trips: launch, add a connection, quit, relaunch — connection is restored.
 - [ ] Importer round-trips: feed it a known-good `MscrmTools.ConnectionsList.xml` fixture (committed under `src/Tests/Fixtures/`), expect N connections in M files, no exceptions.
 - [ ] Per-tab connection round-trips: open Sample Tool A on connection X, open Sample Tool B on connection Y, switch session connection to Z, confirm A and B both follow (default reuse), pin A to X explicitly, switch to W, confirm A stayed on X and B moved to W.
@@ -138,8 +138,8 @@ Every ported tool will assume "I'm operating against *some* connection — possi
 ## Manual Verification Steps
 
 ```bash
-dotnet build src/XrmToolBox.MacOS.slnx -nologo -warnaserror
-dotnet run --project src/XrmToolBox.MacOS
+dotnet build src/PACdToolbox.slnx -nologo -warnaserror
+dotnet run --project src/Shell
 
 # 1. With no catalogue, click "Connections" → empty state shows.
 # 2. "Import connections from XrmToolBox" → pick a known XML → see file tree.

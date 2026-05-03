@@ -10,7 +10,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SHELL_PROJ="${REPO_ROOT}/src/XrmToolBox.MacOS"
+SHELL_PROJ="${REPO_ROOT}/src/Shell"
 ICON="${REPO_ROOT}/assets/icon/AppIcon.icns"
 INFO_PLIST_TEMPLATE="${SHELL_PROJ}/Info.plist"
 DIST_DIR="${REPO_ROOT}/dist"
@@ -75,8 +75,8 @@ sed "s/__VERSION__/${VERSION}/g" "${INFO_PLIST_TEMPLATE}" > "${APP}/Contents/Inf
 if [ -d "${PUBLISH_DIR}/Plugins" ]; then
   echo "→ Plugins folder already inside published output"
 else
-  if [ -d "${REPO_ROOT}/src/XrmToolBox.MacOS/bin/Release/net10.0/Plugins" ]; then
-    cp -R "${REPO_ROOT}/src/XrmToolBox.MacOS/bin/Release/net10.0/Plugins" "${APP}/Contents/MacOS/"
+  if [ -d "${REPO_ROOT}/src/Shell/bin/Release/net10.0/Plugins" ]; then
+    cp -R "${REPO_ROOT}/src/Shell/bin/Release/net10.0/Plugins" "${APP}/Contents/MacOS/"
   fi
 fi
 
