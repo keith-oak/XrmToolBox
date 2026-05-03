@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using XrmToolBox.MacOS.Plugins;
 using XrmToolBox.MacOS.ViewModels;
 
@@ -11,6 +10,17 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        ApplyPlatformWindowChrome();
+    }
+
+    private void ApplyPlatformWindowChrome()
+    {
+        if (!OperatingSystem.IsMacOS())
+        {
+            ExtendClientAreaToDecorationsHint = false;
+            ExtendClientAreaTitleBarHeightHint = 0;
+            TransparencyLevelHint = new[] { Avalonia.Controls.WindowTransparencyLevel.None };
+        }
     }
 
     private void OnPluginDoubleTapped(object? sender, TappedEventArgs e)

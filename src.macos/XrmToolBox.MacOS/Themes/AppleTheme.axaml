@@ -1,0 +1,142 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <ResourceDictionary.ThemeDictionaries>
+
+    <!-- LIGHT -->
+    <ResourceDictionary x:Key="Light">
+      <Color x:Key="WindowBackgroundColor">#F5F5F7</Color>
+      <Color x:Key="SidebarBackgroundColor">#FAFAFAF0</Color>
+      <Color x:Key="SurfaceBackgroundColor">#FFFFFF</Color>
+      <Color x:Key="SurfaceElevatedColor">#FFFFFF</Color>
+      <Color x:Key="ToolbarBackgroundColor">#F0F0F2F8</Color>
+      <Color x:Key="StatusBarBackgroundColor">#E8E8EAF0</Color>
+      <Color x:Key="DividerColor">#1F000000</Color>
+      <Color x:Key="HairlineColor">#33000000</Color>
+      <Color x:Key="PrimaryTextColor">#1D1D1F</Color>
+      <Color x:Key="SecondaryTextColor">#86868B</Color>
+      <Color x:Key="TertiaryTextColor">#AEAEB2</Color>
+      <Color x:Key="AccentColor">#0A84FF</Color>
+      <Color x:Key="AccentForegroundColor">#FFFFFF</Color>
+      <Color x:Key="AccentHoverColor">#0071E3</Color>
+      <Color x:Key="AccentPressedColor">#0058B3</Color>
+      <Color x:Key="DestructiveColor">#FF3B30</Color>
+      <Color x:Key="SuccessColor">#34C759</Color>
+      <Color x:Key="WarningColor">#FF9500</Color>
+      <Color x:Key="HoverOverlayColor">#0F000000</Color>
+      <Color x:Key="PressedOverlayColor">#1F000000</Color>
+      <Color x:Key="SelectionBackgroundColor">#0A84FF</Color>
+      <Color x:Key="SelectionForegroundColor">#FFFFFF</Color>
+      <Color x:Key="ControlBorderColor">#1F000000</Color>
+      <Color x:Key="ControlBackgroundColor">#FFFFFF</Color>
+
+      <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}" />
+      <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{DynamicResource SidebarBackgroundColor}" />
+      <SolidColorBrush x:Key="SurfaceBackgroundBrush" Color="{DynamicResource SurfaceBackgroundColor}" />
+      <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="{DynamicResource SurfaceElevatedColor}" />
+      <SolidColorBrush x:Key="ToolbarBackgroundBrush" Color="{DynamicResource ToolbarBackgroundColor}" />
+      <SolidColorBrush x:Key="StatusBarBackgroundBrush" Color="{DynamicResource StatusBarBackgroundColor}" />
+      <SolidColorBrush x:Key="DividerBrush" Color="{DynamicResource DividerColor}" />
+      <SolidColorBrush x:Key="HairlineBrush" Color="{DynamicResource HairlineColor}" />
+      <SolidColorBrush x:Key="PrimaryTextBrush" Color="{DynamicResource PrimaryTextColor}" />
+      <SolidColorBrush x:Key="SecondaryTextBrush" Color="{DynamicResource SecondaryTextColor}" />
+      <SolidColorBrush x:Key="TertiaryTextBrush" Color="{DynamicResource TertiaryTextColor}" />
+      <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}" />
+      <SolidColorBrush x:Key="AccentForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
+      <SolidColorBrush x:Key="AccentHoverBrush" Color="{DynamicResource AccentHoverColor}" />
+      <SolidColorBrush x:Key="AccentPressedBrush" Color="{DynamicResource AccentPressedColor}" />
+      <SolidColorBrush x:Key="DestructiveBrush" Color="{DynamicResource DestructiveColor}" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
+      <SolidColorBrush x:Key="WarningBrush" Color="{DynamicResource WarningColor}" />
+      <SolidColorBrush x:Key="HoverOverlayBrush" Color="{DynamicResource HoverOverlayColor}" />
+      <SolidColorBrush x:Key="PressedOverlayBrush" Color="{DynamicResource PressedOverlayColor}" />
+      <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{DynamicResource SelectionBackgroundColor}" />
+      <SolidColorBrush x:Key="SelectionForegroundBrush" Color="{DynamicResource SelectionForegroundColor}" />
+      <SolidColorBrush x:Key="ControlBorderBrush" Color="{DynamicResource ControlBorderColor}" />
+      <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{DynamicResource ControlBackgroundColor}" />
+    </ResourceDictionary>
+
+    <!-- DARK -->
+    <ResourceDictionary x:Key="Dark">
+      <Color x:Key="WindowBackgroundColor">#1E1E1F</Color>
+      <Color x:Key="SidebarBackgroundColor">#262628E0</Color>
+      <Color x:Key="SurfaceBackgroundColor">#2C2C2E</Color>
+      <Color x:Key="SurfaceElevatedColor">#3A3A3C</Color>
+      <Color x:Key="ToolbarBackgroundColor">#2C2C2EE0</Color>
+      <Color x:Key="StatusBarBackgroundColor">#202022E0</Color>
+      <Color x:Key="DividerColor">#33FFFFFF</Color>
+      <Color x:Key="HairlineColor">#55000000</Color>
+      <Color x:Key="PrimaryTextColor">#F5F5F7</Color>
+      <Color x:Key="SecondaryTextColor">#98989D</Color>
+      <Color x:Key="TertiaryTextColor">#636366</Color>
+      <Color x:Key="AccentColor">#0A84FF</Color>
+      <Color x:Key="AccentForegroundColor">#FFFFFF</Color>
+      <Color x:Key="AccentHoverColor">#409CFF</Color>
+      <Color x:Key="AccentPressedColor">#0058B3</Color>
+      <Color x:Key="DestructiveColor">#FF453A</Color>
+      <Color x:Key="SuccessColor">#30D158</Color>
+      <Color x:Key="WarningColor">#FF9F0A</Color>
+      <Color x:Key="HoverOverlayColor">#1FFFFFFF</Color>
+      <Color x:Key="PressedOverlayColor">#33FFFFFF</Color>
+      <Color x:Key="SelectionBackgroundColor">#0A84FF</Color>
+      <Color x:Key="SelectionForegroundColor">#FFFFFF</Color>
+      <Color x:Key="ControlBorderColor">#33FFFFFF</Color>
+      <Color x:Key="ControlBackgroundColor">#3A3A3C</Color>
+
+      <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{DynamicResource WindowBackgroundColor}" />
+      <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="{DynamicResource SidebarBackgroundColor}" />
+      <SolidColorBrush x:Key="SurfaceBackgroundBrush" Color="{DynamicResource SurfaceBackgroundColor}" />
+      <SolidColorBrush x:Key="SurfaceElevatedBrush" Color="{DynamicResource SurfaceElevatedColor}" />
+      <SolidColorBrush x:Key="ToolbarBackgroundBrush" Color="{DynamicResource ToolbarBackgroundColor}" />
+      <SolidColorBrush x:Key="StatusBarBackgroundBrush" Color="{DynamicResource StatusBarBackgroundColor}" />
+      <SolidColorBrush x:Key="DividerBrush" Color="{DynamicResource DividerColor}" />
+      <SolidColorBrush x:Key="HairlineBrush" Color="{DynamicResource HairlineColor}" />
+      <SolidColorBrush x:Key="PrimaryTextBrush" Color="{DynamicResource PrimaryTextColor}" />
+      <SolidColorBrush x:Key="SecondaryTextBrush" Color="{DynamicResource SecondaryTextColor}" />
+      <SolidColorBrush x:Key="TertiaryTextBrush" Color="{DynamicResource TertiaryTextColor}" />
+      <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}" />
+      <SolidColorBrush x:Key="AccentForegroundBrush" Color="{DynamicResource AccentForegroundColor}" />
+      <SolidColorBrush x:Key="AccentHoverBrush" Color="{DynamicResource AccentHoverColor}" />
+      <SolidColorBrush x:Key="AccentPressedBrush" Color="{DynamicResource AccentPressedColor}" />
+      <SolidColorBrush x:Key="DestructiveBrush" Color="{DynamicResource DestructiveColor}" />
+      <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
+      <SolidColorBrush x:Key="WarningBrush" Color="{DynamicResource WarningColor}" />
+      <SolidColorBrush x:Key="HoverOverlayBrush" Color="{DynamicResource HoverOverlayColor}" />
+      <SolidColorBrush x:Key="PressedOverlayBrush" Color="{DynamicResource PressedOverlayColor}" />
+      <SolidColorBrush x:Key="SelectionBackgroundBrush" Color="{DynamicResource SelectionBackgroundColor}" />
+      <SolidColorBrush x:Key="SelectionForegroundBrush" Color="{DynamicResource SelectionForegroundColor}" />
+      <SolidColorBrush x:Key="ControlBorderBrush" Color="{DynamicResource ControlBorderColor}" />
+      <SolidColorBrush x:Key="ControlBackgroundBrush" Color="{DynamicResource ControlBackgroundColor}" />
+    </ResourceDictionary>
+
+  </ResourceDictionary.ThemeDictionaries>
+
+  <!-- Typography -->
+  <FontFamily x:Key="SystemFontFamily">avares://Avalonia.Fonts.Inter/Assets#Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif</FontFamily>
+
+  <x:Double x:Key="FontSizeWindowTitle">17</x:Double>
+  <x:Double x:Key="FontSizeLargeTitle">26</x:Double>
+  <x:Double x:Key="FontSizeTitle1">20</x:Double>
+  <x:Double x:Key="FontSizeTitle2">17</x:Double>
+  <x:Double x:Key="FontSizeBody">13</x:Double>
+  <x:Double x:Key="FontSizeCallout">12</x:Double>
+  <x:Double x:Key="FontSizeFootnote">11</x:Double>
+  <x:Double x:Key="FontSizeCaption">10</x:Double>
+
+  <!-- Geometry -->
+  <CornerRadius x:Key="CornerRadiusControl">6</CornerRadius>
+  <CornerRadius x:Key="CornerRadiusCard">10</CornerRadius>
+  <CornerRadius x:Key="CornerRadiusWindow">12</CornerRadius>
+  <Thickness x:Key="ControlPadding">10,5</Thickness>
+  <Thickness x:Key="CardPadding">12,10</Thickness>
+  <Thickness x:Key="SidebarItemMargin">8,2</Thickness>
+  <Thickness x:Key="SidebarItemPadding">10,8</Thickness>
+
+  <!-- Spacing tokens -->
+  <x:Double x:Key="SpacingXs">4</x:Double>
+  <x:Double x:Key="SpacingSm">8</x:Double>
+  <x:Double x:Key="SpacingMd">12</x:Double>
+  <x:Double x:Key="SpacingLg">16</x:Double>
+  <x:Double x:Key="SpacingXl">24</x:Double>
+
+</ResourceDictionary>

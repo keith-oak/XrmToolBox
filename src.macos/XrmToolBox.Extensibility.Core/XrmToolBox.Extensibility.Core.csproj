@@ -8,6 +8,8 @@
     <AssemblyName>XrmToolBox.Extensibility.Core</AssemblyName>
     <Version>2.0.0</Version>
     <Description>Cross-platform XrmToolBox plugin SDK contracts. UI-agnostic.</Description>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU1903</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

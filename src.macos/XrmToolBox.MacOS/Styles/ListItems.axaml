@@ -1,0 +1,113 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- macOS-style sidebar list -->
+  <Style Selector="ListBox.sidebar">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="4,4" />
+  </Style>
+
+  <Style Selector="ListBox.sidebar ListBoxItem">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="Padding" Value="{DynamicResource SidebarItemPadding}" />
+    <Setter Property="Margin" Value="{DynamicResource SidebarItemMargin}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+    <Setter Property="MinHeight" Value="0" />
+  </Style>
+
+  <Style Selector="ListBox.sidebar ListBoxItem:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+  </Style>
+
+  <Style Selector="ListBox.sidebar ListBoxItem:selected /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SelectionBackgroundBrush}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
+  </Style>
+
+  <Style Selector="ListBox.sidebar ListBoxItem:selected:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource SelectionBackgroundBrush}" />
+  </Style>
+
+  <Style Selector="ListBox.sidebar ListBoxItem:selected TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
+  </Style>
+
+  <!-- Tab strip: underline-style, not Fluent pill -->
+  <Style Selector="TabControl.macos">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0,0,0,2" />
+    <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="Padding" Value="14,8" />
+    <Setter Property="MinHeight" Value="0" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+    <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem:pointerover">
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem:selected">
+    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+  </Style>
+
+  <!-- Toolbar -->
+  <Style Selector="Border.toolbar">
+    <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="0,0,0,1" />
+  </Style>
+
+  <!-- Status bar -->
+  <Style Selector="Border.statusbar">
+    <Setter Property="Background" Value="{DynamicResource StatusBarBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="0,1,0,0" />
+    <Setter Property="Padding" Value="12,3" />
+    <Setter Property="Height" Value="22" />
+  </Style>
+
+  <!-- Sidebar surface -->
+  <Style Selector="Border.sidebar">
+    <Setter Property="Background" Value="{DynamicResource SidebarBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="0,0,1,0" />
+  </Style>
+
+  <!-- Card surface -->
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="{DynamicResource SurfaceBackgroundBrush}" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusCard}" />
+    <Setter Property="Padding" Value="{DynamicResource CardPadding}" />
+  </Style>
+
+  <!-- TextBox -->
+  <Style Selector="TextBox">
+    <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrush}" />
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
+    <Setter Property="Padding" Value="8,5" />
+    <Setter Property="MinHeight" Value="28" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+    <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
+  </Style>
+
+  <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    <Setter Property="BorderThickness" Value="2" />
+  </Style>
+
+</Styles>

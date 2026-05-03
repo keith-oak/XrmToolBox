@@ -7,33 +7,47 @@
         mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="720"
         x:Class="XrmToolBox.MacOS.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="XrmToolBox for macOS"
+        Title="XrmToolBox"
         Width="1100" Height="720"
-        MinWidth="900" MinHeight="600">
+        MinWidth="900" MinHeight="600"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        TransparencyLevelHint="AcrylicBlur,Mica,Blur"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaChromeHints="PreferSystemChrome">
 
   <Grid RowDefinitions="Auto,*,Auto">
 
-    <Border Grid.Row="0" Background="{DynamicResource SystemAltMediumColor}" Padding="12,8">
-      <StackPanel Orientation="Horizontal" Spacing="8">
-        <TextBlock Text="Dataverse URL:" VerticalAlignment="Center" />
+    <!-- Toolbar — extends under the traffic lights on macOS -->
+    <Border Grid.Row="0" Classes="toolbar" Padding="80,8,12,8">
+      <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}" VerticalAlignment="Center">
+        <TextBlock Text="Dataverse" Classes="footnote secondary" VerticalAlignment="Center" />
         <TextBox Text="{Binding DataverseUrl}" Width="380" />
-        <Button Content="Connect" Command="{Binding ConnectCommand}" />
-        <TextBlock Text="{Binding ConnectionStatus}" VerticalAlignment="Center" Margin="12,0,0,0" Foreground="{DynamicResource SystemAccentColor}" />
+        <Button Content="Connect" Command="{Binding ConnectCommand}" Classes="primary" />
+        <TextBlock Text="{Binding ConnectionStatus}" Classes="footnote" VerticalAlignment="Center" Margin="12,0,0,0" />
       </StackPanel>
     </Border>
 
-    <Grid Grid.Row="1" ColumnDefinitions="280,*">
+    <!-- Body: sidebar + tab host -->
+    <Grid Grid.Row="1" ColumnDefinitions="260,1,*">
 
-      <Border Grid.Column="0" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="0,0,1,0">
+      <Border Grid.Column="0" Classes="sidebar" BorderThickness="0">
         <DockPanel>
-          <TextBlock DockPanel.Dock="Top" Text="Available tools" FontWeight="SemiBold" Padding="12,8" />
-          <ListBox ItemsSource="{Binding AvailablePlugins}"
+          <TextBlock DockPanel.Dock="Top"
+                     Text="Tools"
+                     Classes="footnote secondary"
+                     Padding="16,12,16,4" />
+          <ListBox Classes="sidebar"
+                   ItemsSource="{Binding AvailablePlugins}"
                    DoubleTapped="OnPluginDoubleTapped">
             <ListBox.ItemTemplate>
               <DataTemplate DataType="plg:PluginEntry">
-                <StackPanel Margin="4">
+                <StackPanel Spacing="{DynamicResource SpacingXs}">
                   <TextBlock Text="{Binding Metadata.Name}" FontWeight="SemiBold" />
-                  <TextBlock Text="{Binding Metadata.Description}" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" TextWrapping="Wrap" FontSize="11" />
+                  <TextBlock Text="{Binding Metadata.Description}"
+                             Classes="footnote"
+                             TextWrapping="Wrap"
+                             MaxLines="2" />
                 </StackPanel>
               </DataTemplate>
             </ListBox.ItemTemplate>
@@ -41,14 +55,22 @@
         </DockPanel>
       </Border>
 
-      <TabControl Grid.Column="1"
+      <GridSplitter Grid.Column="1"
+                    Background="{DynamicResource HairlineBrush}"
+                    Width="1"
+                    ResizeDirection="Columns" />
+
+      <TabControl Grid.Column="2"
+                  Classes="macos"
+                  Margin="12,8,12,8"
                   ItemsSource="{Binding OpenedPlugins}"
                   SelectedItem="{Binding ActivePlugin}">
         <TabControl.ItemTemplate>
           <DataTemplate DataType="vm:OpenedPluginViewModel">
-            <StackPanel Orientation="Horizontal" Spacing="6">
+            <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
               <TextBlock Text="{Binding Title}" />
-              <Button Content="✕" Padding="4,0" FontSize="10"
+              <Button Content="✕"
+                      Classes="tab-close"
                       Command="{Binding $parent[TabControl].((vm:MainWindowViewModel)DataContext).CloseTabCommand}"
                       CommandParameter="{Binding}" />
             </StackPanel>
@@ -56,15 +78,24 @@
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>
           <DataTemplate DataType="vm:OpenedPluginViewModel">
-            <ContentControl Content="{Binding View}" />
+            <Border Classes="card" Background="{DynamicResource SurfaceBackgroundBrush}">
+              <ContentControl Content="{Binding View}" />
+            </Border>
           </DataTemplate>
         </TabControl.ContentTemplate>
       </TabControl>
 
     </Grid>
 
-    <Border Grid.Row="2" Background="{DynamicResource SystemAltMediumColor}" Padding="12,4">
-      <TextBlock Text="XrmToolBox for macOS — native Avalonia build" FontSize="11" />
+    <!-- Status bar -->
+    <Border Grid.Row="2" Classes="statusbar">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Grid.Column="0" Classes="caption mono" VerticalAlignment="Center">
+          XrmToolBox · native build
+        </TextBlock>
+        <TextBlock Grid.Column="1" Classes="caption secondary mono" VerticalAlignment="Center"
+                   Text="{Binding OpenedPlugins.Count, StringFormat='{}{0} tab(s) open'}" />
+      </Grid>
     </Border>
 
   </Grid>

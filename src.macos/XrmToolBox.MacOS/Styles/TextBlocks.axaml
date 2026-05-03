@@ -1,0 +1,67 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Style Selector="TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="FontFamily" Value="{DynamicResource SystemFontFamily}" />
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+  </Style>
+
+  <Style Selector="TextBlock.large-title">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeLargeTitle}" />
+    <Setter Property="FontWeight" Value="Bold" />
+  </Style>
+
+  <Style Selector="TextBlock.title-1">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeTitle1}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="TextBlock.title-2">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeTitle2}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="TextBlock.body">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
+  </Style>
+
+  <Style Selector="TextBlock.callout">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeCallout}" />
+  </Style>
+
+  <Style Selector="TextBlock.footnote">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeFootnote}" />
+    <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.caption">
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeCaption}" />
+    <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.secondary">
+    <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.accent">
+    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.success">
+    <Setter Property="Foreground" Value="{DynamicResource SuccessBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.warning">
+    <Setter Property="Foreground" Value="{DynamicResource WarningBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.destructive">
+    <Setter Property="Foreground" Value="{DynamicResource DestructiveBrush}" />
+  </Style>
+
+  <Style Selector="TextBlock.mono">
+    <Setter Property="FontFamily" Value="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace" />
+  </Style>
+
+</Styles>
