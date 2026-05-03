@@ -203,4 +203,28 @@
     <Setter Property="SelectionForegroundBrush" Value="{DynamicResource SelectionForegroundBrush}" />
   </Style>
 
+  <!-- TreeView: hide the default selection-tick glyph that Fluent renders inside
+       TreeViewItem when the item is selected. We render our own checkmarks for
+       in-fetch state in FXB, and we don't want a phantom tick on the entity row. -->
+  <Style Selector="TreeViewItem /template/ Path#PART_CheckMark">
+    <Setter Property="IsVisible" Value="False" />
+  </Style>
+
+  <!-- Tighten the gap between the chevron expander and the row content. Avalonia's
+       Fluent default leaves ~16px after the chevron; we want the row content to
+       sit immediately after it. -->
+  <Style Selector="TreeViewItem">
+    <Setter Property="Padding" Value="0,2" />
+  </Style>
+  <Style Selector="TreeViewItem /template/ ContentPresenter#PART_HeaderPresenter">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="0" />
+  </Style>
+  <Style Selector="TreeViewItem /template/ ToggleButton#PART_ExpandCollapseChevron">
+    <Setter Property="Margin" Value="0" />
+    <Setter Property="Padding" Value="0" />
+    <Setter Property="MinWidth" Value="16" />
+    <Setter Property="Width" Value="16" />
+  </Style>
+
 </Styles>

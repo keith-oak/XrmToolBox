@@ -1,0 +1,34 @@
+{
+    "odata.metadata": "https://www.xrmtoolbox.com/_odata/$metadata#plugins",
+    "value": [
+        {
+            "mctools_pluginid": "33fb570e-8c77-e711-9401-00155d522633",
+            "mctools_name": "FetchXML Builder",
+            "mctools_version": "1.2025.12.1",
+            "mctools_description": "Build queries for Microsoft Dataverse and the Power Platform. Let AI fix what you can't. Investigate data. Fix the layouts. Get code. Let AI fix what you can't. Empower yourself to achieve more.\n\nRead more: https://fetchxmlbuilder.com/\n\nFetchXML Builder is used to create and execute queries against Microsoft Dataverse / Power Apps / Dynamics 365.\nWhat you don't know about Dataverse this morning, you'll know this afternoon.\nIf you can't solve it, ask in the integrated AI Chat.\n\nThe tool will assist in three major areas:\n\n1. Constructing queries, including more advanced features like:\n- aggregates\n- outer joins\n- complex \"not-in\"-queries\n- attributes from multi-level linked entities\n- update existing views with altered queries\n\n2. Querying CDS/CRM for information not (easily) found in the UI\n- system / internal entities\n- attributes hidden in CRM UI\n- join on other fields than relationships\n\n3. Developer assistance generating code for\n- C# QueryExpression code\n- WebAPI / OData query string\n- Power Automate List Records\n- SQL, JavaScript and C# stubs\n- Easy to use UI to compose queries for reports in CRM\n\nThe tool reads metadata from Microsoft Dataverse and Dynamics 365 / CRM to assist with selecting entities, attributes, relations and to perform validation of condition values.\n\nTo make it even more appealing, there is also the possibility to have it show \"Friendly names\", which will replace the technical names of entities and attributes with their display names in the users' currently selected language, much like Advanced Find does.",
+            "mctools_authors": "Jonas Rapp",
+            "mctools_categorieslist": "Troubleshooting,Data,Customizations,Development,Reporting,Configuration",
+            "mctools_averagedownloadcount": "16296.5700000000",
+            "mctools_totaldownloadcount": 1026684,
+            "mctools_averagefeedbackratingallversions": "4.9400000000",
+            "mctools_downloadurl": "https://api.nuget.org/v3-flatcontainer/cinteros.xrm.fetchxmlbuilder/1.2025.12.1/cinteros.xrm.fetchxmlbuilder.1.2025.12.1.nupkg",
+            "mctools_files": "Cinteros.Xrm.FetchXMLBuilder.nuspec\r\nlib/net472/Plugins/Rappen.XTB.FXB.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Anthropic.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Azure.AI.OpenAI.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Azure.Core.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/CSharpToJsonSchema.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Microsoft.Extensions.AI.Abstractions.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Microsoft.Extensions.AI.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Microsoft.Extensions.AI.OpenAI.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/Microsoft.Extensions.Logging.Abstractions.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/OpenAI.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/System.ClientModel.dll\r\nlib/net472/Plugins/Rappen.XTB.FXB/System.Memory.Data.dll\r\n.signature.p7s\r\n",
+            "mctools_firstreleasedate": "2016-04-28T15:16:08",
+            "mctools_isopensource": true,
+            "mctools_latestreleasedate": "2025-12-14T19:09:12",
+            "mctools_logourl": "https://api.nuget.org/v3-flatcontainer/cinteros.xrm.fetchxmlbuilder/1.2025.12.1/icon",
+            "mctools_nugetid": "Cinteros.Xrm.FetchXmlBuilder",
+            "mctools_projecturl": "https://fetchxmlbuilder.com/",
+            "mctools_xrmtoolboxversiondependency": "1.2025.10.74",
+            "mctools_latestreleasenote": "TEASERS:\nAutogenerate alias - Your own Microsoft Foundry - Markdown - App Notifications - Excel with links - No self-closing - Reasoning effort - Send by enter - AI Chat history - Sorting related table - plus a bunch of fixes and improvements!\n\nRequest from TARS: 'Humor percent' was unfortunately denied for this release.\n\nRead everything here: https://fetchxmlbuilder.com/releases/1-2025-12/\n\nNOTE: \nThis version of FetchXML Builder needs to have XrmToolBox in version 1.2025.10.* or later!",
+            "mctools_latestversionid": "{53162ba7-21d9-f011-8544-7c1e5276d51c}",
+            "mctools_totalfeedbackallversion": 56,
+            "mctools_licenseurl": null,
+            "mctools_requirelicenseacceptance": false,
+            "contact-mctools_ismvp": true,
+            "list-id": "d74c12eb-4571-e711-8132-e0071b6502a1",
+            "view-id": "d3f89d61-de72-e711-810c-5065f38b03b1",
+            "entity-permissions-enabled": "true"
+        }
+    ]
+}

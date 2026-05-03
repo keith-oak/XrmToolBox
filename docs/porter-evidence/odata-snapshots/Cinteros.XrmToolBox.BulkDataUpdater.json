@@ -1,0 +1,34 @@
+{
+    "odata.metadata": "https://www.xrmtoolbox.com/_odata/$metadata#plugins",
+    "value": [
+        {
+            "mctools_pluginid": "63a7485d-8c77-e711-9401-00155d522633",
+            "mctools_name": "Bulk Data Updater",
+            "mctools_version": "1.2025.8.1",
+            "mctools_description": "BDU can update one or multiple columns, for one or a gazillion records in Microsoft Dataverse!\nEmpower yourself to achieve more.\nThis tool is useful to trigger Microsoft Automate, workflows or plugins, as well as bulk updating any number of records with fixed och calculated values.\nIt can also delete, assign, and set state of records by the filter specified.\nUpdating values can also be Calculated by \"XRM Tokens\" and using the Microsoft Power Fx!\n\nRead more: https://jonasr.app/BDU and https://jonasr.app/xrm-tokens/",
+            "mctools_authors": "Jonas Rapp",
+            "mctools_categorieslist": "Data,Migration",
+            "mctools_averagedownloadcount": "12831.6400000000",
+            "mctools_totaldownloadcount": 423444,
+            "mctools_averagefeedbackratingallversions": "4.5500000000",
+            "mctools_downloadurl": "https://api.nuget.org/v3-flatcontainer/cinteros.xrmtoolbox.bulkdataupdater/1.2025.8.1/cinteros.xrmtoolbox.bulkdataupdater.1.2025.8.1.nupkg",
+            "mctools_files": "Cinteros.XrmToolBox.BulkDataUpdater.nuspec\r\nlib/net472/Plugins/Rappen.XTB.BDU.dll\r\nlib/net472/Plugins/Rappen.XTB.BDU/Microsoft.PowerFx.Core.dll\r\nlib/net472/Plugins/Rappen.XTB.BDU/Microsoft.PowerFx.Interpreter.dll\r\nlib/net472/Plugins/Rappen.XTB.BDU/Microsoft.PowerFx.Transport.Attributes.dll\r\nlib/net472/Plugins/Rappen.XTB.BDU/en-US/Microsoft.PowerFx.Core.resources.dll\r\nlib/net472/Plugins/Rappen.XTB.BDU/System.Collections.Immutable.dll\r\n.signature.p7s",
+            "mctools_firstreleasedate": "2016-06-16T10:14:46",
+            "mctools_isopensource": true,
+            "mctools_latestreleasedate": "2025-08-14T07:28:00",
+            "mctools_logourl": "https://raw.githubusercontent.com/rappen/BulkDataUpdater/master/images/BDU-150-tsp.png",
+            "mctools_nugetid": "Cinteros.XrmToolBox.BulkDataUpdater",
+            "mctools_projecturl": "https://jonasr.app/BDU/",
+            "mctools_xrmtoolboxversiondependency": "1.2025.7.71",
+            "mctools_latestreleasenote": "See latest release notes, and all history:\nhttps://jonasr.app/bdu/releases/#1.2025.08.001",
+            "mctools_latestversionid": "{c4b94ed8-e078-f011-b4cc-7c1e52214c74}",
+            "mctools_totalfeedbackallversion": 15,
+            "mctools_licenseurl": null,
+            "mctools_requirelicenseacceptance": false,
+            "contact-mctools_ismvp": true,
+            "list-id": "d74c12eb-4571-e711-8132-e0071b6502a1",
+            "view-id": "d3f89d61-de72-e711-810c-5065f38b03b1",
+            "entity-permissions-enabled": "true"
+        }
+    ]
+}

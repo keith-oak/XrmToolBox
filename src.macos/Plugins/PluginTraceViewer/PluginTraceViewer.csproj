@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Cinteros.XTB.PluginTraceViewer</RootNamespace>
+    <AssemblyName>Cinteros.XTB.PluginTraceViewer</AssemblyName>
+    <Version>1.0.0</Version>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);NU1903;CS1591;CS0067</NoWarn>
+    <Description>Plugin Trace Viewer — auto-ported from rappen/XrmToolBox.PluginTraceViewer@e6eda110. See PORT_REPORT.md.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.2.3" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\XrmToolBox.Extensibility.Core\XrmToolBox.Extensibility.Core.csproj">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="CopyToShellPlugins" AfterTargets="Build">
+    <PropertyGroup>
+      <ShellPluginsDir>$(MSBuildThisFileDirectory)..\..\XrmToolBox.MacOS\bin\$(Configuration)\$(TargetFramework)\Plugins\PluginTraceViewer\</ShellPluginsDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <_PluginArtifact Include="$(TargetDir)$(AssemblyName).dll" />
+      <_PluginArtifact Include="$(TargetDir)$(AssemblyName).pdb" Condition="Exists('$(TargetDir)$(AssemblyName).pdb')" />
+    </ItemGroup>
+    <MakeDir Directories="$(ShellPluginsDir)" />
+    <Copy SourceFiles="@(_PluginArtifact)" DestinationFolder="$(ShellPluginsDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

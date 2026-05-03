@@ -274,16 +274,14 @@
                     <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                       <TextBlock Text="{Binding Title}" />
                       <Border Classes="conn-chip"
-                              IsVisible="{Binding HasConnection}"
                               Background="{DynamicResource AccentSoftBrush}"
                               CornerRadius="6"
                               Padding="6,2"
                               VerticalAlignment="Center">
                         <TextBlock Text="{Binding ConnectionLabel}"
                                    FontSize="11"
-                                   Classes="footnote secondary"
-                                   TextTrimming="CharacterEllipsis"
-                                   MaxWidth="160" />
+                                   TextWrapping="NoWrap"
+                                   Classes="footnote secondary" />
                       </Border>
                       <Border Classes="conn-chip pinned"
                               IsVisible="{Binding IsConnectionPinned}"

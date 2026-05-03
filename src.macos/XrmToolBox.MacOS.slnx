@@ -1,7 +1,14 @@
 <Solution>
   <Folder Name="/Plugins/">
     <Project Path="Plugins/SampleTool/SampleTool.csproj" />
+    <Project Path="Plugins/BulkDataUpdater/BulkDataUpdater.csproj" />
+    <Project Path="Plugins/PluginTraceViewer/PluginTraceViewer.csproj" />
+    <Project Path="Plugins/FetchXmlBuilder/FetchXmlBuilder.csproj" />
+    <Project Path="Plugins/PluginRegistration/PluginRegistration.csproj" />
+    <Project Path="Plugins/EarlyBoundGenerator/EarlyBoundGenerator.csproj" />
   </Folder>
   <Project Path="XrmToolBox.Extensibility.Core/XrmToolBox.Extensibility.Core.csproj" />
+  <Project Path="XrmToolBox.Catalog/XrmToolBox.Catalog.csproj" />
   <Project Path="XrmToolBox.MacOS/XrmToolBox.MacOS.csproj" />
+  <Project Path="XrmToolBox.Catalog.Tests/XrmToolBox.Catalog.Tests.csproj" />
 </Solution>

@@ -1,0 +1,34 @@
+{
+    "odata.metadata": "https://www.xrmtoolbox.com/_odata/$metadata#plugins",
+    "value": [
+        {
+            "mctools_pluginid": "bb1cdb06-d945-e711-9400-00155d522475",
+            "mctools_name": "Plugin Trace Viewer",
+            "mctools_version": "1.2026.1.1",
+            "mctools_description": "Investigate the Plugin Trace Log and finding records with easy filtering and display possibilities",
+            "mctools_authors": "Jonas Rapp",
+            "mctools_categorieslist": "Troubleshooting,Development,Plugins",
+            "mctools_averagedownloadcount": "14495.8800000000",
+            "mctools_totaldownloadcount": 608827,
+            "mctools_averagefeedbackratingallversions": "5.0000000000",
+            "mctools_downloadurl": "https://api.nuget.org/v3-flatcontainer/cinteros.xrmtoolbox.plugintraceviewer/1.2026.1.1/cinteros.xrmtoolbox.plugintraceviewer.1.2026.1.1.nupkg",
+            "mctools_files": "Cinteros.XrmToolBox.PluginTraceViewer.nuspec\r\nlib/net48/Plugins/Rappen.XTB.PTV.dll\r\n.signature.p7s\r\n",
+            "mctools_firstreleasedate": "2016-06-16T14:37:18",
+            "mctools_isopensource": true,
+            "mctools_latestreleasedate": "2026-01-01T16:42:38",
+            "mctools_logourl": "https://api.nuget.org/v3-flatcontainer/cinteros.xrmtoolbox.plugintraceviewer/1.2026.1.1/icon",
+            "mctools_nugetid": "Cinteros.XrmToolBox.PluginTraceViewer",
+            "mctools_projecturl": "https://jonasr.app/PTV",
+            "mctools_xrmtoolboxversiondependency": "1.2025.10.74",
+            "mctools_latestreleasenote": "Export to Excel functionality added!\n  - Either includes all visible columns or everything, also with Trace Details and Exception details.\n\nFiltering on-the-fly\n  - Open filtering text box with CTRL+SHIFT+F\n  - Now also has the Match Cases option\n  - Minor bug fixes\n\nPossible to call PTV from other tools and filter automatically by Message.\nThanks @drivardxrm for your PR!\n\nUsing Windows App Notifications (Toasts) to let you know when new traces are added and informing you how to support my tool for the creator, still maintaining and improving this tool after 10 years, new, less intrusive!\n\nRead the latest release notes!\nhttps://jonasr.app/ptv/releases/#1.2026.01.001",
+            "mctools_latestversionid": "{36fa01de-31e7-f011-8544-7c1e5276d51c}",
+            "mctools_totalfeedbackallversion": 10,
+            "mctools_licenseurl": null,
+            "mctools_requirelicenseacceptance": false,
+            "contact-mctools_ismvp": true,
+            "list-id": "d74c12eb-4571-e711-8132-e0071b6502a1",
+            "view-id": "d3f89d61-de72-e711-810c-5065f38b03b1",
+            "entity-permissions-enabled": "true"
+        }
+    ]
+}
