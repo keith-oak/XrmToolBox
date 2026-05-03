@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-XrmToolBox is a Windows Forms (.NET Framework) host application for tools that connect to the Microsoft Common Data Service for Apps / Dataverse / Dynamics 365 CE. It is fundamentally a **plugin host** — the shell discovers and loads third-party tools at runtime via MEF (Managed Extensibility Framework). The fork at `MscrmTools/XrmToolBox` is the canonical upstream; recent merges in git history come from there.
+This repository is a fork of `MscrmTools/XrmToolBox` that is being developed into **PAC'd Toolbox** — a modern, cross-platform (macOS / Linux / Windows) reimagining of XrmToolBox built on Avalonia 11 + .NET 10. Two coexisting trees:
+
+- **Upstream (untouched, for reference + future merges):** repo root — `XrmToolBox/`, `XrmToolBox.Extensibility/`, `XrmToolBox.AutoUpdater/`, `XrmToolBox.PluginsStore/`, `XrmToolBox.ToolLibrary/`, `Plugins/MsCrmTools.SampleTool/`. WinForms, .NET Framework 4.8, Windows-only.
+- **PAC'd Toolbox (active development):** `src/` — Avalonia 11 + .NET 10. Cross-platform shell (`src/Shell/`), plugin SDK (`src/XrmToolBox.Extensibility.Core/`), OData catalogue client (`src/XrmToolBox.Catalog/`), 5 ported community plugins under `src/Plugins/`, solution `src/PACdToolbox.slnx`.
+
+XrmToolBox is fundamentally a **plugin host** — the shell discovers and loads third-party tools at runtime via MEF (Managed Extensibility Framework). PAC'd Toolbox preserves the `XrmToolBox.*` namespaces, assembly identities and MEF metadata contracts so the SDK surface stays familiar to plugin authors.
 
 ## Build & Run
 

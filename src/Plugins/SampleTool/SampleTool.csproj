@@ -25,7 +25,7 @@
 
   <Target Name="CopyToShellPlugins" AfterTargets="Build">
     <PropertyGroup>
-      <ShellPluginsDir>$(MSBuildThisFileDirectory)..\..\XrmToolBox.MacOS\bin\$(Configuration)\$(TargetFramework)\Plugins\SampleTool\</ShellPluginsDir>
+      <ShellPluginsDir>$(MSBuildThisFileDirectory)..\..\Shell\bin\$(Configuration)\$(TargetFramework)\Plugins\SampleTool\</ShellPluginsDir>
     </PropertyGroup>
     <ItemGroup>
       <_PluginArtifact Include="$(TargetDir)$(AssemblyName).dll" />

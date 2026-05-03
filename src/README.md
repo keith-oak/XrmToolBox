@@ -1,16 +1,23 @@
-# PAC'd Toolbox — native macOS build
+# PAC'd Toolbox
 
-Native macOS port of XrmToolBox, rebranded as **PAC'd Toolbox**. Cross-platform (macOS / Linux / Windows) shell built on [Avalonia](https://avaloniaui.net/) targeting .NET 10. Replaces the Windows-only WinForms shell with a modern, Apple HIG-aligned UI.
+A modern reimagining of [XrmToolBox](https://www.xrmtoolbox.com/), branded as **PAC'd Toolbox** ("PAC" for **P**ower **A**pps / Power Platform CLI). Cross-platform (macOS / Linux / Windows) shell built on [Avalonia](https://avaloniaui.net/) and .NET 10, designed to host the existing XrmToolBox plugin ecosystem on platforms beyond Windows.
+
+We deliberately preserve the `XrmToolBox.*` namespaces, assembly names, and MEF metadata contracts so plugins built for the upstream Windows shell can be ported (or eventually loaded directly) without breaking the SDK surface.
+
+## Why
+
+The upstream `MscrmTools/XrmToolBox` is a brilliant Windows tool — but it's WinForms + .NET Framework 4.8, Windows-only. Power Platform consultants increasingly work on macOS and Linux. PAC'd Toolbox aims to bring the same plugin host model to those platforms, with a modern UI (Apple HIG on macOS, native styling elsewhere) while keeping the plugin contract familiar.
 
 ## Layout
 
 | Project | Purpose |
 | --- | --- |
 | `XrmToolBox.Extensibility.Core` | UI-agnostic plugin SDK contracts (`IXrmToolBoxPlugin`, `IXrmToolBoxPluginControl`, `PluginBase`, `ConnectionDetail`, `IPluginMetadata`, …) |
-| `XrmToolBox.MacOS` | Avalonia shell — branded UI, MSAL/Keychain auth, MEF plugin discovery, tabbed tool host |
+| `Shell` | Avalonia shell project (`XrmToolBox.MacOS.csproj` retained for SDK compat) — branded UI, MSAL/Keychain auth, MEF plugin discovery, tabbed tool host |
+| `XrmToolBox.Catalog` | OData catalogue client — fetches the official plugin catalogue at `https://www.xrmtoolbox.com/_odata/plugins`, caches it, supports search/filter/sort |
+| `XrmToolBox.Catalog.Tests` | xunit tests covering catalogue parse + query behaviour |
 | `Plugins/SampleTool` | Reference tool demonstrating the cross-platform plugin pattern |
-
-The legacy Windows WinForms shell at the repository root is kept untouched; this directory is the parallel native build.
+| `Plugins/{BulkDataUpdater,PluginTraceViewer,FetchXmlBuilder,PluginRegistration,EarlyBoundGenerator}` | Manually ported community plugins — see [`docs/porter-evidence/`](../docs/porter-evidence/) |
 
 ## Build & run
 
@@ -88,7 +95,7 @@ Connection details (URL, friendly name, auth mode) are persisted to `~/Library/A
 - **Geometry**: 8px controls, 12px cards
 - **Both Light and Dark variants** wired through `AppleTheme.axaml`
 
-See [`Themes/AppleTheme.axaml`](XrmToolBox.MacOS/Themes/AppleTheme.axaml) for the full palette + tokens.
+See [`Shell/Themes/AppleTheme.axaml`](Shell/Themes/AppleTheme.axaml) for the full palette + tokens.
 
 ## Specs
 

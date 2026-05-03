@@ -26,7 +26,7 @@
 
   <Target Name="CopyToShellPlugins" AfterTargets="Build">
     <PropertyGroup>
-      <ShellPluginsDir>$(MSBuildThisFileDirectory)..\..\XrmToolBox.MacOS\bin\$(Configuration)\$(TargetFramework)\Plugins\PluginTraceViewer\</ShellPluginsDir>
+      <ShellPluginsDir>$(MSBuildThisFileDirectory)..\..\Shell\bin\$(Configuration)\$(TargetFramework)\Plugins\PluginTraceViewer\</ShellPluginsDir>
     </PropertyGroup>
     <ItemGroup>
       <_PluginArtifact Include="$(TargetDir)$(AssemblyName).dll" />

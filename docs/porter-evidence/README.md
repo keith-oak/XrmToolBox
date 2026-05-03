@@ -1,4 +1,4 @@
-# Porter evidence — manual port of the top-5 OSS XrmToolBox plugins
+# Porter evidence — manual port of the top-5 OSS XrmToolBox plugins to PAC'd Toolbox
 
 This directory is the input to spec 002 v3. Each per-plugin port report is the
 output a (not-yet-built) `tools/PluginPorter` CLI would produce for the same
@@ -86,7 +86,7 @@ derived from doing the work for real:
 8. **Drop** `Properties/AssemblyInfo.cs` — replaced by SDK-style csproj
    `<Version>` + auto-generated assembly attributes.
 9. **Add** the `CopyToShellPlugins` `<Target AfterTargets="Build">` that
-   copies the DLL + PDB into `..\..\XrmToolBox.MacOS\bin\$(Configuration)\
+   copies the DLL + PDB into `..\..\Shell\bin\$(Configuration)\
    $(TargetFramework)\Plugins\<AssemblyName>\`.
 10. **Preserve** original `<RootNamespace>` and `<AssemblyName>` so MEF imports
     keep working without rebuilding consumer plugins (none of these have
