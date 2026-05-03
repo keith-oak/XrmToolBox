@@ -144,7 +144,10 @@
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
               <DataTemplate DataType="vm:OpenedPluginViewModel">
-                <Border Classes="card" Background="{DynamicResource SurfaceBackgroundBrush}">
+                <Border Background="{DynamicResource SurfaceBackgroundBrush}"
+                        BorderBrush="{DynamicResource HairlineBrush}"
+                        BorderThickness="1"
+                        CornerRadius="0,8,8,8">
                   <ContentControl Content="{Binding View}" />
                 </Border>
               </DataTemplate>

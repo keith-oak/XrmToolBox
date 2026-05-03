@@ -208,6 +208,18 @@ public sealed class MainWindowViewModel : ViewModelBase
         _connectionService.Disconnect();
         IsConnected = false;
         ConnectionStatus = "Not connected";
+
+        foreach (var opened in OpenedPlugins)
+        {
+            try
+            {
+                opened.Control.ResetConnection();
+            }
+            catch
+            {
+                // Plugin reset failures must never take down the shell.
+            }
+        }
     }
 
     private void ForgetRecent(RecentConnection connection)

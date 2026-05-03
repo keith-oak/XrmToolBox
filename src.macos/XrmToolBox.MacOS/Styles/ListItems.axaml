@@ -36,48 +36,62 @@
     <Setter Property="Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
   </Style>
 
-  <!-- Tab strip: underline-style, not Fluent pill -->
+  <!-- Tab strip: macOS-style segmented tabs sitting on a hairline track -->
   <Style Selector="TabControl.macos">
     <Setter Property="Background" Value="Transparent" />
     <Setter Property="BorderThickness" Value="0" />
     <Setter Property="Padding" Value="0" />
   </Style>
 
+  <!-- The header panel area (where TabItems live) gets a hairline below
+       and a tiny bit of padding so tabs float above it. -->
+  <Style Selector="TabControl.macos /template/ ItemsPresenter#PART_ItemsPresenter">
+    <Setter Property="Margin" Value="0,4,0,0" />
+  </Style>
+
   <Style Selector="TabControl.macos > TabItem">
     <Setter Property="Background" Value="Transparent" />
-    <Setter Property="BorderThickness" Value="0,0,0,2" />
+    <Setter Property="BorderThickness" Value="1" />
     <Setter Property="BorderBrush" Value="Transparent" />
+    <Setter Property="CornerRadius" Value="8,8,0,0" />
     <Setter Property="Padding" Value="14,8" />
-    <Setter Property="MinHeight" Value="0" />
+    <Setter Property="Margin" Value="0,0,2,0" />
+    <Setter Property="MinHeight" Value="32" />
     <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}" />
     <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
   </Style>
 
-  <!-- Hide Fluent's default coloured "pipe" inside the tab item; we draw
-       our own underline via the TabItem's BorderThickness/BorderBrush. -->
+  <!-- Hide Fluent's default coloured "pipe" inside the tab item. -->
   <Style Selector="TabControl.macos > TabItem /template/ Border#PART_SelectedPipe">
     <Setter Property="IsVisible" Value="False" />
   </Style>
 
+  <!-- Hover: subtle wash. -->
   <Style Selector="TabControl.macos > TabItem:pointerover /template/ Border#PART_LayoutRoot">
-    <Setter Property="Background" Value="Transparent" />
-  </Style>
-
-  <Style Selector="TabControl.macos > TabItem:selected /template/ Border#PART_LayoutRoot">
-    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Background" Value="{DynamicResource HoverOverlayBrush}" />
+    <Setter Property="CornerRadius" Value="8,8,0,0" />
   </Style>
 
   <Style Selector="TabControl.macos > TabItem:pointerover">
     <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
   </Style>
 
-  <Style Selector="TabControl.macos > TabItem:selected">
-    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+  <!-- Selected: tab body becomes the surface colour, lifts above the
+       content card with matching corner radius and border. -->
+  <Style Selector="TabControl.macos > TabItem:selected /template/ Border#PART_LayoutRoot">
+    <Setter Property="Background" Value="{DynamicResource SurfaceBackgroundBrush}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource HairlineBrush}" />
+    <Setter Property="BorderThickness" Value="1,1,1,0" />
+    <Setter Property="CornerRadius" Value="8,8,0,0" />
   </Style>
 
-  <Style Selector="TabControl.macos > TabItem:selected:pointerover">
-    <Setter Property="Foreground" Value="{DynamicResource AccentBrush}" />
+  <Style Selector="TabControl.macos > TabItem:selected">
+    <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+    <Setter Property="FontWeight" Value="SemiBold" />
+  </Style>
+
+  <Style Selector="TabControl.macos > TabItem:selected:pointerover /template/ Border#PART_LayoutRoot">
+    <Setter Property="Background" Value="{DynamicResource SurfaceBackgroundBrush}" />
   </Style>
 
   <!-- Toolbar -->

@@ -238,6 +238,22 @@ public sealed class SamplePluginControl : IXrmToolBoxPluginControl
         _connection = connectionDetail;
         _connectionLabel.Text = $"Connected to {connectionDetail.OrganizationFriendlyName ?? connectionDetail.Url} ({connectionDetail.OrganizationVersion})";
         _connectionLabel.Foreground = Brushes.ForestGreen;
+        _runButton.IsEnabled = true;
+        _statusLabel.Text = string.Empty;
+    }
+
+    public void ResetConnection()
+    {
+        _service = null;
+        _connection = null;
+        _connectionLabel.Text = "Not connected.";
+        _connectionLabel.Foreground = new SolidColorBrush(Color.FromArgb(180, 90, 90, 95));
+        _runButton.IsEnabled = false;
+        _copyButton.IsEnabled = false;
+        Results.Clear();
+        _summaryLabel.Text = string.Empty;
+        _statusLabel.Foreground = new SolidColorBrush(Color.FromArgb(180, 90, 90, 95));
+        _statusLabel.Text = "Disconnected — connect again to run queries.";
     }
 
     private async Task RunQueryAsync()
