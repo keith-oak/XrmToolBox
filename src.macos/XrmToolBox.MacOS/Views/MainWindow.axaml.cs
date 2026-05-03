@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using XrmToolBox.MacOS.Plugins;
 using XrmToolBox.MacOS.ViewModels;
 
@@ -19,6 +20,22 @@ public partial class MainWindow : Window
             ExtendClientAreaToDecorationsHint = false;
             ExtendClientAreaTitleBarHeightHint = 0;
             TransparencyLevelHint = new[] { Avalonia.Controls.WindowTransparencyLevel.None };
+        }
+    }
+
+    private void OnToolbarPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        // Only fire on the toolbar surface itself, not on bubbled-up events
+        // from buttons/inputs inside it. If the original source is interactive,
+        // BeginMoveDrag is a no-op anyway.
+        var src = e.Source as Avalonia.Visual;
+        if (src is Button or TextBox or AutoCompleteBox or ComboBox or ListBox)
+        {
+            return;
+        }
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+        {
+            BeginMoveDrag(e);
         }
     }
 

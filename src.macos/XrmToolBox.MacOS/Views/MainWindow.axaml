@@ -32,8 +32,10 @@
     <!-- Main shell -->
     <Grid RowDefinitions="Auto,*,Auto">
 
-      <!-- Toolbar -->
-      <Border Grid.Row="0" Classes="toolbar" Padding="80,8,12,8">
+      <!-- Toolbar (also acts as the window drag handle on macOS,
+           because we extended client area to the decorations) -->
+      <Border Grid.Row="0" Classes="toolbar" Padding="80,8,12,8"
+              PointerPressed="OnToolbarPointerPressed">
         <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,*,Auto">
           <TextBlock Grid.Column="0" Text="Dataverse" Classes="footnote secondary" VerticalAlignment="Center" Margin="0,0,8,0" />
           <AutoCompleteBox Grid.Column="1"
@@ -98,14 +100,12 @@
               <ListBox.ItemTemplate>
                 <DataTemplate DataType="vm:NavItem">
                   <Grid ColumnDefinitions="24,*" Height="28">
-                    <Border Grid.Column="0" Width="24" Height="24" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding Icon}"
-                                 FontSize="15"
-                                 LineHeight="24"
-                                 TextAlignment="Center"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center" />
-                    </Border>
+                    <Viewbox Grid.Column="0" Width="18" Height="18"
+                             Stretch="Uniform"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center">
+                      <TextBlock Text="{Binding Icon}" FontSize="14" />
+                    </Viewbox>
                     <TextBlock Grid.Column="1"
                                Text="{Binding Label}"
                                FontWeight="Medium"
@@ -294,14 +294,14 @@
 
           </Grid>
 
-          <!-- PLUGINS — installed plugin manager (not the runner; that's Tools) -->
+          <!-- MANAGE TOOLS — install / uninstall installed tools (Tools section runs them) -->
           <ScrollViewer IsVisible="{Binding IsPluginsActive}">
             <StackPanel Margin="32,28,32,28" Spacing="{DynamicResource SpacingXl}">
               <Grid ColumnDefinitions="*,Auto,Auto">
                 <StackPanel Grid.Column="0" Spacing="{DynamicResource SpacingXs}">
-                  <TextBlock Classes="large-title" Text="Plugins" />
+                  <TextBlock Classes="large-title" Text="Manage Tools" />
                   <TextBlock Classes="footnote secondary"
-                             Text="Manage installed plugins. To run one, switch to Tools." />
+                             Text="Install, uninstall, and reload your tools. Switch to Tools to run them." />
                 </StackPanel>
                 <Button Grid.Column="1" Content="Open Folder" Classes="tertiary"
                         Command="{Binding OpenPluginsFolderCommand}" />
@@ -323,10 +323,10 @@
                                      TextWrapping="Wrap" />
                           <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}">
                             <Border Padding="8,2" CornerRadius="10" Background="{DynamicResource AccentSoftBrush}">
-                              <TextBlock Text="Plugin" Classes="caption" Foreground="{DynamicResource AccentBrush}" />
+                              <TextBlock Text="Installed" Classes="caption" Foreground="{DynamicResource AccentBrush}" />
                             </Border>
                             <TextBlock Classes="caption secondary" VerticalAlignment="Center"
-                                       Text="{Binding Plugin, Converter={x:Static ObjectConverters.IsNotNull}, StringFormat='Loaded'}" />
+                                       Text="{Binding Plugin, Converter={x:Static ObjectConverters.IsNotNull}, StringFormat='Ready'}" />
                           </StackPanel>
                         </StackPanel>
                         <Button Grid.Column="1" Content="Open" Classes="tertiary"
@@ -344,12 +344,12 @@
 
               <Border Classes="card" IsVisible="{Binding !AvailablePlugins.Count}">
                 <StackPanel Spacing="{DynamicResource SpacingMd}" HorizontalAlignment="Center" Margin="0,16">
-                  <TextBlock Classes="title-2" Text="No plugins installed" HorizontalAlignment="Center" />
+                  <TextBlock Classes="title-2" Text="No tools installed" HorizontalAlignment="Center" />
                   <TextBlock Classes="footnote secondary" TextAlignment="Center"
-                             Text="Browse the community catalogue to find tools, or drop plugin DLLs into the Plugins folder and reload." />
+                             Text="Browse the community catalogue to find tools, or drop tool packages into your Tools folder and reload." />
                   <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}" HorizontalAlignment="Center">
                     <Button Content="Browse Library" Classes="primary" Command="{Binding ToggleStoreCommand}" />
-                    <Button Content="Open Plugins Folder" Classes="tertiary" Command="{Binding OpenPluginsFolderCommand}" />
+                    <Button Content="Open Tools Folder" Classes="tertiary" Command="{Binding OpenPluginsFolderCommand}" />
                   </StackPanel>
                 </StackPanel>
               </Border>
@@ -404,11 +404,17 @@
                 <StackPanel Spacing="{DynamicResource SpacingSm}">
                   <TextBlock Classes="title-2" Text="Appearance" />
                   <TextBlock Classes="footnote secondary" Text="Theme override (live)" />
-                  <ComboBox Width="240" SelectedIndex="0">
-                    <ComboBoxItem Content="Auto (follow system)" />
-                    <ComboBoxItem Content="Light" />
-                    <ComboBoxItem Content="Dark" />
-                  </ComboBox>
+                  <StackPanel Orientation="Horizontal" Spacing="{DynamicResource SpacingSm}">
+                    <Button Content="Auto" Classes="segmented"
+                            Command="{Binding SetThemeCommand}" CommandParameter="auto"
+                            Classes.active="{Binding IsThemeAuto}" />
+                    <Button Content="Light" Classes="segmented"
+                            Command="{Binding SetThemeCommand}" CommandParameter="light"
+                            Classes.active="{Binding IsThemeLight}" />
+                    <Button Content="Dark" Classes="segmented"
+                            Command="{Binding SetThemeCommand}" CommandParameter="dark"
+                            Classes.active="{Binding IsThemeDark}" />
+                  </StackPanel>
                 </StackPanel>
               </Border>
 
@@ -436,8 +442,8 @@
 
               <Border Classes="card">
                 <StackPanel Spacing="{DynamicResource SpacingSm}">
-                  <TextBlock Classes="title-2" Text="Plugins" />
-                  <Button Content="Reload plugins" Command="{Binding ReloadPluginsCommand}" HorizontalAlignment="Left" />
+                  <TextBlock Classes="title-2" Text="Tools" />
+                  <Button Content="Reload tools" Command="{Binding ReloadPluginsCommand}" HorizontalAlignment="Left" />
                 </StackPanel>
               </Border>
 
@@ -488,33 +494,6 @@
                 </StackPanel>
               </Border>
 
-              <Border Classes="card">
-                <StackPanel Spacing="{DynamicResource SpacingSm}">
-                  <TextBlock Classes="title-2" Text="Brand essence" />
-                  <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="⚡" FontSize="14" Margin="0,4,12,8" />
-                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,8">
-                      <TextBlock Text="Powerful" FontWeight="SemiBold" />
-                      <TextBlock Text="Built for productivity and advanced workflows." Classes="footnote secondary" TextWrapping="Wrap" />
-                    </StackPanel>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="✨" FontSize="14" Margin="0,4,12,8" />
-                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,8">
-                      <TextBlock Text="Modern" FontWeight="SemiBold" />
-                      <TextBlock Text="Clean, current and delightful across platforms." Classes="footnote secondary" TextWrapping="Wrap" />
-                    </StackPanel>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="🛡" FontSize="14" Margin="0,4,12,8" />
-                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,8">
-                      <TextBlock Text="Reliable" FontWeight="SemiBold" />
-                      <TextBlock Text="Trusted open-source toolkit for the community." Classes="footnote secondary" TextWrapping="Wrap" />
-                    </StackPanel>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="🖥" FontSize="14" Margin="0,4,12,0" />
-                    <StackPanel Grid.Row="3" Grid.Column="1">
-                      <TextBlock Text="Cross-Platform" FontWeight="SemiBold" />
-                      <TextBlock Text="Seamless experience on macOS and Windows." Classes="footnote secondary" TextWrapping="Wrap" />
-                    </StackPanel>
-                  </Grid>
-                </StackPanel>
-              </Border>
             </StackPanel>
           </ScrollViewer>
 
@@ -592,7 +571,7 @@
           <Border Grid.Column="2" Padding="20,16" Background="{DynamicResource WindowBackgroundBrush}">
             <ScrollViewer>
               <StackPanel Spacing="{DynamicResource SpacingSm}">
-                <TextBlock Classes="title-2" Text="{Binding Store.Selected.Name, FallbackValue='Select a plugin'}" />
+                <TextBlock Classes="title-2" Text="{Binding Store.Selected.Name, FallbackValue='Select a tool'}" />
                 <TextBlock Classes="footnote secondary" Text="{Binding Store.Selected.Authors}" />
                 <TextBlock Classes="body" TextWrapping="Wrap" Text="{Binding Store.Selected.Description, FallbackValue=''}" />
                 <Border Margin="0,12,0,0" Padding="12" CornerRadius="{DynamicResource CornerRadiusControl}"
@@ -602,7 +581,7 @@
                   <StackPanel Spacing="{DynamicResource SpacingSm}">
                     <TextBlock Classes="footnote warning" FontWeight="SemiBold" Text="Needs porting" />
                     <TextBlock Classes="footnote" TextWrapping="Wrap"
-                               Text="Existing community plugins are .NET Framework + WinForms and won't load in this native shell. The agentic plugin porter (spec 002) auto-converts them. Install will be enabled once that ships." />
+                               Text="Existing community tools are .NET Framework + WinForms and won't load in this native shell. The agentic tool porter (spec 002) auto-converts them. Install will be enabled once that ships." />
                   </StackPanel>
                 </Border>
               </StackPanel>

@@ -24,18 +24,16 @@
     <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
   </Style>
 
+  <!-- Default selected state: subtle accent wash, keeps original text colours
+       so secondary text / chips remain legible. The sidebar gets the strong
+       purple-fill treatment via its own scoped selector below. -->
   <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource SelectionBackgroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
     <Setter Property="CornerRadius" Value="{DynamicResource CornerRadiusControl}" />
-    <Setter Property="TextElement.Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
   </Style>
 
   <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource SelectionBackgroundBrush}" />
-  </Style>
-
-  <Style Selector="ListBoxItem:selected TextBlock">
-    <Setter Property="Foreground" Value="{DynamicResource SelectionForegroundBrush}" />
+    <Setter Property="Background" Value="{DynamicResource AccentSoftBrush}" />
   </Style>
 
   <!-- macOS-style sidebar list -->

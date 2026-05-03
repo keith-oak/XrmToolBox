@@ -119,7 +119,7 @@ public sealed class MainWindowViewModel : ViewModelBase
     {
         new(NavSection.Home, "Home", "🏠"),
         new(NavSection.Tools, "Tools", "🧰"),
-        new(NavSection.Plugins, "Plugins", "🧩"),
+        new(NavSection.Plugins, "Manage Tools", "🧩"),
         new(NavSection.Environments, "Environments", "🌐"),
         new(NavSection.Connections, "Connections", "🔗"),
         new(NavSection.Settings, "Settings", "⚙️"),
@@ -179,6 +179,29 @@ public sealed class MainWindowViewModel : ViewModelBase
 
     public ObservableCollection<RecentTool> RecentTools { get; } = new();
 
+    private string _themeMode = "auto";
+    public string ThemeMode
+    {
+        get => _themeMode;
+        set
+        {
+            if (_themeMode == value) return;
+            this.RaiseAndSetIfChanged(ref _themeMode, value);
+            this.RaisePropertyChanged(nameof(IsThemeAuto));
+            this.RaisePropertyChanged(nameof(IsThemeLight));
+            this.RaisePropertyChanged(nameof(IsThemeDark));
+            ApplyTheme(value);
+            SettingsService.Current.ThemeOverride = value;
+            SettingsService.Save();
+        }
+    }
+
+    public bool IsThemeAuto => ThemeMode == "auto";
+    public bool IsThemeLight => ThemeMode == "light";
+    public bool IsThemeDark => ThemeMode == "dark";
+
+    public ReactiveCommand<string, Unit> SetThemeCommand { get; }
+
     public MainWindowViewModel(PluginManager pluginManager, SettingsService settings)
     {
         _pluginManager = pluginManager;
@@ -186,6 +209,7 @@ public sealed class MainWindowViewModel : ViewModelBase
 
         _selectedNav = NavItems[0];
         _dataverseUrl = settings.Current.DefaultDataverseUrl;
+        _themeMode = string.IsNullOrEmpty(settings.Current.ThemeOverride) ? "auto" : settings.Current.ThemeOverride;
 
         foreach (var entry in _pluginManager.GetPluginEntries())
         {
@@ -268,6 +292,11 @@ public sealed class MainWindowViewModel : ViewModelBase
             ConnectionStatus = "Solution importer — coming soon.";
         });
 
+        SetThemeCommand = ReactiveCommand.Create<string>(mode =>
+        {
+            ThemeMode = mode;
+        });
+
         // Seed Recent Tools from previously-opened plugins (will surface
         // on Home view).
         foreach (var typeName in settings.Current.LastOpenedPlugins)
@@ -276,7 +305,7 @@ public sealed class MainWindowViewModel : ViewModelBase
                 string.Equals(e.Plugin.GetType().FullName, typeName, StringComparison.Ordinal));
             if (entry is not null)
             {
-                RecentTools.Add(new RecentTool(entry, "Plugin", DateTimeOffset.Now));
+                RecentTools.Add(new RecentTool(entry, "Tool", DateTimeOffset.Now));
             }
         }
     }
@@ -389,7 +418,7 @@ public sealed class MainWindowViewModel : ViewModelBase
         // Track in Recent Tools (move to top, dedupe).
         var existingRecent = RecentTools.FirstOrDefault(r => r.Entry == entry);
         if (existingRecent is not null) RecentTools.Remove(existingRecent);
-        RecentTools.Insert(0, new RecentTool(entry, "Plugin", DateTimeOffset.Now));
+        RecentTools.Insert(0, new RecentTool(entry, "Tool", DateTimeOffset.Now));
         while (RecentTools.Count > 10) RecentTools.RemoveAt(RecentTools.Count - 1);
 
         // Switch to Tools section so the opened plugin is visible.
@@ -488,10 +517,12 @@ public sealed class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void ApplyThemeFromSettings()
+    public void ApplyThemeFromSettings() => ApplyTheme(SettingsService.Current.ThemeOverride);
+
+    private static void ApplyTheme(string mode)
     {
         if (Application.Current is null) return;
-        Application.Current.RequestedThemeVariant = SettingsService.Current.ThemeOverride switch
+        Application.Current.RequestedThemeVariant = mode switch
         {
             "light" => ThemeVariant.Light,
             "dark" => ThemeVariant.Dark,

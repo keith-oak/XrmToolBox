@@ -2,10 +2,13 @@
 
 ## Priority: HIGH
 
-## Status: COMPLETE (v1)
+## Status: COMPLETE (v1.1)
 
-> v1 ships: settings persistence + window state, recent connections (AutoCompleteBox + forget), settings panel, About panel, Plugin Store with online catalogue + offline fallback + honest "needs porting" install message, command palette (overlay), native macOS menu bar with File/View/Help, Cmd-K / Cmd-, / Cmd-R bindings.
-> v2 follow-ups (left as comments in `004-usable-shell.md`): theme dropdown wired live, command palette fuzzy filter, MSAL token-cache cleanup on Forget, About-panel link buttons, "Open logs folder" via OS shell, command palette opening focuses the search box.
+> v1 shipped: settings persistence + window state, recent connections (AutoCompleteBox + forget), settings panel, About panel, Plugin Store with online catalogue + offline fallback + honest "needs porting" install message, command palette (overlay), native macOS menu bar with File/View/Help, Cmd-K / Cmd-, / Cmd-R bindings.
+>
+> **v1.1 (this branch) adds**: rebrand to PAC'd Toolbox + brand visual system (purple #6C5CE7, Inter Tight, 8/12 corner radii, sidebar nav with seven sections), inline Settings + About panes (no more modal dialogs), live-apply theme via segmented `Auto / Light / Dark` control with stable geometry (no layout shift on toggle), draggable toolbar (BeginMoveDrag wired on PointerPressed for the extended client-area chrome), separate **Manage Tools** pane distinct from the **Tools** runner so users can install/uninstall without touching Finder, MSAL + `MsalCacheHelper.WithMacKeyChain()` with verified persistence so deny actually fails sign-in, sample-tool entity pre-flight guard, ResetConnection plumbing, sidebar emoji icons centred via `Viewbox`, About brand-essence card removed, default `ListBoxItem:selected` no longer overrides nested `TextBlock` foregrounds (so secondary text + chips stay legible).
+>
+> v2 follow-ups: agentic plugin porter (spec 002), command palette fuzzy filter, MSAL token-cache cleanup on Forget, About-panel link buttons, "Open logs folder" via OS shell, command palette opening focuses the search box.
 
 ## Description
 
